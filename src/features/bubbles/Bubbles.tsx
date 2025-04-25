@@ -24,6 +24,7 @@ const Bubbles: React.FC = () => {
 
   const animationRef = useRef<number>(0);
 
+  // buble gen
   useEffect(() => {
     if (!wrapperRef.current) return;
 
@@ -34,13 +35,10 @@ const Bubbles: React.FC = () => {
         id: getId(),
         color: (Math.floor(Math.random() * 3) + 1) * 100,
         x: parentEl.clientWidth * 0.72 + Math.random() * 48 - 24,
-        // x: Math.random() * parentEl.clientWidth,
         y: parentEl.clientHeight - 32,
-        r: Math.random() * 32 + 2,
+        r: Math.random() * 24 + 2,
         start: performance.now(),
         duration: Math.random() * 10000 + 24000,
-        // duration: 24000,
-
         finalY: -1 * Math.random() * 256,
         wiggleAmplitude: 4 + Math.random() * 16, // от 10 до 15 px в стороны
         wiggleFrequency: 10 + Math.random() * 40, // от 2 до 4 колебаний за подъем
@@ -52,6 +50,7 @@ const Bubbles: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // buble animation
   useEffect(() => {
     if (!wrapperRef.current) return;
 
@@ -83,7 +82,16 @@ const Bubbles: React.FC = () => {
   }, []);
 
   return (
-    <Box ref={wrapperRef} w='100%' h='100%' flex='1 1 auto' position='absolute' top={0} left={0} zIndex={-1}>
+    <Box
+      ref={wrapperRef}
+      w='100%'
+      h='100%'
+      flex='1 1 auto'
+      position='absolute'
+      top={0}
+      left={0}
+      // zIndex={-1}
+    >
       {!!wrapperRef.current && (
         <svg
           width={wrapperRef.current.clientWidth}
@@ -99,18 +107,34 @@ const Bubbles: React.FC = () => {
             // const bubbleOpacity = 1 - bubbleEased; // fade out
 
             return (
-              <circle
-                key={b.id}
-                cx={
-                  b.x +
-                  Math.sin(((performance.now() - b.start) / b.duration) * Math.PI * 2 * b.wiggleFrequency) *
-                    b.wiggleAmplitude
-                }
-                cy={b.y}
-                r={b.r}
-                // fill={`rgba(173, 216, 230, ${bubbleOpacity.toFixed(2)})`}
-                fill={`var(--chakra-colors-blue-${b.color})`}
-              />
+              <>
+                <circle
+                  key={b.id}
+                  cx={
+                    b.x +
+                    Math.sin(((performance.now() - b.start) / b.duration) * Math.PI * 2 * b.wiggleFrequency) *
+                      b.wiggleAmplitude
+                  }
+                  cy={b.y}
+                  r={b.r}
+                  fill={`var(--chakra-colors-blue-${b.color})`}
+                  opacity={0.75}
+                />
+
+                <circle
+                  key={b.id + '123'}
+                  cx={
+                    b.x +
+                    Math.sin(((performance.now() - b.start) / b.duration) * Math.PI * 2 * b.wiggleFrequency) *
+                      b.wiggleAmplitude
+                  }
+                  cy={b.y}
+                  r={b.r}
+                  fill='none'
+                  stroke='#fff'
+                  strokeWidth={2}
+                />
+              </>
             );
           })}
         </svg>

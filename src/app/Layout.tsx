@@ -21,23 +21,42 @@ const Layout = () => {
   if (appLoading) return <Loader />;
 
   return (
-    <Container as='main' m='0 auto' position='relative' p={0}>
+    <Container
+      as='main'
+      m='0 auto'
+      position='relative'
+      p={0}
+      background='no-repeat url("./assets/bg.jpeg")'
+      backgroundPosition='center'
+      backgroundSize='cover'
+    >
+      {/* <Image position='absolute' top={0} left={0} /> */}
+
       <Bubbles />
 
-      <Stack w='100%' h='100vh'>
-        <Flex p={8} flex='0 0 auto' gap={8} justifyContent='space-between' alignItems='center'>
+      <Stack w='100%' h='100vh' gap={0}>
+        <Flex
+          p={8}
+          flex='0 0 auto'
+          gap={8}
+          justifyContent='space-between'
+          alignItems='center'
+          // bg='blackAlpha.500'
+          // borderBottom='1px solid'
+          // borderColor='border.emphasized'
+        >
           <Heading size='4xl'>Supa diving</Heading>
 
           <Flex gap={4}>
-            <ColorModeButton size='md' colorPalette='blue' />
+            <ColorModeButton size='xl' colorPalette='blue' />
 
-            <Button variant='solid' colorPalette='blue' size='md' onClick={() => tg.close()}>
+            <Button variant='solid' colorPalette='blue' size='xl' onClick={() => tg.close()}>
               Close diving
             </Button>
           </Flex>
         </Flex>
 
-        <Stack w='100%' p={8} flex='1 1 auto'>
+        <Stack w='100%' p={8} flex='1 1 auto' zIndex={1}>
           <Outlet />
         </Stack>
       </Stack>
