@@ -4036,6 +4036,7 @@ __metadata:
     copy-webpack-plugin: 13.0.0
     css-loader: 7.1.2
     eslint: 9.24.0
+    eslint-config-google: 0.14.0
     eslint-plugin-react: 7.37.5
     eslint-plugin-react-hooks: 5.2.0
     globals: 16.0.0
@@ -4048,7 +4049,7 @@ __metadata:
     prettier: 3.5.3
     react: 19.1.0
     react-dom: 19.1.0
-    react-icons: ^5.5.0
+    react-icons: 5.5.0
     react-router-dom: 7.5.2
     rimraf: 6.0.1
     sass: 1.86.3
@@ -5178,6 +5179,15 @@ __metadata:
   version: 4.0.0
   resolution: "escape-string-regexp@npm:4.0.0"
   checksum: 98b48897d93060f2322108bf29db0feba7dd774be96cd069458d1453347b25ce8682ecc39859d4bca2203cc0ab19c237bcc71755eff49a0f8d90beadeeba5cc5
+  languageName: node
+  linkType: hard
+
+"eslint-config-google@npm:0.14.0":
+  version: 0.14.0
+  resolution: "eslint-config-google@npm:0.14.0"
+  peerDependencies:
+    eslint: ">=5.16.0"
+  checksum: 52ad84c0df2d33703024e5b7fd73a9a1b2a87413d25cee1826c891b3f8fba89f9188f3c5ed6d57b4315851c6a3c82847cc9f6c747278bf4395341f9ad79ed0d0
   languageName: node
   linkType: hard
 
@@ -8150,7 +8160,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-icons@npm:^5.5.0":
+"react-icons@npm:5.5.0":
   version: 5.5.0
   resolution: "react-icons@npm:5.5.0"
   peerDependencies:
