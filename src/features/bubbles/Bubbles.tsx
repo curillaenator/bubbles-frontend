@@ -36,12 +36,12 @@ const Bubbles: React.FC = () => {
         color: (Math.floor(Math.random() * 3) + 1) * 100,
         x: parentEl.clientWidth * 0.72 + Math.random() * 48 - 24,
         y: parentEl.clientHeight - 32,
-        r: Math.random() * 24 + 2,
+        r: Math.pow(Math.random() * 5, 2) + 3,
         start: performance.now(),
-        duration: Math.random() * 10000 + 24000,
+        duration: Math.random() * 12000 + 22000,
         finalY: -1 * Math.random() * 256,
-        wiggleAmplitude: 4 + Math.random() * 16, // от 10 до 15 px в стороны
-        wiggleFrequency: 10 + Math.random() * 40, // от 2 до 4 колебаний за подъем
+        wiggleAmplitude: 4 + Math.random() * 16,
+        wiggleFrequency: 10 + Math.random() * 40,
       };
 
       setBubbles((prev) => [...prev, newBubble]);
@@ -82,59 +82,24 @@ const Bubbles: React.FC = () => {
   }, []);
 
   return (
-    <Box
-      ref={wrapperRef}
-      w='100%'
-      h='100%'
-      flex='1 1 auto'
-      position='absolute'
-      top={0}
-      left={0}
-      // zIndex={-1}
-    >
+    <Box ref={wrapperRef} w='100%' h='100%' flex='1 1 auto' position='absolute' top={0} left={0} color='fg'>
       {!!wrapperRef.current && (
         <svg
           width={wrapperRef.current.clientWidth}
           height={wrapperRef.current.clientHeight}
           viewBox={`0 0 ${wrapperRef.current.clientWidth} ${wrapperRef.current.clientHeight}`}
-          style={{
-            display: 'block',
-          }}
         >
           {bubbles.map((b) => {
-            // const bubbleProgress = (performance.now() - b.start) / b.duration;
-            // const bubbleEased = easeInOut(Math.min(bubbleProgress * 4, 1));
-            // const bubbleOpacity = 1 - bubbleEased; // fade out
+            const cx =
+              b.x +
+              Math.sin(((performance.now() - b.start) / b.duration) * Math.PI * 2 * b.wiggleFrequency) *
+                b.wiggleAmplitude;
 
             return (
-              <>
-                <circle
-                  key={b.id}
-                  cx={
-                    b.x +
-                    Math.sin(((performance.now() - b.start) / b.duration) * Math.PI * 2 * b.wiggleFrequency) *
-                      b.wiggleAmplitude
-                  }
-                  cy={b.y}
-                  r={b.r}
-                  fill={`var(--chakra-colors-blue-${b.color})`}
-                  opacity={0.75}
-                />
-
-                <circle
-                  key={b.id + '123'}
-                  cx={
-                    b.x +
-                    Math.sin(((performance.now() - b.start) / b.duration) * Math.PI * 2 * b.wiggleFrequency) *
-                      b.wiggleAmplitude
-                  }
-                  cy={b.y}
-                  r={b.r}
-                  fill='none'
-                  stroke='#fff'
-                  strokeWidth={2}
-                />
-              </>
+              <g key={b.id}>
+                <circle cx={cx} cy={b.y} r={b.r} fill={`var(--chakra-colors-blue-${b.color})`} opacity={0.3} />
+                <circle cx={cx} cy={b.y} r={b.r} fill='none' stroke='currentColor' strokeWidth={1} />
+              </g>
             );
           })}
         </svg>

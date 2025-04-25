@@ -1,17 +1,29 @@
 import React, { useEffect } from 'react';
-import { Container, Heading, Stack, Button, Flex } from '@chakra-ui/react';
+import { Container, Heading, Stack, Flex, IconButton } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 
 import { Bubbles } from '@src/features/bubbles';
 
-import { ColorModeButton } from '@src/features/chakra/color-mode';
+import { ColorModeButton, useColorModeValue } from '@src/features/chakra/color-mode';
 
 import { useAuthState } from '@src/hooks/useAuthState';
 import { Loader } from '@src/features/loader';
 
+import { MdClose } from 'react-icons/md';
+
 const tg = window.Telegram?.WebApp;
 
 const Layout = () => {
+  const appModedLowBg = useColorModeValue(
+    'var(--chakra-colors-white-alpha-600)',
+    'var(--chakra-colors-black-alpha-600)',
+  );
+
+  const appModedHighBg = useColorModeValue(
+    'var(--chakra-colors-white-alpha-800)',
+    'var(--chakra-colors-black-alpha-800)',
+  );
+
   useEffect(() => {
     if (tg) tg.ready();
   }, []);
@@ -26,37 +38,39 @@ const Layout = () => {
       m='0 auto'
       position='relative'
       p={0}
-      background='no-repeat url("./assets/bg.jpeg")'
+      background={`linear-gradient(${appModedLowBg}, ${appModedHighBg}), no-repeat url("./assets/bg.jpeg")`}
       backgroundPosition='center'
       backgroundSize='cover'
+      maxW='unset'
     >
       {/* <Image position='absolute' top={0} left={0} /> */}
 
       <Bubbles />
 
-      <Stack w='100%' h='100vh' gap={0}>
+      <Stack w='100%' h='100vh' gap={0} zIndex={1}>
         <Flex
-          p={8}
+          p={6}
           flex='0 0 auto'
-          gap={8}
+          gap={6}
           justifyContent='space-between'
           alignItems='center'
-          // bg='blackAlpha.500'
-          // borderBottom='1px solid'
-          // borderColor='border.emphasized'
+          as='header'
+          bg={appModedLowBg}
+          borderBottom='1px solid'
+          borderColor='border.inverted'
         >
-          <Heading size='4xl'>Supa diving</Heading>
+          <Heading size='2xl'>Supa diving</Heading>
 
           <Flex gap={4}>
-            <ColorModeButton size='xl' colorPalette='blue' />
+            <ColorModeButton size='md' colorPalette='blue' variant='surface' />
 
-            <Button variant='solid' colorPalette='blue' size='xl' onClick={() => tg.close()}>
-              Close diving
-            </Button>
+            <IconButton variant='surface' colorPalette='blue' size='md' onClick={() => tg.close()}>
+              <MdClose />
+            </IconButton>
           </Flex>
         </Flex>
 
-        <Stack w='100%' p={8} flex='1 1 auto' zIndex={1}>
+        <Stack w='100%' px={6} flex='1 1 auto' maxH='calc(100vh - 88px)'>
           <Outlet />
         </Stack>
       </Stack>
