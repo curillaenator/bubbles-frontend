@@ -1,3 +1,4 @@
 {
-  "*.(js|jsx|ts|tsx)": ["npx prettier --write", "npx eslint --fix --quiet", "git add"]
+  "*.(js|jsx|ts|tsx)": ["npx prettier --write", "npx eslint --fix --quiet", "git add"],
+  "*.module.s?css": ["npx prettier --write", "git add"]
 }

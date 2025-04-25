@@ -41,19 +41,10 @@ export default [
   },
 
   {
-    files: [
-      //
-      'src/**/*.js',
-      'src/**/*.ts',
-      'src/**/*.jsx',
-      'src/**/*.tsx',
-      'kit/**/src/*.ts',
-      'kit/**/src/*.tsx',
-    ],
+    files: ['**/*.ts', '**/*.tsx'],
 
     rules: {
       'react/react-in-jsx-scope': 'off',
-      // 'import/no-unresolved': 'warn',
       'no-console': 'warn',
       'react-hooks/exhaustive-deps': 'error',
       '@typescript-eslint/no-explicit-any': 'error',
@@ -69,9 +60,9 @@ export default [
       '.firebase/*',
       '.husky/*',
       '.yarn/*',
-      '**/node_modules/*',
-      '**/build/*',
-      '**/*.config.js',
+      'node_modules',
+      'build',
+      'webpack.config.js',
     ],
   },
 ];

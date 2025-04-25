@@ -1,0 +1,48 @@
+@keyframes dashRotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dashAnimation {
+  0% {
+    stroke-dasharray: 0, 50;
+    stroke-dashoffset: 0px;
+  }
+  50% {
+    stroke-dasharray: 50, 50;
+    stroke-dashoffset: 0px;
+  }
+  100% {
+    stroke-dasharray: 50, 50;
+    stroke-dashoffset: -50px;
+  }
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+
+  & > svg {
+    transform-origin: center center;
+    width: 32px;
+    height: 32px;
+
+    & > circle {
+      fill: none;
+      stroke: #524f54;
+      stroke-width: 2px;
+      transform-origin: center;
+      stroke-linecap: round;
+      animation:
+        dashAnimation 1.6s linear infinite,
+        dashRotation 2s linear infinite;
+    }
+  }
+}
