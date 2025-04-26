@@ -7,8 +7,11 @@ import { toPairs } from 'lodash';
 import type { AppLanguage } from '@src/entities/i18n';
 
 const LANG_ASSOC: Partial<Record<AppLanguage, { name: string; flags: string }>> = {
-  en: { name: 'English', flags: '🇺🇸 🇬🇧 ' },
+  en: { name: 'English', flags: '🇺🇸 🇬🇧' },
   ru: { name: 'Русский', flags: '🇷🇺' },
+  fr: { name: 'Français', flags: '🇫🇷' },
+  kz: { name: 'Қазақ', flags: '🇰🇿' },
+  uz: { name: "O'zbek", flags: '🇺🇿' },
 };
 
 const LangSelector: React.FC = () => {
@@ -25,7 +28,7 @@ const LangSelector: React.FC = () => {
     >
       {/* @ts-expect-error */}
       <Menu.Trigger asChild>
-        <Button variant='outline' size='md' color='white'>
+        <Button variant='solid' size='md'>
           {LANG_ASSOC[selected]?.name} {LANG_ASSOC[selected]?.flags}
         </Button>
       </Menu.Trigger>

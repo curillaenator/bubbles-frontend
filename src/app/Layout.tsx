@@ -37,6 +37,7 @@ const getMaxH = (extract: string) => `calc(100vh - ${extract})`;
 
 const Layout = () => {
   const headerOpacity = useColorModeValue('0.9', '0.5');
+  const menuHeaderColor = useColorModeValue('bg.inverted', 'bg');
   const { t } = useTranslation();
 
   // const { appLoading } = useAuthState();
@@ -81,7 +82,7 @@ const Layout = () => {
           />
 
           <Flex alignItems='center' gap={4}>
-            <IconButton variant='ghost' size='md' color='white' onClick={() => setMenuOpen((o) => !o)}>
+            <IconButton variant='solid' size='md' onClick={() => setMenuOpen((o) => !o)}>
               <MdMenu />
             </IconButton>
 
@@ -93,11 +94,7 @@ const Layout = () => {
           </Flex>
 
           <Flex gap={4}>
-            <ColorModeButton size='md' variant='outline' color='white' />
-
-            {/* <IconButton variant='ghost' size='md' onClick={() => tg.close()} color='white'>
-              <MdClose />
-            </IconButton> */}
+            <ColorModeButton size='md' variant='solid' />
 
             <LangSelector />
           </Flex>
@@ -126,7 +123,7 @@ const Layout = () => {
 
           <Drawer.Positioner>
             <Drawer.Content>
-              <Drawer.Header p={HEADER_PD} borderBottom='1px solid' borderColor='border'>
+              <Drawer.Header p={HEADER_PD} borderBottom='1px solid' borderColor='border' bg={menuHeaderColor}>
                 <Drawer.Title>
                   <Flex alignItems='center' gap={4}>
                     <Logo />
@@ -144,7 +141,7 @@ const Layout = () => {
 
               {/* @ts-expect-error */}
               <Drawer.CloseTrigger asChild>
-                <CloseButton size='sm' />
+                <CloseButton size='sm' color='white' />
               </Drawer.CloseTrigger>
             </Drawer.Content>
           </Drawer.Positioner>
