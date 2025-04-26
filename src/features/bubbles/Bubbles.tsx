@@ -79,12 +79,12 @@ const Bubbles: React.FC = () => {
         left='0'
         transform='translateY(-100%)'
         w='100%'
-        height={{ base: '96px', sm: '144px', md: '220px' }}
+        height={{ base: '72px', sm: '144px', md: '220px' }}
         background='no-repeat url("./assets/diver.jpg")'
         backgroundPosition='center'
         backgroundSize='cover'
-        // borderTop='1px solid'
-        // borderColor='fg'
+        borderTop='1px solid'
+        borderColor='border'
         zIndex={-1}
       />
 

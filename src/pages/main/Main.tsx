@@ -9,7 +9,7 @@ const getMaxH = (extract: string) => `calc(100% - ${extract})`;
 const Main = () => {
   return (
     <Box
-      maxH={{ base: getMaxH('96px'), sm: getMaxH('144px'), md: getMaxH('220px') }}
+      maxH={{ base: getMaxH('72px'), sm: getMaxH('144px'), md: getMaxH('220px') }}
       overflow='auto'
       scrollbar='hidden'
     >
