@@ -72,7 +72,17 @@ const Bubbles: React.FC = () => {
   }, []);
 
   return (
-    <Box ref={wrapperRef} w='100%' h='100%' position='absolute' top={0} left={0} color='fg'>
+    <Box
+      ref={wrapperRef}
+      w='100%'
+      h='100%'
+      position='absolute'
+      top={0}
+      left={0}
+      color='fg'
+      pointerEvents='none'
+      zIndex={10}
+    >
       <Box
         position='absolute'
         top='100%'
@@ -80,7 +90,7 @@ const Bubbles: React.FC = () => {
         transform='translateY(-100%)'
         w='100%'
         height={{ base: '72px', sm: '144px', md: '220px' }}
-        background='no-repeat url("./assets/diver.jpg")'
+        background='no-repeat url("./assets/footer.jpg")'
         backgroundPosition='center'
         backgroundSize='cover'
         borderTop='1px solid'

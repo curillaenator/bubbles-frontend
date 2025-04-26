@@ -1,42 +1,63 @@
-import React, { useEffect } from 'react';
-import { Container, Heading, Stack, Flex, IconButton, Flex as Header, Image } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import {
+  Container,
+  Heading,
+  Stack,
+  Flex,
+  IconButton,
+  Flex as Header,
+  Image,
+  CloseButton,
+  Drawer,
+  Portal,
+} from '@chakra-ui/react';
+
 import { Outlet } from 'react-router-dom';
 
 import { Bubbles } from '@src/features/bubbles';
 
+// import { useAuthState } from '@src/hooks/useAuthState';
 import { ColorModeButton, useColorModeValue } from '@src/features/chakra/color-mode';
-import { useAuthState } from '@src/hooks/useAuthState';
+import { LangSelector } from '@src/features/langSelector';
 import { Loader } from '@src/features/loader';
 
-import { MdClose } from 'react-icons/md';
+import { MdMenu } from 'react-icons/md';
 
-import { Logo } from './Logo';
+import { Logo } from './assets/Logo';
 //@ts-expect-error
 import headBg from './assets/head.png';
+
+const HEADER_PD = { base: 4, sm: 4, md: 4, lg: 6 };
 
 const tg = window.Telegram?.WebApp;
 
 const getMaxH = (extract: string) => `calc(100vh - ${extract})`;
 
 const Layout = () => {
+  const headerOpacity = useColorModeValue('0.9', '0.5');
+  const { t } = useTranslation();
+
+  // const { appLoading } = useAuthState();
+  const appLoading = false;
+
+  const [menuoOpen, setMenuOpen] = useState<boolean>(false);
+
   useEffect(() => {
     if (tg) tg.ready();
   }, []);
 
-  const { appLoading } = useAuthState();
-
-  const headerOpacity = useColorModeValue('0.9', '0.5');
-
   if (appLoading) return <Loader />;
 
   return (
-    <Container as='main' position='relative' p={0} maxW='unset'>
+    <Container as='main' position='relative' p={0} maxW='unset' minW='375px'>
       <Bubbles />
 
-      <Stack w='100%' h='100vh' gap={0} zIndex={1} position='relative'>
+      <Stack w='100%' h='100vh' gap={0} position='relative'>
         <Header
           data-app-header
-          p={{ base: 4, sm: 4, md: 4, lg: 6 }}
+          p={HEADER_PD}
           flex='0 0 auto'
           gap={6}
           justifyContent='space-between'
@@ -60,18 +81,25 @@ const Layout = () => {
           />
 
           <Flex alignItems='center' gap={4}>
+            <IconButton variant='ghost' size='md' color='white' onClick={() => setMenuOpen((o) => !o)}>
+              <MdMenu />
+            </IconButton>
+
             <Logo />
+
             <Heading size={{ base: 'md', sm: 'xl', md: '2xl', lg: '2xl' }} color='white'>
-              NhaTrang Diving
+              {t('app-title')}
             </Heading>
           </Flex>
 
           <Flex gap={4}>
-            <ColorModeButton size='md' variant='ghost' color='white' />
+            <ColorModeButton size='md' variant='outline' color='white' />
 
-            <IconButton variant='ghost' size='md' onClick={() => tg.close()} color='white'>
+            {/* <IconButton variant='ghost' size='md' onClick={() => tg.close()} color='white'>
               <MdClose />
-            </IconButton>
+            </IconButton> */}
+
+            <LangSelector />
           </Flex>
         </Header>
 
@@ -86,6 +114,42 @@ const Layout = () => {
           <Outlet />
         </Container>
       </Stack>
+
+      <Drawer.Root
+        size={{ base: 'xs', sm: 'sm', md: 'md', lg: 'md' }}
+        placement='start'
+        open={menuoOpen}
+        onOpenChange={(e: { open: boolean }) => setMenuOpen(e.open)}
+      >
+        <Portal>
+          <Drawer.Backdrop />
+
+          <Drawer.Positioner>
+            <Drawer.Content>
+              <Drawer.Header p={HEADER_PD} borderBottom='1px solid' borderColor='border'>
+                <Drawer.Title>
+                  <Flex alignItems='center' gap={4}>
+                    <Logo />
+
+                    <Heading size={{ base: 'md', sm: 'xl', md: '2xl', lg: '2xl' }} color='white'>
+                      {t('app-title')}
+                    </Heading>
+                  </Flex>
+                </Drawer.Title>
+              </Drawer.Header>
+
+              <Drawer.Body>
+                <p>{t('banner-slogan')}</p>
+              </Drawer.Body>
+
+              {/* @ts-expect-error */}
+              <Drawer.CloseTrigger asChild>
+                <CloseButton size='sm' />
+              </Drawer.CloseTrigger>
+            </Drawer.Content>
+          </Drawer.Positioner>
+        </Portal>
+      </Drawer.Root>
     </Container>
   );
 };

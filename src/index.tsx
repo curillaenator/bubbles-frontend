@@ -1,3 +1,5 @@
+import './configs/i18n.config';
+
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
