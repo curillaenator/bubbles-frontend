@@ -5,49 +5,31 @@ import { Outlet } from 'react-router-dom';
 import { Bubbles } from '@src/features/bubbles';
 
 import { ColorModeButton, useColorModeValue } from '@src/features/chakra/color-mode';
-
 import { useAuthState } from '@src/hooks/useAuthState';
 import { Loader } from '@src/features/loader';
 
 import { MdClose } from 'react-icons/md';
 
+import { Logo } from './Logo';
+
 const tg = window.Telegram?.WebApp;
 
 const Layout = () => {
-  const appModedLowBg = useColorModeValue(
-    'var(--chakra-colors-white-alpha-600)',
-    'var(--chakra-colors-black-alpha-600)',
-  );
-
-  const appModedHighBg = useColorModeValue(
-    'var(--chakra-colors-white-alpha-800)',
-    'var(--chakra-colors-black-alpha-800)',
-  );
-
   useEffect(() => {
     if (tg) tg.ready();
   }, []);
 
   const { appLoading } = useAuthState();
 
+  const headerBg = useColorModeValue('whiteAlpha.700', 'blackAlpha.700');
+
   if (appLoading) return <Loader />;
 
   return (
-    <Container
-      as='main'
-      m='0 auto'
-      position='relative'
-      p={0}
-      background={`linear-gradient(${appModedLowBg}, ${appModedHighBg}), no-repeat url("./assets/bg.jpeg")`}
-      backgroundPosition='center'
-      backgroundSize='cover'
-      maxW='unset'
-    >
-      {/* <Image position='absolute' top={0} left={0} /> */}
-
+    <Container as='main' position='relative' p={0} maxW='unset'>
       <Bubbles />
 
-      <Stack w='100%' h='100vh' gap={0} zIndex={1}>
+      <Stack w='100%' h='100vh' gap={0} zIndex={1} position='relative'>
         <Flex
           p={6}
           flex='0 0 auto'
@@ -55,24 +37,28 @@ const Layout = () => {
           justifyContent='space-between'
           alignItems='center'
           as='header'
-          bg={appModedLowBg}
+          bg={headerBg}
           borderBottom='1px solid'
-          borderColor='border.inverted'
+          borderColor='border'
         >
-          <Heading size='2xl'>Supa diving</Heading>
+          <Flex alignItems='center' gap={4}>
+            <Logo />
+
+            <Heading size={{ base: 'md', sm: 'md', md: 'xl', lg: '2xl' }}>NhaTrand Diving</Heading>
+          </Flex>
 
           <Flex gap={4}>
-            <ColorModeButton size='md' colorPalette='blue' variant='surface' />
+            <ColorModeButton size='md' variant='ghost' />
 
-            <IconButton variant='surface' colorPalette='blue' size='md' onClick={() => tg.close()}>
+            <IconButton variant='ghost' size='md' onClick={() => tg.close()}>
               <MdClose />
             </IconButton>
           </Flex>
         </Flex>
 
-        <Stack w='100%' px={6} flex='1 1 auto' maxH='calc(100vh - 88px)'>
+        <Container as='div' w='100%' m='0 auto' px={6} flex='1 1 auto' maxH='calc(100vh - 96px)'>
           <Outlet />
-        </Stack>
+        </Container>
       </Stack>
     </Container>
   );

@@ -2,26 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Box } from '@chakra-ui/react';
 import { v4 as getId } from 'uuid';
 
-type Bubble = {
-  id: number | string;
-  color: number;
-  x: number;
-  y: number;
-  r: number;
-  start: number;
-  duration: number;
-  finalY: number;
-  wiggleAmplitude: number;
-  wiggleFrequency: number;
-};
+import { BubbleG } from './Bubble';
+
+import { BubbleProps } from './interfaces';
 
 const easeInOut = (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t); // от 0 до 1
 
 const Bubbles: React.FC = () => {
-  const [bubbles, setBubbles] = useState<Bubble[]>([]);
+  const [bubbles, setBubbles] = useState<BubbleProps[]>([]);
 
   const wrapperRef = useRef<HTMLDivElement | null>(null);
-
   const animationRef = useRef<number>(0);
 
   // buble gen
@@ -31,11 +21,11 @@ const Bubbles: React.FC = () => {
     const { current: parentEl } = wrapperRef;
 
     const interval = setInterval(() => {
-      const newBubble: Bubble = {
+      const newBubble: BubbleProps = {
         id: getId(),
         color: (Math.floor(Math.random() * 3) + 1) * 100,
-        x: parentEl.clientWidth * 0.72 + Math.random() * 48 - 24,
-        y: parentEl.clientHeight - 32,
+        x: parentEl.clientWidth * 0.68 + Math.random() * 72 - 32,
+        y: parentEl.clientHeight - 48,
         r: Math.pow(Math.random() * 5, 2) + 3,
         start: performance.now(),
         duration: Math.random() * 12000 + 22000,
@@ -61,7 +51,7 @@ const Bubbles: React.FC = () => {
             .map((b) => {
               const progress = (time - b.start) / b.duration;
 
-              if (progress >= 1 || b.finalY / b.y >= 0.8) return null; // удалить пузырёк
+              if (progress >= 1 || b.finalY / b.y >= 0.8) return null; // pop bubble
 
               const eased = easeInOut(Math.min(progress, 1));
 
@@ -70,7 +60,7 @@ const Bubbles: React.FC = () => {
                 y: b.y - eased * (b.y - b.finalY),
               };
             })
-            .filter(Boolean) as Bubble[],
+            .filter(Boolean) as BubbleProps[],
       );
 
       animationRef.current = requestAnimationFrame(animate);
@@ -82,26 +72,32 @@ const Bubbles: React.FC = () => {
   }, []);
 
   return (
-    <Box ref={wrapperRef} w='100%' h='100%' flex='1 1 auto' position='absolute' top={0} left={0} color='fg'>
+    <Box ref={wrapperRef} w='100%' h='100%' position='absolute' top={0} left={0} color='fg'>
+      <Box
+        position='absolute'
+        top='100%'
+        left='0'
+        transform='translateY(-100%)'
+        w='100%'
+        height={{ base: '96px', sm: '144px', md: '220px', lg: '300px' }}
+        background='no-repeat url("./assets/diver.jpg")'
+        backgroundPosition='center'
+        backgroundSize='cover'
+        borderTop='1px solid'
+        borderColor='fg'
+        zIndex={-1}
+      />
+
       {!!wrapperRef.current && (
         <svg
           width={wrapperRef.current.clientWidth}
           height={wrapperRef.current.clientHeight}
           viewBox={`0 0 ${wrapperRef.current.clientWidth} ${wrapperRef.current.clientHeight}`}
+          style={{ display: 'block' }}
         >
-          {bubbles.map((b) => {
-            const cx =
-              b.x +
-              Math.sin(((performance.now() - b.start) / b.duration) * Math.PI * 2 * b.wiggleFrequency) *
-                b.wiggleAmplitude;
-
-            return (
-              <g key={b.id}>
-                <circle cx={cx} cy={b.y} r={b.r} fill={`var(--chakra-colors-blue-${b.color})`} opacity={0.3} />
-                <circle cx={cx} cy={b.y} r={b.r} fill='none' stroke='currentColor' strokeWidth={1} />
-              </g>
-            );
-          })}
+          {bubbles.map((bbl) => (
+            <BubbleG key={bbl.id} {...bbl} />
+          ))}
         </svg>
       )}
     </Box>
