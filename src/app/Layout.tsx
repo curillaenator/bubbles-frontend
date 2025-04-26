@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Container, Heading, Stack, Flex, IconButton } from '@chakra-ui/react';
+import { Container, Heading, Stack, Flex, IconButton, Flex as Header, Image } from '@chakra-ui/react';
 import { Outlet } from 'react-router-dom';
 
 import { Bubbles } from '@src/features/bubbles';
@@ -11,8 +11,12 @@ import { Loader } from '@src/features/loader';
 import { MdClose } from 'react-icons/md';
 
 import { Logo } from './Logo';
+//@ts-expect-error
+import headBg from './assets/head.png';
 
 const tg = window.Telegram?.WebApp;
+
+const getMaxH = (extract: string) => `calc(100vh - ${extract})`;
 
 const Layout = () => {
   useEffect(() => {
@@ -21,7 +25,7 @@ const Layout = () => {
 
   const { appLoading } = useAuthState();
 
-  const headerBg = useColorModeValue('whiteAlpha.700', 'blackAlpha.700');
+  const headerOpacity = useColorModeValue('0.9', '0.5');
 
   if (appLoading) return <Loader />;
 
@@ -30,33 +34,55 @@ const Layout = () => {
       <Bubbles />
 
       <Stack w='100%' h='100vh' gap={0} zIndex={1} position='relative'>
-        <Flex
-          p={6}
+        <Header
+          data-app-header
+          p={{ base: 4, sm: 4, md: 4, lg: 6 }}
           flex='0 0 auto'
           gap={6}
           justifyContent='space-between'
           alignItems='center'
           as='header'
-          bg={headerBg}
+          position='relative'
+          overflow='hidden'
           borderBottom='1px solid'
           borderColor='border'
         >
+          <Image
+            src={headBg}
+            w='100%'
+            objectFit='cover'
+            position='absolute'
+            top={0}
+            left={0}
+            transform='translateY(-38%)'
+            zIndex={-1}
+            opacity={headerOpacity}
+          />
+
           <Flex alignItems='center' gap={4}>
             <Logo />
-
-            <Heading size={{ base: 'md', sm: 'md', md: 'xl', lg: '2xl' }}>NhaTrand Diving</Heading>
+            <Heading size={{ base: 'md', sm: 'xl', md: '2xl', lg: '2xl' }} color='white'>
+              NhaTrang Diving
+            </Heading>
           </Flex>
 
           <Flex gap={4}>
-            <ColorModeButton size='md' variant='ghost' />
+            <ColorModeButton size='md' variant='ghost' color='white' />
 
-            <IconButton variant='ghost' size='md' onClick={() => tg.close()}>
+            <IconButton variant='ghost' size='md' onClick={() => tg.close()} color='white'>
               <MdClose />
             </IconButton>
           </Flex>
-        </Flex>
+        </Header>
 
-        <Container as='div' w='100%' m='0 auto' px={6} flex='1 1 auto' maxH='calc(100vh - 96px)'>
+        <Container
+          as='div'
+          w='100%'
+          m='0 auto'
+          px={6}
+          flex='1 1 auto'
+          maxH={{ base: getMaxH('73px'), sm: getMaxH('73px'), md: getMaxH('73px'), lg: getMaxH('97px') }}
+        >
           <Outlet />
         </Container>
       </Stack>

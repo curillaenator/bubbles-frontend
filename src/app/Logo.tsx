@@ -1,15 +1,19 @@
 import React from 'react';
 
+import { chakra } from '@chakra-ui/react';
+
+const LogoSvg = chakra('svg');
+
 const Logo = () => (
-  <svg
+  <LogoSvg
     version='1.0'
     xmlns='http://www.w3.org/2000/svg'
-    width='48'
-    height='48'
+    width={{ base: '40px', sm: '40px', md: '40px', lg: '48px' }}
+    height={{ base: '40px', sm: '40px', md: '40px', lg: '48px' }}
     viewBox='0 0 1261.000000 1280.000000'
     preserveAspectRatio='xMidYMid meet'
   >
-    <g transform='translate(0.000000,1280.000000) scale(0.100000,-0.100000)' fill='currentColor' stroke='none'>
+    <g transform='translate(0.000000,1280.000000) scale(0.100000,-0.100000)' fill='white' stroke='none'>
       <path
         d='M11072 12720 c-288 -43 -525 -80 -527 -82 -4 -4 326 -2331 331 -2337
 3 -4 1075 139 1081 143 2 1 -46 349 -106 772 -60 423 -135 952 -167 1177 -48
@@ -70,7 +74,7 @@ c106 -262 317 -482 599 -623 100 -50 258 -99 357 -110 141 -16 1402 -44 1706
 -461 545 -844 972 -243 271 -584 620 -685 701 -131 106 -182 121 -227 68z'
       />
     </g>
-  </svg>
+  </LogoSvg>
 );
 
 export { Logo };

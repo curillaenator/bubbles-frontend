@@ -8,7 +8,7 @@ const config = defineConfig({
   theme: {
     tokens: {
       fonts: {
-        heading: { value: '"Dela Gothic One", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"' }, // -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
+        heading: { value: '"Permanent Marker", cursive, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"' }, // -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"
         body: {
           value:
             '-apple-system, BlinkMacSystemFont, Nunito Sans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
