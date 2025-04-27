@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -20,40 +21,40 @@ import {
 import { Outlet } from 'react-router-dom';
 
 import { Bubbles } from '@src/features/bubbles';
+import { Logo } from '@src/features/logo';
 
 // import { useAuthState } from '@src/hooks/useAuthState';
-import { ColorModeButton, useColorModeValue } from '@src/features/chakra/color-mode';
+import { useColorModeValue } from '@src/features/chakra/color-mode';
 import { Menu } from '@src/features/menu';
 import { LangSelector } from '@src/features/langSelector';
-import { Loader } from '@src/features/loader';
+// import { Loader } from '@src/features/loader';
 
 import { MdMenu } from 'react-icons/md';
+import { FaTelegramPlane } from 'react-icons/fa';
 
-import { Logo } from './assets/Logo';
 //@ts-expect-error
 import headBg from './assets/head.png';
 
 const HEADER_PD = { base: 4, sm: 4, md: 4, lg: 6 };
 
-const tg = window.Telegram?.WebApp;
-
 const getMaxH = (head: string, foot: string) => `calc(100vh - ${head} - ${foot})`;
 
-const Layout = () => {
+const Layout: React.FC = () => {
   const headerOpacity = useColorModeValue('0.9', '0.5');
   const menuHeaderColor = useColorModeValue('bg.inverted', 'bg');
   const { t } = useTranslation();
 
   // const { appLoading } = useAuthState();
-  const appLoading = false;
 
   const [drawerOpen, toggleDrawer] = useState<boolean>(false);
 
   useEffect(() => {
-    if (tg) tg.ready();
+    if (window.Telegram?.WebApp) {
+      window.Telegram?.WebApp.ready();
+    }
   }, []);
 
-  if (appLoading) return <Loader />;
+  // if (appLoading) return <Loader />;
 
   return (
     <Container as='main' position='relative' p={0} maxW='unset' minW='375px'>
@@ -64,7 +65,7 @@ const Layout = () => {
           data-app-header
           p={HEADER_PD}
           flex='0 0 auto'
-          gap={6}
+          gap={4}
           justifyContent='space-between'
           alignItems='center'
           as='header'
@@ -85,7 +86,7 @@ const Layout = () => {
             opacity={headerOpacity}
           />
 
-          <Flex alignItems='center' gap={4}>
+          <Flex alignItems='center' gap={2}>
             <IconButton variant='ghost' size='md' color='white' onClick={() => toggleDrawer((o) => !o)}>
               <MdMenu />
             </IconButton>
@@ -97,8 +98,8 @@ const Layout = () => {
             </Heading>
           </Flex>
 
-          <Flex gap={4}>
-            <ColorModeButton size='md' variant='ghost' color='white' />
+          <Flex gap={2}>
+            {/* <ColorModeButton size='md' variant='ghost' color='white' /> */}
 
             <LangSelector />
           </Flex>
@@ -140,7 +141,16 @@ const Layout = () => {
           backgroundPosition='center'
           backgroundSize='cover'
         >
-          <Button size='md'>{t('app-footer-button')}</Button>
+          <Button
+            as={Link}
+            //@ts-expect-error
+            to='https://t.me/Viktorrrkarp'
+            size='md'
+            onClick={() => window.Telegram?.WebApp.close()}
+          >
+            <FaTelegramPlane />
+            {t('app-footer-button')}
+          </Button>
         </AppFooter>
       </AppInteractiveUI>
 

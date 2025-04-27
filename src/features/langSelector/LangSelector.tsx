@@ -1,45 +1,43 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Menu, Portal, IconButton } from '@chakra-ui/react';
 
 import { toPairs } from 'lodash';
 
-import type { AppLanguage } from '@src/entities/i18n';
+type AppLanguage = 'en' | 'ru' | 'fr' | 'kz' | 'uz';
 
-const LANG_ASSOC: Partial<Record<AppLanguage, { name: string; flags: string }>> = {
-  en: { name: 'English', flags: '🇬🇧' }, //'🇺🇸 🇬🇧'
-  ru: { name: 'Русский', flags: '🇷🇺' },
-  fr: { name: 'Français', flags: '🇫🇷' },
-  kz: { name: 'Қазақ', flags: '🇰🇿' },
-  uz: { name: "O'zbek", flags: '🇺🇿' },
+const LANG_ASSOC: Record<AppLanguage, { name: string; flag: string }> = {
+  en: { name: 'English', flag: '🇬🇧' }, //'🇺🇸 🇬🇧'
+  ru: { name: 'Русский', flag: '🇷🇺' },
+  fr: { name: 'Français', flag: '🇫🇷' },
+  kz: { name: 'Қазақ', flag: '🇰🇿' },
+  uz: { name: "O'zbek", flag: '🇺🇿' },
 };
 
 const LangSelector: React.FC = () => {
   const { i18n } = useTranslation();
-  const [selected, setSelected] = useState<AppLanguage>('ru');
 
   return (
     <Menu.Root
       positioning={{ placement: 'left-end' }}
       onSelect={(e: { value: AppLanguage }) => {
         i18n.changeLanguage(e.value);
-        setSelected(e.value);
       }}
     >
       {/* @ts-expect-error */}
       <Menu.Trigger asChild>
         <IconButton variant='ghost' size='md'>
-          {LANG_ASSOC[selected]?.flags}
+          {LANG_ASSOC[i18n.language as AppLanguage]?.flag || '🇬🇧'}
         </IconButton>
       </Menu.Trigger>
 
       <Portal>
         <Menu.Positioner>
           <Menu.Content>
-            {toPairs(LANG_ASSOC).map(([lang, { name, flags }]) => (
+            {toPairs(LANG_ASSOC).map(([lang, { name, flag }]) => (
               // @ts-expect-error
               <Menu.Item key={`lang-selector-${lang}`} value={lang}>
-                {name} <Menu.ItemCommand>{flags}</Menu.ItemCommand>
+                {name} <Menu.ItemCommand>{flag}</Menu.ItemCommand>
               </Menu.Item>
             ))}
           </Menu.Content>

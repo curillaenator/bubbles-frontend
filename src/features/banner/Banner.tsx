@@ -1,9 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { Flex, Button, Stack, Heading, Text } from '@chakra-ui/react';
 
-const Banner = () => {
+import { Logo } from '../logo';
+
+const Banner: React.FC = () => {
   const { t } = useTranslation();
 
   return (
@@ -28,14 +31,19 @@ const Banner = () => {
 
       <Flex pt={12}>
         <Button
+          as={Link}
+          //@ts-expect-error
+          to='https://t.me/Viktorrrkarp'
+          onClick={() => window.Telegram?.WebApp.close()}
           size='xl'
           variant='solid'
-          colorPalette='green'
-          //   color='white'
+          colorPalette='blue'
           border='1px solid'
           borderColor='white'
+          fontWeight='extrabold'
         >
-          {t('app-banner-button')}
+          <Logo size={24} />
+          {t('banner-button')}
         </Button>
       </Flex>
     </Stack>

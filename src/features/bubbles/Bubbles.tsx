@@ -14,6 +14,7 @@ const easeInOut = (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t); /
 const Bubbles = () => {
   const location = useLocation();
   const isRoot = location.pathname === '/';
+  const isShare = location.pathname === '/share';
 
   const [bubbles, setBubbles] = useState<BubbleProps[]>([]);
 
@@ -22,7 +23,7 @@ const Bubbles = () => {
 
   // buble gen
   useEffect(() => {
-    if (!wrapperRef.current || !isRoot) return;
+    if (!wrapperRef.current || !(isRoot || isShare)) return;
 
     const { current: parentEl } = wrapperRef;
 
@@ -44,7 +45,7 @@ const Bubbles = () => {
     }, 160);
 
     return () => clearInterval(interval);
-  }, [isRoot]);
+  }, [isRoot, isShare]);
 
   // buble animation
   useEffect(() => {

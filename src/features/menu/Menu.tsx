@@ -1,8 +1,10 @@
 import React from 'react';
-import { Stack } from '@chakra-ui/react';
+import { Stack, Flex } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { TbLogin2, TbHome2, TbShare2, TbPhoto } from 'react-icons/tb';
+
+import { ColorModeButton } from '@src/features/chakra/color-mode';
 
 import { NavButton } from './NavButton';
 
@@ -32,12 +34,28 @@ const Menu: React.FC<MenuProps> = ({ toggleDrawer }) => {
         ))}
       </Stack>
 
-      <Stack>
-        <NavButton to={AUTH_ROUTE} color='fg.muted' onClick={() => toggleDrawer(false)}>
+      <Flex
+        w='100%'
+        gap={4}
+        css={{
+          '& > a': {
+            width: '100%',
+          },
+        }}
+      >
+        <NavButton
+          to={AUTH_ROUTE}
+          color='fg.muted'
+          onClick={() => toggleDrawer(false)}
+          w='100%'
+          justifyContent='flex-start'
+        >
           <TbLogin2 />
           {t('app-nav-auth')}
         </NavButton>
-      </Stack>
+
+        <ColorModeButton size='md' variant='surface' flex='0 0 auto' />
+      </Flex>
     </Stack>
   );
 };
