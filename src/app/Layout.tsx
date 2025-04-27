@@ -86,7 +86,7 @@ const Layout = () => {
           />
 
           <Flex alignItems='center' gap={4}>
-            <IconButton variant='solid' size='md' onClick={() => toggleDrawer((o) => !o)}>
+            <IconButton variant='ghost' size='md' color='white' onClick={() => toggleDrawer((o) => !o)}>
               <MdMenu />
             </IconButton>
 
@@ -98,7 +98,7 @@ const Layout = () => {
           </Flex>
 
           <Flex gap={4}>
-            <ColorModeButton size='md' variant='solid' />
+            <ColorModeButton size='md' variant='ghost' color='white' />
 
             <LangSelector />
           </Flex>
