@@ -14,6 +14,7 @@ const NavButton = (props: NavButtonProps) => {
           {...rest}
           colorPalette={isActive ? 'blue' : undefined}
           variant={isActive ? 'solid' : 'surface'}
+          textAlign='start'
           justifyContent='flex-start'
           w='100%'
           onClick={onClick}

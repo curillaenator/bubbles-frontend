@@ -1,7 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Card, Stack, Image, Center, SimpleGrid, GridItem, Heading } from '@chakra-ui/react';
+import { Card, Stack, Image, Center, SimpleGrid, GridItem, Heading, Text, Button } from '@chakra-ui/react';
+
+import { FaTelegramPlane } from 'react-icons/fa';
 
 //@ts-expect-error
 import me from './vik.jpg';
@@ -12,20 +14,36 @@ const Me = () => {
   return (
     <Card.Root width='100%' variant='subtle'>
       <Card.Body gap='2'>
-        <SimpleGrid columns={{ base: 1, sm: 1, md: 3, lg: 3 }} gap={4}>
+        <SimpleGrid columns={{ base: 1, sm: 1, md: 3, lg: 3 }} gap={6}>
           <GridItem colSpan={{ base: 1, sm: 1, md: 2, lg: 2 }}>
-            <Stack py={{ base: 0, sm: 0, md: 6, lg: 6 }}>
+            <Stack gap={6}>
               <Heading size='2xl'>{t('me-greatings')}</Heading>
 
-              <Card.Description whiteSpace='pre-line'>{t('me-slogan')}</Card.Description>
+              <Text whiteSpace='pre-line' color='fg.info'>
+                {t('me-slogan')}
+              </Text>
 
               <Heading>{t('me-pricing')}</Heading>
 
-              <Card.Description whiteSpace='pre-line'>{t('me-skills')}</Card.Description>
+              <Text whiteSpace='pre-line' color='fg.info'>
+                {t('me-skills')}
+              </Text>
 
-              <Heading size='md' whiteSpace='pre-line'>
+              <Text fontWeight='bold' whiteSpace='pre-line'>
                 {t('me-subskills')}
-              </Heading>
+              </Text>
+
+              <Button
+                size='md'
+                colorPalette='blue'
+                onClick={() => {
+                  //@ts-expect-error
+                  window.Telegram?.WebApp?.openTelegramLink?.('https://t.me/Viktorrrkarp');
+                }}
+              >
+                <FaTelegramPlane />
+                {t('app-footer-button')}
+              </Button>
             </Stack>
           </GridItem>
 

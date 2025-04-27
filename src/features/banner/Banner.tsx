@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 // import { useUnit } from 'effector-react';
 import { useTranslation } from 'react-i18next';
 
@@ -14,6 +14,9 @@ import { Logo } from '../logo';
 const Banner: React.FC = () => {
   // const { uid } = useUnit($userStore);
   const { t } = useTranslation();
+
+  //@ts-expect-error
+  console.log(window.Telegram.WebApp.openTelegramLink);
 
   // const [isEdit, seIsEdit] = useState<boolean>(false);
 
@@ -40,20 +43,22 @@ const Banner: React.FC = () => {
             {t('banner-title')}
           </Heading>
 
-          <Text color='white'>{t('banner-slogan')}</Text>
+          <Text color='white' fontWeight='bold'>
+            {t('banner-slogan')}
+          </Text>
 
           <Flex pt={6}>
             <Button
-              as={Link}
-              //@ts-expect-error
-              to='https://t.me/Viktorrrkarp'
-              onClick={() => window.Telegram?.WebApp.close()}
               size='xl'
               variant='solid'
               colorPalette='blue'
               border='1px solid'
               borderColor='white'
               fontWeight='extrabold'
+              onClick={() => {
+                //@ts-expect-error
+                window.Telegram?.WebApp?.openTelegramLink?.('https://t.me/Viktorrrkarp');
+              }}
             >
               <Logo size={24} />
               {t('banner-button')}

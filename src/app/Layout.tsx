@@ -147,11 +147,11 @@ const Layout: React.FC = () => {
           backgroundSize='cover'
         >
           <Button
-            as={Link}
-            //@ts-expect-error
-            to='https://t.me/Viktorrrkarp'
             size='md'
-            onClick={() => window.Telegram?.WebApp.close()}
+            onClick={() => {
+              //@ts-expect-error
+              window.Telegram?.WebApp?.openTelegramLink?.('https://t.me/Viktorrrkarp');
+            }}
           >
             <FaTelegramPlane />
             {t('app-footer-button')}
