@@ -7,9 +7,9 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import { Provider as ChakraProvider } from './features/chakra/provider';
 
 import { Layout } from './app';
-import { Main } from './pages';
+import { Main, AuthPage, SharePage, GalleryPage } from './pages';
 
-import { ROOT_ROUTE } from './routes';
+import { ROOT_ROUTE, SHARE_ROUTE, AUTH_ROUTE, GALLERY_ROUTE } from './routes';
 
 import './index.css';
 
@@ -20,6 +20,9 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path={ROOT_ROUTE} element={<Layout />}>
       <Route index element={<Main />} />
+      <Route path={AUTH_ROUTE} element={<AuthPage />} />
+      <Route path={SHARE_ROUTE} element={<SharePage />} />
+      <Route path={GALLERY_ROUTE} element={<GalleryPage />} />
     </Route>,
   ),
 );

@@ -3,11 +3,14 @@ import { useTranslation } from 'react-i18next';
 
 import {
   Container,
+  Container as AppBody,
   Heading,
-  Stack,
+  Stack as AppInteractiveUI,
   Flex,
   IconButton,
-  Flex as Header,
+  Button,
+  Flex as AppHeader,
+  Flex as AppFooter,
   Image,
   CloseButton,
   Drawer,
@@ -20,6 +23,7 @@ import { Bubbles } from '@src/features/bubbles';
 
 // import { useAuthState } from '@src/hooks/useAuthState';
 import { ColorModeButton, useColorModeValue } from '@src/features/chakra/color-mode';
+import { Menu } from '@src/features/menu';
 import { LangSelector } from '@src/features/langSelector';
 import { Loader } from '@src/features/loader';
 
@@ -33,7 +37,7 @@ const HEADER_PD = { base: 4, sm: 4, md: 4, lg: 6 };
 
 const tg = window.Telegram?.WebApp;
 
-const getMaxH = (extract: string) => `calc(100vh - ${extract})`;
+const getMaxH = (head: string, foot: string) => `calc(100vh - ${head} - ${foot})`;
 
 const Layout = () => {
   const headerOpacity = useColorModeValue('0.9', '0.5');
@@ -43,7 +47,7 @@ const Layout = () => {
   // const { appLoading } = useAuthState();
   const appLoading = false;
 
-  const [menuoOpen, setMenuOpen] = useState<boolean>(false);
+  const [drawerOpen, toggleDrawer] = useState<boolean>(false);
 
   useEffect(() => {
     if (tg) tg.ready();
@@ -55,8 +59,8 @@ const Layout = () => {
     <Container as='main' position='relative' p={0} maxW='unset' minW='375px'>
       <Bubbles />
 
-      <Stack w='100%' h='100vh' gap={0} position='relative'>
-        <Header
+      <AppInteractiveUI w='100%' h='100vh' gap={0} position='relative'>
+        <AppHeader
           data-app-header
           p={HEADER_PD}
           flex='0 0 auto'
@@ -82,7 +86,7 @@ const Layout = () => {
           />
 
           <Flex alignItems='center' gap={4}>
-            <IconButton variant='solid' size='md' onClick={() => setMenuOpen((o) => !o)}>
+            <IconButton variant='solid' size='md' onClick={() => toggleDrawer((o) => !o)}>
               <MdMenu />
             </IconButton>
 
@@ -98,25 +102,53 @@ const Layout = () => {
 
             <LangSelector />
           </Flex>
-        </Header>
+        </AppHeader>
 
-        <Container
+        <AppBody
           as='div'
           w='100%'
           m='0 auto'
           px={6}
           flex='1 1 auto'
-          maxH={{ base: getMaxH('73px'), sm: getMaxH('73px'), md: getMaxH('73px'), lg: getMaxH('97px') }}
+          maxH={{
+            base: getMaxH('73px', '72px'),
+            sm: getMaxH('73px', '144px'),
+            md: getMaxH('73px', '220px'),
+            lg: getMaxH('97px', '220px'),
+          }}
         >
           <Outlet />
-        </Container>
-      </Stack>
+        </AppBody>
+
+        <AppFooter
+          w='100%'
+          h={{
+            base: '72px',
+            sm: '144px',
+            md: '220px',
+            lg: '220px',
+          }}
+          data-app-footer
+          p={HEADER_PD}
+          flex='0 0 auto'
+          as='footer'
+          position='relative'
+          overflow='hidden'
+          borderTop='1px solid'
+          borderColor='border'
+          background='no-repeat url("./assets/footer.jpg")'
+          backgroundPosition='center'
+          backgroundSize='cover'
+        >
+          <Button size='md'>{t('app-footer-button')}</Button>
+        </AppFooter>
+      </AppInteractiveUI>
 
       <Drawer.Root
         size={{ base: 'xs', sm: 'sm', md: 'md', lg: 'md' }}
         placement='start'
-        open={menuoOpen}
-        onOpenChange={(e: { open: boolean }) => setMenuOpen(e.open)}
+        open={drawerOpen}
+        onOpenChange={(e: { open: boolean }) => toggleDrawer(e.open)}
       >
         <Portal>
           <Drawer.Backdrop />
@@ -135,8 +167,8 @@ const Layout = () => {
                 </Drawer.Title>
               </Drawer.Header>
 
-              <Drawer.Body>
-                <p>{t('banner-slogan')}</p>
+              <Drawer.Body p={6}>
+                <Menu toggleDrawer={toggleDrawer} />
               </Drawer.Body>
 
               {/* @ts-expect-error */}

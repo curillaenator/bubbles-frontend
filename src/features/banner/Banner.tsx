@@ -30,12 +30,12 @@ const Banner = () => {
         <Button
           size='xl'
           variant='solid'
-          //   colorPalette='blue'
+          colorPalette='green'
           //   color='white'
           border='1px solid'
           borderColor='white'
         >
-          Ready to dive
+          {t('app-banner-button')}
         </Button>
       </Flex>
     </Stack>

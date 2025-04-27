@@ -28,7 +28,7 @@ const BubbleG: React.FC<BubbleProps> = (props) => {
         cy={props.y}
         r={props.r}
         fill='none'
-        stroke='currentColor'
+        stroke='var(--chakra-colors-white)'
         strokeWidth={0.6}
       />
 
@@ -37,7 +37,7 @@ const BubbleG: React.FC<BubbleProps> = (props) => {
         cx={cx}
         cy={props.y}
         r={specularR}
-        stroke='currentColor'
+        stroke='var(--chakra-colors-white)'
         strokeWidth={0.08 * props.r}
         fill='none'
         strokeDasharray={`${specularCircumference * 0.24}px, 1000px`}

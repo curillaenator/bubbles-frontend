@@ -1,14 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Box } from '@chakra-ui/react';
+import { useLocation } from 'react-router-dom';
+import { Box, chakra } from '@chakra-ui/react';
 import { v4 as getId } from 'uuid';
 
 import { BubbleG } from './Bubble';
 
 import { BubbleProps } from './interfaces';
 
+const Svg = chakra('svg');
+
 const easeInOut = (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t); // от 0 до 1
 
-const Bubbles: React.FC = () => {
+const Bubbles = () => {
+  const location = useLocation();
+  const isRoot = location.pathname === '/';
+
   const [bubbles, setBubbles] = useState<BubbleProps[]>([]);
 
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -16,14 +22,14 @@ const Bubbles: React.FC = () => {
 
   // buble gen
   useEffect(() => {
-    if (!wrapperRef.current) return;
+    if (!wrapperRef.current || !isRoot) return;
 
     const { current: parentEl } = wrapperRef;
 
     const interval = setInterval(() => {
       const newBubble: BubbleProps = {
         id: getId(),
-        color: (Math.floor(Math.random() * 3) + 1) * 100,
+        color: (Math.floor(Math.random() * 3) + 1) * 100 + 100,
         x: parentEl.clientWidth * 0.68 + Math.random() * 72 - 32,
         y: parentEl.clientHeight - 48,
         r: Math.pow(Math.random() * 5, 2) + 3,
@@ -38,7 +44,7 @@ const Bubbles: React.FC = () => {
     }, 160);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isRoot]);
 
   // buble animation
   useEffect(() => {
@@ -83,32 +89,17 @@ const Bubbles: React.FC = () => {
       pointerEvents='none'
       zIndex={10}
     >
-      <Box
-        position='absolute'
-        top='100%'
-        left='0'
-        transform='translateY(-100%)'
-        w='100%'
-        height={{ base: '72px', sm: '144px', md: '220px' }}
-        background='no-repeat url("./assets/footer.jpg")'
-        backgroundPosition='center'
-        backgroundSize='cover'
-        borderTop='1px solid'
-        borderColor='border'
-        zIndex={-1}
-      />
-
       {!!wrapperRef.current && (
-        <svg
+        <Svg
+          display='block'
           width={wrapperRef.current.clientWidth}
           height={wrapperRef.current.clientHeight}
           viewBox={`0 0 ${wrapperRef.current.clientWidth} ${wrapperRef.current.clientHeight}`}
-          style={{ display: 'block' }}
         >
           {bubbles.map((bbl) => (
             <BubbleG key={bbl.id} {...bbl} />
           ))}
-        </svg>
+        </Svg>
       )}
     </Box>
   );

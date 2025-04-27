@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Menu, Portal } from '@chakra-ui/react';
+import { Menu, Portal, IconButton } from '@chakra-ui/react';
 
 import { toPairs } from 'lodash';
 
 import type { AppLanguage } from '@src/entities/i18n';
 
 const LANG_ASSOC: Partial<Record<AppLanguage, { name: string; flags: string }>> = {
-  en: { name: 'English', flags: '🇺🇸 🇬🇧' },
+  en: { name: 'English', flags: '🇬🇧' }, //'🇺🇸 🇬🇧'
   ru: { name: 'Русский', flags: '🇷🇺' },
   fr: { name: 'Français', flags: '🇫🇷' },
   kz: { name: 'Қазақ', flags: '🇰🇿' },
@@ -28,9 +28,9 @@ const LangSelector: React.FC = () => {
     >
       {/* @ts-expect-error */}
       <Menu.Trigger asChild>
-        <Button variant='solid' size='md'>
-          {LANG_ASSOC[selected]?.name} {LANG_ASSOC[selected]?.flags}
-        </Button>
+        <IconButton variant='solid' size='md'>
+          {LANG_ASSOC[selected]?.flags}
+        </IconButton>
       </Menu.Trigger>
 
       <Portal>
