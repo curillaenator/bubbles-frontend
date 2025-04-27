@@ -1,17 +1,21 @@
 {
-  "app-title": "NhaTrang Diving",
+  "app-title": "Diving in Nha Trang",
   "app-footer-button": "t.me/Viktorrrkarp",
-  "app-share-title": "Share DiveBot",
+  "app-share-title": "Share the DiveBot:",
+  "app-gallery": "Photo Gallery:",
 
-  "app-nav-auth": "Login",
-  "app-nav-main": "Main page",
-  "app-nav-share": "Share bot",
-  "app-nav-gallery": "Photo gallery",
+  "app-nav-auth": "Sign In",
+  "app-nav-main": "Home",
+  "app-nav-share": "Share the Bot",
+  "app-nav-gallery": "Photo Gallery",
 
-  "banner-title": "Become a dive professional",
-  "banner-slogan": "Learn how to lead dives, assist with classes and be the diver everyone looks up to. Start your scuba career with Divemaster eLearning.",
-  "banner-button": "Ready to dive",
+  "banner-title": "Discover the amazing world of diving in Nha Trang",
+  "banner-slogan": "Want to dive into the amazing underwater world? I have a unique offer for you!",
+  "banner-button": "I want to dive",
 
-  "me-greatings": "Hi, I'm Victor - probably the best diving instructor in NhaTrang",
-  "me-skills": "Dive into an unforgettable adventure with our experienced diving instructor! With years of expertise, a deep passion for the ocean, and a commitment to safety, they will guide you through the breathtaking underwater world with ease and confidence. Whether you are a beginner or an experienced diver, you’ll receive personalized training, encouragement, and unforgettable memories beneath the waves. Discover new depths, meet amazing marine life, and feel the true magic of the sea — all under the care of a professional who truly loves what they do."
+  "me-greatings": "Hi, I'm Viktor Karpov — a professional diving instructor!",
+  "me-slogan": "Want to learn diving? I'll help you!",
+  "me-pricing": "Two dives — only $80!",
+  "me-skills": "Price includes:\n - Full guidance and support at every stage\n - Modern and safe equipment\n - Dives at the best and most scenic spots of Nha Trang\n - Unforgettable experiences and new emotions",
+  "me-subskills": "I conduct certified courses under the NDL system, suitable for both beginners and those who want to improve their skills. Training takes place in a comfortable and friendly atmosphere with a personal approach, ensuring you feel confident and safe underwater."
 }

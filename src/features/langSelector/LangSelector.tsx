@@ -4,14 +4,14 @@ import { Menu, Portal, IconButton } from '@chakra-ui/react';
 
 import { toPairs } from 'lodash';
 
-type AppLanguage = 'en' | 'ru' | 'fr' | 'kz' | 'uz';
+type AppLanguage = 'en' | 'ru'; // | 'fr' | 'kz' | 'uz';
 
 const LANG_ASSOC: Record<AppLanguage, { name: string; flag: string }> = {
   en: { name: 'English', flag: '🇬🇧' }, //'🇺🇸 🇬🇧'
   ru: { name: 'Русский', flag: '🇷🇺' },
-  fr: { name: 'Français', flag: '🇫🇷' },
-  kz: { name: 'Қазақ', flag: '🇰🇿' },
-  uz: { name: "O'zbek", flag: '🇺🇿' },
+  // fr: { name: 'Français', flag: '🇫🇷' },
+  // kz: { name: 'Қазақ', flag: '🇰🇿' },
+  // uz: { name: "O'zbek", flag: '🇺🇿' },
 };
 
 const LangSelector: React.FC = () => {

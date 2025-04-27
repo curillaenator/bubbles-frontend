@@ -25,7 +25,7 @@ const Banner: React.FC = () => {
       backgroundSize='cover'
       borderRadius={6}
       px={{ base: 6, sm: 6, md: 8, lg: 12 }}
-      py={{ base: 12, sm: 12, md: 24, lg: 32 }}
+      py={{ base: 6, sm: 6, md: 16, lg: 32 }}
       gap={6}
       border='1px solid'
       borderColor='border'
@@ -42,7 +42,7 @@ const Banner: React.FC = () => {
 
           <Text color='white'>{t('banner-slogan')}</Text>
 
-          <Flex pt={12}>
+          <Flex pt={6}>
             <Button
               as={Link}
               //@ts-expect-error

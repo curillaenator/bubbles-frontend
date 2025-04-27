@@ -2,13 +2,23 @@ import React from 'react';
 import { Stack, Flex } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { TbLogin2, TbHome2, TbShare2, TbPhoto } from 'react-icons/tb';
+import {
+  TbLogin2,
+  TbHome2,
+  TbShare2,
+  // TbPhoto
+} from 'react-icons/tb';
 
 import { ColorModeButton } from '@src/features/chakra/color-mode';
 
 import { NavButton } from './NavButton';
 
-import { ROOT_ROUTE, SHARE_ROUTE, AUTH_ROUTE, GALLERY_ROUTE } from '@src/routes';
+import {
+  ROOT_ROUTE,
+  SHARE_ROUTE,
+  AUTH_ROUTE,
+  // GALLERY_ROUTE
+} from '@src/routes';
 
 interface MenuProps {
   toggleDrawer: (value: React.SetStateAction<boolean>) => void;
@@ -16,7 +26,7 @@ interface MenuProps {
 
 const MENU_ITEMS = [
   { to: ROOT_ROUTE, captionId: 'app-nav-main', Icon: TbHome2 },
-  { to: GALLERY_ROUTE, captionId: 'app-nav-gallery', Icon: TbPhoto },
+  // { to: GALLERY_ROUTE, captionId: 'app-nav-gallery', Icon: TbPhoto },
   { to: SHARE_ROUTE, captionId: 'app-nav-share', Icon: TbShare2 },
 ] as const;
 
@@ -49,6 +59,7 @@ const Menu: React.FC<MenuProps> = ({ toggleDrawer }) => {
           onClick={() => toggleDrawer(false)}
           w='100%'
           justifyContent='flex-start'
+          disabled
         >
           <TbLogin2 />
           {t('app-nav-auth')}

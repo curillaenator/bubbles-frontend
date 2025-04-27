@@ -16,6 +16,7 @@ import {
   CloseButton,
   Drawer,
   Portal,
+  chakra,
 } from '@chakra-ui/react';
 
 import { Outlet } from 'react-router-dom';
@@ -38,6 +39,8 @@ import headBg from './assets/head.png';
 const HEADER_PD = { base: 4, sm: 4, md: 4, lg: 6 };
 
 const getMaxH = (head: string, foot: string) => `calc(100vh - ${head} - ${foot})`;
+
+const ChakraLink = chakra(Link);
 
 const Layout: React.FC = () => {
   const headerOpacity = useColorModeValue('0.9', '0.5');
@@ -78,12 +81,12 @@ const Layout: React.FC = () => {
             src={headBg}
             w='100%'
             objectFit='cover'
-            position='absolute'
-            top={0}
-            left={0}
             transform='translateY(-38%)'
             zIndex={-1}
             opacity={headerOpacity}
+            position='absolute'
+            top={0}
+            left={0}
           />
 
           <Flex alignItems='center' gap={2}>
@@ -91,7 +94,9 @@ const Layout: React.FC = () => {
               <MdMenu />
             </IconButton>
 
-            <Logo />
+            <ChakraLink to='/'>
+              <Logo />
+            </ChakraLink>
 
             <Heading size={{ base: 'md', sm: 'xl', md: '2xl', lg: '2xl' }} color='white'>
               {t('app-title')}

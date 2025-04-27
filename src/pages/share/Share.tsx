@@ -1,6 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Stack, Flex, Center, Box, Heading } from '@chakra-ui/react';
+import { Stack, Flex, Center, Box, Heading, QrCode } from '@chakra-ui/react';
+
+const BOT_LINK = 'https://t.me/best_diving_bot';
 
 const SharePage: React.FC = () => {
   const { t } = useTranslation();
@@ -11,21 +13,20 @@ const SharePage: React.FC = () => {
 
       <Flex
         w='100%'
-        bg='white'
         borderRadius='xl'
         border='1px solid'
         borderColor='border'
+        bg='bg'
         justifyContent='center'
         zIndex={20}
       >
-        <Center
-          w='100%'
-          maxW='512px'
-          aspectRatio='1 / 1'
-          background='no-repeat url("./assets/tme.png")'
-          backgroundPosition='center'
-          backgroundSize='cover'
-        />
+        <Center w='100%' maxW='512px' aspectRatio='1 / 1'>
+          <QrCode.Root value={BOT_LINK} size='2xl'>
+            <QrCode.Frame>
+              <QrCode.Pattern />
+            </QrCode.Frame>
+          </QrCode.Root>
+        </Center>
       </Flex>
 
       <Box
