@@ -7,7 +7,7 @@ import { Box, Grid, Button, Card, Image, HStack, Badge } from '@chakra-ui/react'
 import { useColorModeValue } from '@src/features/chakra/color-mode';
 
 const CARD_WIDTH = 512;
-const MOCK_CARDS = [...new Array(12)].map(() => getId());
+const MOCK_CARDS = [...new Array(3)].map(() => getId());
 
 const Dashboard = () => {
   const cardModedBg = useColorModeValue('whiteAlpha.700', 'blackAlpha.700');
@@ -30,7 +30,7 @@ const Dashboard = () => {
   }, [defferedSetCols]);
 
   return (
-    <Grid ref={gridRef} templateColumns={`repeat(${cols}, 1fr)`} gap={4} my={4}>
+    <Grid ref={gridRef} templateColumns={`repeat(${cols}, 1fr)`} gap={4}>
       {MOCK_CARDS.map((id) => (
         <Card.Root
           flexDirection='row'

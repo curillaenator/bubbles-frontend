@@ -4692,8 +4692,8 @@ __metadata:
     html-webpack-plugin: 5.6.3
     husky: 9.1.7
     i18next: 25.0.1
-    i18next-browser-languagedetector: ^8.0.5
-    i18next-http-backend: ^3.0.2
+    i18next-browser-languagedetector: 8.0.5
+    i18next-http-backend: 3.0.2
     lint-staged: 15.5.1
     lodash: 4.17.21
     mini-css-extract-plugin: 2.9.2
@@ -4701,6 +4701,7 @@ __metadata:
     prettier: 3.5.3
     react: 19.1.0
     react-dom: 19.1.0
+    react-hook-form: ^7.56.1
     react-i18next: 15.5.1
     react-icons: 5.5.0
     react-router-dom: 7.5.2
@@ -6967,7 +6968,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next-browser-languagedetector@npm:^8.0.5":
+"i18next-browser-languagedetector@npm:8.0.5":
   version: 8.0.5
   resolution: "i18next-browser-languagedetector@npm:8.0.5"
   dependencies:
@@ -6976,7 +6977,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next-http-backend@npm:^3.0.2":
+"i18next-http-backend@npm:3.0.2":
   version: 3.0.2
   resolution: "i18next-http-backend@npm:3.0.2"
   dependencies:
@@ -9016,6 +9017,15 @@ __metadata:
   peerDependencies:
     react: ^19.1.0
   checksum: 1d154b6543467095ac269e61ca59db546f34ef76bcdeb90f2dad41d682cd210aae492e70c85010ed5d0a2caea225e9a55139ebc1a615ee85bf197d7f99678cdf
+  languageName: node
+  linkType: hard
+
+"react-hook-form@npm:^7.56.1":
+  version: 7.56.1
+  resolution: "react-hook-form@npm:7.56.1"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18 || ^19
+  checksum: bbf4dde8a62b57a758c6fcd989ad652efcec695b2e36b5c9313bcd31466d5b68a74dc3ded66d2b5a89777c58848c0e6664fe831e710643c96f3c0bb32e7d8bbd
   languageName: node
   linkType: hard
 
