@@ -36,11 +36,19 @@ const Banner: React.FC = () => {
         <></>
       ) : (
         <>
-          <Heading size={{ base: '2xl', sm: '2xl', md: '3xl', lg: '5xl' }} color='white'>
+          <Heading
+            size={{ base: '2xl', sm: '2xl', md: '3xl', lg: '5xl' }}
+            color='white'
+            filter='drop-shadow(0 0 4px var(--chakra-colors-black-alpha-950)) drop-shadow(0 0 12px var(--chakra-colors-black-alpha-950))'
+          >
             {t('banner-title')}
           </Heading>
 
-          <Text color='white' fontWeight='bold'>
+          <Text
+            color='white'
+            fontWeight='bold'
+            filter='drop-shadow(0 0 4px var(--chakra-colors-black-alpha-950)) drop-shadow(0 0 12px var(--chakra-colors-black-alpha-950))'
+          >
             {t('banner-slogan')}
           </Text>
 

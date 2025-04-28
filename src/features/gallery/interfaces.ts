@@ -4,6 +4,8 @@ interface GallerySource {
   src: string;
   caption?: string;
   body?: string;
+  type?: 'img' | 'video';
+  videoSrc?: string;
 }
 
 interface GalleryProps {

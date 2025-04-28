@@ -1,12 +1,51 @@
 import type { Photo } from 'react-photo-album';
 import type { GallerySource } from '@src/features/gallery';
 
-const getSources = (t: Function): GallerySource[] =>
+const getCommonSources = (t: Function): GallerySource[] =>
   [...new Array(9)].map((_, i) => ({
     src: `./assets/sunbay/p${i + 1}.webp`,
     caption: t(''),
     body: t(''),
   }));
+
+const getHontamGallerySources = (t: Function): GallerySource[] => {
+  return [
+    {
+      src: './assets/hontam/hontam.webp',
+      caption: t(''),
+      body: t(''),
+      type: 'img',
+    },
+    {
+      src: './assets/hontam/hontam-arrival.jpeg',
+      caption: t(''),
+      body: t(''),
+      type: 'img',
+    },
+    {
+      src: './assets/hontam/hontam-dive-girl.webp',
+      caption: t(''),
+      body: t(''),
+      type: 'img',
+    },
+    {
+      src: './assets/hontam/video-cover-1.jpg',
+      caption: t(''),
+      body: t(''),
+      type: 'video',
+      videoSrc: './assets/hontam/video1.mp4',
+    },
+    {
+      src: './assets/hontam/video-cover-2.webp',
+      caption: t(''),
+      body: t(''),
+      type: 'video',
+      videoSrc: './assets/hontam/video2.mp4',
+    },
+
+    ...getCommonSources(t),
+  ];
+};
 
 function getMockPhoto(path: string, width: number, height: number, size: number, extension: string) {
   return `https://images.react-photo-album.com/hiking/${path}.${width}x${height}.${size}w.${extension}`;
@@ -51,4 +90,4 @@ const EQUPMENT_PHOTOS = [
   return { src: getMockPhoto(path, width, height, width, extension), width, height, ...rest } as Photo;
 });
 
-export { EQUPMENT_PHOTOS, getSources };
+export { getHontamGallerySources, EQUPMENT_PHOTOS };

@@ -7,7 +7,7 @@ import { Gallery } from '@src/features/gallery';
 import { Banner } from '@src/features/banner';
 import { Me, Bullets } from '@src/features/me';
 
-import { EQUPMENT_PHOTOS, getSources } from './constants';
+import { getHontamGallerySources, EQUPMENT_PHOTOS } from './constants';
 
 const Main: React.FC = () => {
   const { t } = useTranslation();
@@ -21,9 +21,19 @@ const Main: React.FC = () => {
       <Stack gap={{ base: 6 }}>
         <Heading size='2xl'>{t('app-gallery')}</Heading>
 
-        <Gallery title={t('gallery-sunbay')} description={t('gallery-sunbay-description')} sources={getSources(t)} />
+        <Gallery
+          title={t('gallery-hontam')}
+          description={t('gallery-hontam-description')}
+          sources={getHontamGallerySources(t)}
+        />
 
         <Separator />
+
+        {/* <Gallery
+          title={t('gallery-sunbay')}
+          description={t('gallery-sunbay-description')}
+          sources={getCommonSources(t)}
+        /> */}
 
         <Gallery title={t('gallery-common')} description={t('gallery-common-description')} photos={EQUPMENT_PHOTOS} />
       </Stack>
