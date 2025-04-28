@@ -1,63 +1,70 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { useKeenSlider } from 'keen-slider/react';
-import { useTranslation } from 'react-i18next';
+import { RowsPhotoAlbum, type Photo } from 'react-photo-album';
 
-import { Box, Stack, Heading } from '@chakra-ui/react';
-
-import { useColorModeValue } from '@src/features/chakra/color-mode';
+import { Stack, Box, Dialog, CloseButton, Heading, Text } from '@chakra-ui/react';
 
 import 'keen-slider/keen-slider.min.css';
+import 'react-photo-album/rows.css';
 
-const PHOTOS = [...new Array(9)].map((_, i) => `p${i + 1}.webp`);
+interface GalleryProps {
+  title: string;
+  description?: string;
+  photos?: Photo[];
+}
 
-const Gallery: React.FC = () => {
-  const { t } = useTranslation();
+const Gallery: React.FC<GalleryProps> = (props) => {
+  const { title, description, photos = [] } = props;
 
-  const overlay = useColorModeValue('whiteAlpha.500', 'blackAlpha.500');
-
-  const [sliderRef, instanceRef] = useKeenSlider(
-    {
-      loop: true,
-      slideChanged() {
-        // console.log('slide changed');
-      },
-    },
-    [
-      // add plugins here
-    ],
-  );
-
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => {
-    if (!instanceRef.current) return;
-
-    intervalRef.current = setInterval(() => instanceRef.current?.next(), 4000);
-
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [instanceRef]);
+  const [isLightbox, setIsLightbox] = React.useState<boolean>(false);
+  const [sliderRef, instanceRef] = useKeenSlider({ loop: true });
 
   return (
-    <Stack>
-      <Heading size='2xl'>{t('app-gallery')}</Heading>
+    <Stack my={4}>
+      <Heading>{title}</Heading>
 
-      <Box ref={sliderRef} className='keen-slider' h='640px' flex='0 0 auto' borderRadius={6}>
-        {PHOTOS.map((photo, i) => (
-          <Box
-            key={`keen-${photo}`}
-            className='keen-slider__slide'
-            background={`no-repeat url("./assets/gallery/${photo}")`}
-            backgroundPosition='center'
-            backgroundSize='cover'
-          >
-            <Stack p={6} bg={overlay}>
-              <Heading color='white'>{t(`gallery-${i + 1}`)}</Heading>
-            </Stack>
-          </Box>
-        ))}
-      </Box>
+      {!!description && (
+        <Text fontSize={14} color='fg.muted'>
+          {description}
+        </Text>
+      )}
+
+      <RowsPhotoAlbum
+        photos={photos}
+        targetRowHeight={172}
+        onClick={({ index }) => {
+          setIsLightbox(true);
+          setTimeout(() => instanceRef.current?.moveToIdx(index), 0);
+        }}
+      />
+
+      <Dialog.Root size='lg' open={isLightbox} placement='center' onOpenChange={() => setIsLightbox(false)}>
+        <Dialog.Backdrop />
+
+        <Dialog.Positioner>
+          <Dialog.Content>
+            <Dialog.Body p={4}>
+              <Box ref={sliderRef} className='keen-slider' minH='78vh'>
+                {photos.map(({ src }) => (
+                  <Box
+                    borderRadius={6}
+                    key={`keen-${src}`}
+                    className='keen-slider__slide'
+                    background={`no-repeat url(${src})`}
+                    backgroundPosition='center'
+                    backgroundSize='cover'
+                  />
+                ))}
+              </Box>
+            </Dialog.Body>
+
+            {/* @ts-expect-error */}
+            <Dialog.CloseTrigger asChild top={4} right={4}>
+              <CloseButton colorPalette='bg' color='white' />
+            </Dialog.CloseTrigger>
+          </Dialog.Content>
+        </Dialog.Positioner>
+      </Dialog.Root>
     </Stack>
   );
 };

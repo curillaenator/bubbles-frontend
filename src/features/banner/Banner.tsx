@@ -15,9 +15,6 @@ const Banner: React.FC = () => {
   // const { uid } = useUnit($userStore);
   const { t } = useTranslation();
 
-  //@ts-expect-error
-  console.log(window.Telegram.WebApp.openTelegramLink);
-
   // const [isEdit, seIsEdit] = useState<boolean>(false);
 
   return (

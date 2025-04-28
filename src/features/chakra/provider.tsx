@@ -6,6 +6,14 @@ import { ColorModeProvider, type ColorModeProviderProps } from './color-mode';
 
 const config = defineConfig({
   theme: {
+    breakpoints: {
+      sm: '960px',
+      md: '1440px',
+      lg: '1920px',
+      xl: '2560px',
+      '2xl': '2560px',
+    },
+
     tokens: {
       fonts: {
         heading: { value: '"Tektur", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"' }, // -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"

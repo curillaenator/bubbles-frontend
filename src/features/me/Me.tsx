@@ -1,55 +1,65 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Card, Stack, Image, Center, SimpleGrid, GridItem, Heading, Text, Button } from '@chakra-ui/react';
+import { Card, Stack, Image, SimpleGrid, GridItem, Heading, Text, Button } from '@chakra-ui/react';
 
 import { FaTelegramPlane } from 'react-icons/fa';
 
 //@ts-expect-error
 import me from './vik.jpg';
 
-const Me = () => {
+const Me: React.FC = () => {
   const { t } = useTranslation();
 
   return (
     <Card.Root width='100%' variant='subtle'>
       <Card.Body gap='2'>
-        <SimpleGrid columns={{ base: 1, sm: 1, md: 3, lg: 3 }} gap={6}>
-          <GridItem colSpan={{ base: 1, sm: 1, md: 2, lg: 2 }}>
+        <SimpleGrid columns={{ base: 1, sm: 3, md: 3, lg: 3 }} gap={6}>
+          <GridItem
+            display='flex'
+            flexDirection='column'
+            justifyContent='space-between'
+            gap={6}
+            colSpan={{ base: 1, sm: 2, md: 2, lg: 2 }}
+          >
             <Stack gap={6}>
-              <Heading size='2xl'>{t('me-greatings')}</Heading>
+              <Stack>
+                <Heading size='2xl'>{t('me-head')}</Heading>
 
-              <Text whiteSpace='pre-line' color='fg.info'>
-                {t('me-slogan')}
-              </Text>
+                <Text whiteSpace='pre-line' color='fg.info'>
+                  {t('me-slogan')}
+                </Text>
+              </Stack>
 
-              <Heading>{t('me-pricing')}</Heading>
+              <Stack>
+                <Heading>{t('me-pricing')}</Heading>
 
-              <Text whiteSpace='pre-line' color='fg.info'>
-                {t('me-skills')}
-              </Text>
+                <Text whiteSpace='pre-line' color='fg.muted'>
+                  {t('me-body')}
+                </Text>
+              </Stack>
 
-              <Text fontWeight='bold' whiteSpace='pre-line'>
-                {t('me-subskills')}
-              </Text>
-
-              <Button
-                size='md'
-                colorPalette='blue'
-                onClick={() => {
-                  //@ts-expect-error
-                  window.Telegram?.WebApp?.openTelegramLink?.('https://t.me/Viktorrrkarp');
-                }}
-              >
-                <FaTelegramPlane />
-                {t('app-footer-button')}
-              </Button>
+              <Text whiteSpace='pre-line'>{t('me-skills')}</Text>
             </Stack>
+
+            <Button
+              size='xl'
+              colorPalette='blue'
+              border='1px solid'
+              borderColor='white'
+              onClick={() => {
+                //@ts-expect-error
+                window.Telegram?.WebApp?.openTelegramLink?.('https://t.me/Viktorrrkarp');
+              }}
+            >
+              <FaTelegramPlane />
+              {t('app-footer-button')}
+            </Button>
           </GridItem>
 
-          <Center>
+          <GridItem>
             <Image src={me} alt='Viktor' w='100%' h='100%' objectFit='cover' borderRadius={6} />
-          </Center>
+          </GridItem>
         </SimpleGrid>
       </Card.Body>
     </Card.Root>

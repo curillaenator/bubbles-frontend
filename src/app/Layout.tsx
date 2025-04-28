@@ -118,9 +118,11 @@ const Layout: React.FC = () => {
           flex='1 1 auto'
           maxH={{
             base: getMaxH('73px', '72px'),
-            sm: getMaxH('73px', '144px'),
-            md: getMaxH('73px', '220px'),
-            lg: getMaxH('97px', '220px'),
+            sm: getMaxH('73px', '96px'),
+            md: getMaxH('73px', '96px'),
+            lg: getMaxH('97px', '144px'),
+            xl: getMaxH('97px', '200px'),
+            '2xl': getMaxH('97px', '200px'),
           }}
         >
           <Outlet />
@@ -130,13 +132,16 @@ const Layout: React.FC = () => {
           w='100%'
           h={{
             base: '72px',
-            sm: '144px',
-            md: '220px',
-            lg: '220px',
+            sm: '96px',
+            md: '96px',
+            lg: '144px',
+            xl: '200px',
+            '2xl': '200px',
           }}
           data-app-footer
           p={HEADER_PD}
           flex='0 0 auto'
+          alignItems='flex-end'
           as='footer'
           position='relative'
           overflow='hidden'
@@ -148,6 +153,9 @@ const Layout: React.FC = () => {
         >
           <Button
             size='md'
+            colorPalette='blue'
+            border='1px solid'
+            borderColor='white'
             onClick={() => {
               //@ts-expect-error
               window.Telegram?.WebApp?.openTelegramLink?.('https://t.me/Viktorrrkarp');

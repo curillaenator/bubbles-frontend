@@ -4694,7 +4694,7 @@ __metadata:
     i18next: 25.0.1
     i18next-browser-languagedetector: 8.0.5
     i18next-http-backend: 3.0.2
-    keen-slider: ^6.8.6
+    keen-slider: 6.8.6
     lint-staged: 15.5.1
     lodash: 4.17.21
     mini-css-extract-plugin: 2.9.2
@@ -4705,6 +4705,7 @@ __metadata:
     react-hook-form: 7.56.1
     react-i18next: 15.5.1
     react-icons: 5.5.0
+    react-photo-album: 3.1.0
     react-router-dom: 7.5.2
     rimraf: 6.0.1
     sass: 1.86.3
@@ -4715,6 +4716,7 @@ __metadata:
     webpack: 5.99.5
     webpack-cli: 6.0.1
     webpack-dev-server: 5.2.1
+    yet-another-react-lightbox: 3.23.0
   languageName: unknown
   linkType: soft
 
@@ -7673,7 +7675,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"keen-slider@npm:^6.8.6":
+"keen-slider@npm:6.8.6":
   version: 6.8.6
   resolution: "keen-slider@npm:6.8.6"
   checksum: f87e65d72e3b2e73cbd52b1908c1458b253ec5a2a2d3e1e34bd1a831172d18568649188cf3e4ad679c7988568929195ae91d4b7a1c0bd3d6da592a453be3723a
@@ -9071,6 +9073,19 @@ __metadata:
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
+  languageName: node
+  linkType: hard
+
+"react-photo-album@npm:3.1.0":
+  version: 3.1.0
+  resolution: "react-photo-album@npm:3.1.0"
+  peerDependencies:
+    "@types/react": ^18 || ^19
+    react: ^18 || ^19
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: da8cabd0b7889ef23e5db6ab94e14e72ac24e3ff8fa71a7408ea0748d749e2ee8905cdac9f22b63cd06f0edfbc9b3627ef54dab5a624ea2e0d74424a0987b100
   languageName: node
   linkType: hard
 
@@ -11018,6 +11033,23 @@ __metadata:
     y18n: ^5.0.5
     yargs-parser: ^21.1.1
   checksum: 73b572e863aa4a8cbef323dd911d79d193b772defd5a51aab0aca2d446655216f5002c42c5306033968193bdbf892a7a4c110b0d77954a7fdf563e653967b56a
+  languageName: node
+  linkType: hard
+
+"yet-another-react-lightbox@npm:3.23.0":
+  version: 3.23.0
+  resolution: "yet-another-react-lightbox@npm:3.23.0"
+  peerDependencies:
+    "@types/react": ^16 || ^17 || ^18 || ^19
+    "@types/react-dom": ^16 || ^17 || ^18 || ^19
+    react: ^16.8.0 || ^17 || ^18 || ^19
+    react-dom: ^16.8.0 || ^17 || ^18 || ^19
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: 620d8f8edbbedf7419d8c890714f52ff70a0bdcde4c9ed9889aed56e2a54fd7c661b02dd6ab717b40d4f1e210c73c7d8849d030ce20fd468f892aea6d9f9512e
   languageName: node
   linkType: hard
 
