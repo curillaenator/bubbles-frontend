@@ -11,7 +11,7 @@ const Bullets: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <Card.Root width='100%' variant='subtle'>
+    <Card.Root width='100%' variant='subtle' bg='bg'>
       <Card.Body gap='2'>
         <Stack gap={6}>
           <Heading size='2xl'>{t('description-head')}</Heading>
@@ -20,7 +20,7 @@ const Bullets: React.FC = () => {
             {t('description-body')
               .split('\n')
               .map((string, emojiIdx) => (
-                <GridItem key={EMOJIES[emojiIdx]} p={4} borderRadius={6} bg='bg' display='flex' gap={6}>
+                <GridItem key={EMOJIES[emojiIdx]} p={4} borderRadius={6} bg='bg.muted' display='flex' gap={6}>
                   <Text fontSize={64} h='64px' lineHeight='64px'>
                     {EMOJIES[emojiIdx]}
                   </Text>
@@ -42,7 +42,7 @@ const Bullets: React.FC = () => {
               ))}
           </SimpleGrid>
 
-          <Heading whiteSpace='pre-line'>{t('description-slogan')}</Heading>
+          {/* <Heading whiteSpace='pre-line'>{t('description-slogan')}</Heading> */}
 
           {/* <Button
             size='xl'
