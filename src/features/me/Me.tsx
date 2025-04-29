@@ -24,9 +24,9 @@ const Me: React.FC = () => {
           >
             <Stack gap={6}>
               <Stack>
-                <Heading size='2xl'>{t('me-head')}</Heading>
+                <Heading>{t('me-head')}</Heading>
 
-                <Text whiteSpace='pre-line' color='fg.info'>
+                <Text whiteSpace='pre-line' color='fg.info' fontSize={{ base: 14, sm: 16 }}>
                   {t('me-slogan')}
                 </Text>
               </Stack>
@@ -34,12 +34,14 @@ const Me: React.FC = () => {
               <Stack>
                 <Heading>{t('me-pricing')}</Heading>
 
-                <Text whiteSpace='pre-line' color='fg.muted'>
+                <Text whiteSpace='pre-line' color='fg.muted' fontSize={{ base: 14, sm: 16 }}>
                   {t('me-body')}
                 </Text>
               </Stack>
 
-              <Text whiteSpace='pre-line'>{t('me-skills')}</Text>
+              <Text whiteSpace='pre-line' fontSize={{ base: 14, sm: 16 }}>
+                <b>{t('me-skills')}</b>
+              </Text>
             </Stack>
 
             <Button

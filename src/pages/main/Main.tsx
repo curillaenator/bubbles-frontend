@@ -7,7 +7,7 @@ import { Gallery } from '@src/features/gallery';
 import { Banner } from '@src/features/banner';
 import { Me, Bullets } from '@src/features/me';
 
-import { getHontamGallerySources, EQUPMENT_PHOTOS } from './constants';
+import { getHontamGallerySources } from './constants';
 
 const Main: React.FC = () => {
   const { t } = useTranslation();
@@ -29,13 +29,7 @@ const Main: React.FC = () => {
 
         <Separator />
 
-        {/* <Gallery
-          title={t('gallery-sunbay')}
-          description={t('gallery-sunbay-description')}
-          sources={getCommonSources(t)}
-        /> */}
-
-        <Gallery title={t('gallery-common')} description={t('gallery-common-description')} photos={EQUPMENT_PHOTOS} />
+        {/* <Gallery title={t('gallery-common')} description={t('gallery-common-description')} photos={EQUPMENT_PHOTOS} /> */}
       </Stack>
     </Stack>
   );

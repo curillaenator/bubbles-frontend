@@ -11,6 +11,9 @@ import { Flex, Button, Stack, Heading, Text } from '@chakra-ui/react';
 // import { BannerForm } from './EditBanner';
 import { Logo } from '../logo';
 
+const TEXT_SHADOW =
+  'drop-shadow(0 0 4px var(--chakra-colors-black-alpha-950)) drop-shadow(0 0 12px var(--chakra-colors-black-alpha-950))';
+
 const Banner: React.FC = () => {
   // const { uid } = useUnit($userStore);
   const { t } = useTranslation();
@@ -36,19 +39,11 @@ const Banner: React.FC = () => {
         <></>
       ) : (
         <>
-          <Heading
-            size={{ base: '2xl', sm: '2xl', md: '3xl', lg: '5xl' }}
-            color='white'
-            filter='drop-shadow(0 0 4px var(--chakra-colors-black-alpha-950)) drop-shadow(0 0 12px var(--chakra-colors-black-alpha-950))'
-          >
+          <Heading size={{ base: '2xl', sm: '2xl', md: '3xl', lg: '5xl' }} color='white' filter={TEXT_SHADOW}>
             {t('banner-title')}
           </Heading>
 
-          <Text
-            color='white'
-            fontWeight='bold'
-            filter='drop-shadow(0 0 4px var(--chakra-colors-black-alpha-950)) drop-shadow(0 0 12px var(--chakra-colors-black-alpha-950))'
-          >
+          <Text color='white' fontWeight='bold' fontSize={{ base: 14, sm: 16 }} filter={TEXT_SHADOW}>
             {t('banner-slogan')}
           </Text>
 

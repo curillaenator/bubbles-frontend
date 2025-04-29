@@ -15,4 +15,6 @@ interface GalleryProps {
   photos?: Photo[];
 }
 
-export type { GalleryProps, GallerySource };
+interface GalleryItem extends Photo, GallerySource {}
+
+export type { GalleryProps, GallerySource, GalleryItem };

@@ -12,15 +12,22 @@ const Bullets: React.FC = () => {
 
   return (
     <Card.Root width='100%' variant='subtle' bg='bg'>
-      <Card.Body gap='2'>
+      <Card.Body>
         <Stack gap={6}>
           <Heading size='2xl'>{t('description-head')}</Heading>
 
-          <SimpleGrid columns={{ base: 1, sm: 3, md: 3, lg: 3 }} gap={{ base: 2, sm: 2, md: 2, lg: 4, xl: 6 }}>
+          <SimpleGrid columns={{ base: 1, sm: 3 }} gap={{ base: 2, sm: 2, md: 6 }}>
             {t('description-body')
               .split('\n')
               .map((string, emojiIdx) => (
-                <GridItem key={EMOJIES[emojiIdx]} p={4} borderRadius={6} bg='bg.muted' display='flex' gap={6}>
+                <GridItem
+                  key={EMOJIES[emojiIdx]}
+                  p={{ base: 4, sm: 4, md: 6 }}
+                  borderRadius={6}
+                  bg='bg.muted'
+                  display='flex'
+                  gap={{ base: 2, sm: 2, md: 6 }}
+                >
                   <Text fontSize={64} h='64px' lineHeight='64px'>
                     {EMOJIES[emojiIdx]}
                   </Text>
