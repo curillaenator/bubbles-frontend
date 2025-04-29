@@ -1,34 +1,30 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { debounce } from 'lodash';
-import { useKeenSlider } from 'keen-slider/react';
 import { MasonryPhotoAlbum } from 'react-photo-album';
 
-import { Stack, Box, Dialog, CloseButton, Heading, Text, Image, Center, chakra } from '@chakra-ui/react';
+import { Stack, Box, Dialog, CloseButton, Heading, Text, Image, Center } from '@chakra-ui/react';
 import { GoPlay } from 'react-icons/go';
 
-import { useColorModeValue } from '@src/features/chakra/color-mode';
+import { Carousel } from './Carousel';
+
 import { useItems } from './hooks/useItems';
 
-import { MOBILE_MAX_ALBUM_ITEMS, MOBILE_VIEW_MAX_WIDTH } from './constants';
+import { MOBILE_VIEW_MAX_WIDTH } from './constants';
 import { GalleryProps } from './interfaces';
 
 import 'keen-slider/keen-slider.min.css';
 import 'react-photo-album/masonry.css';
 
-const Video = chakra('video');
-
 const Gallery: React.FC<GalleryProps> = (props) => {
   const { title, description } = props;
 
-  const imageItemCaptionOverlayBg = useColorModeValue('whiteAlpha.600', 'blackAlpha.600');
-
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [sliderRef, instanceRef] = useKeenSlider({ loop: true });
 
+  const [initial, setInitial] = useState<number>(-1);
   const [isMobile, setIsMobile] = useState<boolean>(false);
   const [isLightbox, setIsLightbox] = useState<boolean>(false);
 
-  const { items } = useItems(props);
+  const { items: photoItems } = useItems(props);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const checkMobile = useCallback(
@@ -56,7 +52,7 @@ const Gallery: React.FC<GalleryProps> = (props) => {
       )}
 
       <MasonryPhotoAlbum
-        photos={isMobile ? items.slice(0, MOBILE_MAX_ALBUM_ITEMS) : items}
+        photos={photoItems}
         spacing={isMobile ? 8 : 24}
         columns={(parentWidth) => {
           if (parentWidth >= MOBILE_VIEW_MAX_WIDTH) return 4;
@@ -65,7 +61,8 @@ const Gallery: React.FC<GalleryProps> = (props) => {
         }}
         onClick={({ index }) => {
           setIsLightbox(true);
-          setTimeout(() => instanceRef.current?.moveToIdx(index), 0);
+          setInitial(index);
+          // setTimeout(() => carouselRef.current?.moveToIdx(index), 0);
         }}
         render={{
           image: (imageProps) => (
@@ -82,7 +79,15 @@ const Gallery: React.FC<GalleryProps> = (props) => {
         }}
       />
 
-      <Dialog.Root open={isLightbox} onOpenChange={() => setIsLightbox(false)} size='cover' placement='center'>
+      <Dialog.Root
+        open={isLightbox}
+        size='cover'
+        placement='center'
+        onOpenChange={() => {
+          setIsLightbox(false);
+          setInitial(-1);
+        }}
+      >
         <Dialog.Backdrop />
 
         {/* @ts-expect-error */}
@@ -90,30 +95,7 @@ const Gallery: React.FC<GalleryProps> = (props) => {
           {/* @ts-expect-error */}
           <Dialog.Content maxH='90vh' maxW={{ lg: '70vw' }} mx='auto'>
             <Dialog.Body p={4} h='100%'>
-              <Box ref={sliderRef} className='keen-slider' h='100%'>
-                {items.map(({ src, videoSrc, type = 'img', caption }) => {
-                  return type === 'img' ? (
-                    <Box key={`keen-${src}`} className='keen-slider__slide' position='relative'>
-                      <Image src={src} w='100%' h='100%' objectFit='cover' />
-
-                      {caption && (
-                        <Stack w='full' p={4} position='absolute' top={0} left={0} bg={imageItemCaptionOverlayBg}>
-                          <Text fontSize={{ base: 14, sm: 16 }} lineHeight='24px'>
-                            {caption}
-                          </Text>
-                        </Stack>
-                      )}
-                    </Box>
-                  ) : (
-                    <Center key={`keen-${src}`} className='keen-slider__slide'>
-                      <Video controls w='100%'>
-                        <source src={videoSrc} type='video/mp4' />
-                        Your browser does not support the video tag.
-                      </Video>
-                    </Center>
-                  );
-                })}
-              </Box>
+              <Carousel initial={initial} isMobile={isMobile} photoItems={photoItems} />
             </Dialog.Body>
 
             {/* @ts-expect-error */}

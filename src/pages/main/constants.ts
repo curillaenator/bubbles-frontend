@@ -27,14 +27,14 @@ const getHontamGallerySources = (t: Function): GallerySource[] => [
 
   {
     src: './assets/hontam/hontam-dive-girl.webp',
-    caption: '',
+    caption: t('gallery-hontam-beginer'),
     body: '',
     type: 'img',
   },
 
   {
     src: './assets/hontam/hontam-dive-man.webp',
-    caption: t('gallery-hontam-dive-man'),
+    caption: t('gallery-hontam-experienced'),
     body: '',
     type: 'img',
   },
