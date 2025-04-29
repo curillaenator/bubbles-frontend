@@ -2,7 +2,7 @@
 
 Фронт-приложение Telegram бота школы дайвинга - [перейти в Telegram бот](https://best-diving-ever.web.app/)
 
-Или: [Посмотреть развёрнутый фронт бота в браузере](https://best-diving-ever.web.app/)
+Бот может быть неактивен, пожтому можно [посмотреть развёрнутый фронт бота в браузере](https://best-diving-ever.web.app/)
 
 ```bash
 React/Typescript
