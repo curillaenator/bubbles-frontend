@@ -19,8 +19,8 @@ import {
   Box,
 } from '@chakra-ui/react';
 
-import { HiUpload } from 'react-icons/hi';
-import { MdSave, MdCancel } from 'react-icons/md';
+import { MdSave } from 'react-icons/md';
+import { TbUpload, TbCancel } from 'react-icons/tb';
 
 import { FORM_MODEL } from './form.model';
 import type { MeEditFields, MeEditFieldType } from './interfaces';
@@ -109,7 +109,7 @@ const EditMe: React.FC = () => {
                 {/* @ts-expect-error */}
                 <FileUpload.Trigger asChild>
                   <Button variant='solid' size='sm' colorPalette={errors.photoURL ? 'red' : 'blue'}>
-                    <HiUpload /> Upload avatar
+                    <TbUpload /> Upload avatar
                   </Button>
                 </FileUpload.Trigger>
 
@@ -141,7 +141,7 @@ const EditMe: React.FC = () => {
                 navigate('/');
               }}
             >
-              <MdCancel />
+              <TbCancel />
               {t('app-cancel-button')}
             </Button>
           </Flex>

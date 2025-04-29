@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "best-diving-ever"
-  }
+    "prod": "art-app-2020"
+  },
+  "targets": {},
+  "etags": {}
 }

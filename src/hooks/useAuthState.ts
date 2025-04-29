@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '@src/configs/firebase.config';
-// import { setUser } from '@src/entities/user';
+import { setUid } from '@src/entities/user';
 
 const useAuthState = () => {
   const [appLoading, setAppLoading] = useState(true);
@@ -11,11 +11,12 @@ const useAuthState = () => {
 
     const unsubAuth = onAuthStateChanged(auth, async (user) => {
       if (!user) {
+        setUid({ uid: null });
         setAppLoading(false);
         return;
       }
 
-      // setUser({ uid: user.uid, username: user.displayName, email: user.email, avatar: user.photoURL });
+      setUid({ uid: user.uid });
       setAppLoading(false);
     });
 

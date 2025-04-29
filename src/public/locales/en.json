@@ -9,7 +9,8 @@
 
   "app-gallery": "What we'll do & where we'll dive:",
 
-  "app-nav-auth": "Sign In",
+  "app-nav-auth": "Login",
+  "app-nav-logout": "Logout",
   "app-nav-main": "Home",
   "app-nav-share": "Share the Bot",
   "app-nav-edit-me": "Edit my profile",

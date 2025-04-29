@@ -1,10 +1,12 @@
 import React from 'react';
-import { Stack, Flex } from '@chakra-ui/react';
+import { useUnit } from 'effector-react';
+import { Stack, Flex, Button } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { TbLogin2, TbHome2, TbShare2, TbSettings } from 'react-icons/tb';
+import { TbLogin2, TbLogout2, TbHome2, TbShare2, TbSettings } from 'react-icons/tb';
 
 import { ColorModeButton } from '@src/features/chakra/color-mode';
+import { $userStore, logoutUser } from '@src/entities/user';
 
 import { NavButton } from './NavButton';
 
@@ -26,6 +28,7 @@ const SETTINGS_ITEMS = [
 
 const Menu: React.FC<MenuProps> = ({ toggleDrawer }) => {
   const { t } = useTranslation();
+  const { uid } = useUnit($userStore);
 
   return (
     <Stack w='100' h='100%' flex='1 1 auto' justifyContent='space-between'>
@@ -39,14 +42,16 @@ const Menu: React.FC<MenuProps> = ({ toggleDrawer }) => {
           ))}
         </Stack>
 
-        <Stack gap={{ base: 1, sm: 1, md: 2, lg: 3 }}>
-          {SETTINGS_ITEMS.map(({ to, captionId, Icon }) => (
-            <NavButton key={`menu-item-${captionId}`} to={to} onClick={() => toggleDrawer(false)}>
-              <Icon />
-              {t(captionId)}
-            </NavButton>
-          ))}
-        </Stack>
+        {!!uid && (
+          <Stack gap={{ base: 1, sm: 1, md: 2, lg: 3 }}>
+            {SETTINGS_ITEMS.map(({ to, captionId, Icon }) => (
+              <NavButton key={`menu-item-${captionId}`} to={to} onClick={() => toggleDrawer(false)}>
+                <Icon />
+                {t(captionId)}
+              </NavButton>
+            ))}
+          </Stack>
+        )}
       </Stack>
 
       <Flex
@@ -58,17 +63,17 @@ const Menu: React.FC<MenuProps> = ({ toggleDrawer }) => {
           },
         }}
       >
-        <NavButton
-          to={AUTH_ROUTE}
-          color='fg.muted'
-          onClick={() => toggleDrawer(false)}
-          w='100%'
-          justifyContent='flex-start'
-          disabled
-        >
-          <TbLogin2 />
-          {t('app-nav-auth')}
-        </NavButton>
+        {uid ? (
+          <Button variant='surface' w='full' flex='1 1 auto' onClick={() => logoutUser()} justifyContent='flex-start'>
+            <TbLogout2 />
+            {t('app-nav-logout')}
+          </Button>
+        ) : (
+          <NavButton to={AUTH_ROUTE} color='fg.muted' onClick={() => toggleDrawer(false)} w='100%'>
+            <TbLogin2 />
+            {t('app-nav-auth')}
+          </NavButton>
+        )}
 
         <ColorModeButton size='md' variant='surface' flex='0 0 auto' />
       </Flex>

@@ -2,4 +2,9 @@ interface AppUser {
   uid: string | null;
 }
 
-export type { AppUser };
+interface AppUserCreds {
+  email: string;
+  password: string;
+}
+
+export type { AppUser, AppUserCreds };

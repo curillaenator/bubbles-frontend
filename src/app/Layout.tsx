@@ -24,11 +24,11 @@ import { Outlet } from 'react-router-dom';
 import { Bubbles } from '@src/features/bubbles';
 import { Logo } from '@src/features/logo';
 
-// import { useAuthState } from '@src/hooks/useAuthState';
+import { useAuthState } from '@src/hooks/useAuthState';
 import { useColorModeValue } from '@src/features/chakra/color-mode';
 import { Menu } from '@src/features/menu';
 import { LangSelector } from '@src/features/langSelector';
-// import { Loader } from '@src/features/loader';
+import { Loader } from '@src/features/loader';
 
 import { MdMenu } from 'react-icons/md';
 import { FaTelegramPlane } from 'react-icons/fa';
@@ -47,7 +47,7 @@ const Layout: React.FC = () => {
   const menuHeaderColor = useColorModeValue('bg.inverted', 'bg');
   const { t } = useTranslation();
 
-  // const { appLoading } = useAuthState();
+  const { appLoading } = useAuthState();
 
   const [drawerOpen, toggleDrawer] = useState<boolean>(false);
 
@@ -57,7 +57,7 @@ const Layout: React.FC = () => {
     }
   }, []);
 
-  // if (appLoading) return <Loader />;
+  if (appLoading) return <Loader />;
 
   return (
     <Container as='main' position='relative' p={0} maxW='unset' minW='375px'>
