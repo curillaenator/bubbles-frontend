@@ -1,12 +1,19 @@
 {
   "app-title": "Дайвинг в Нячанге",
   "app-footer-button": "t.me/Viktorrrkarp",
-  "app-share-title": "Поделиться ботом:",
+  "app-save-button": "Сохранить",
+  "app-cancel-button": "Отмена",
+
+  "app-share-bot": "Поделиться ботом:",
+  "app-share-app": "Поделиться сайтом:",
+
   "app-gallery": "Куда и как мы с вами можем погрузиться?",
 
   "app-nav-auth": "Войти",
   "app-nav-main": "Главная",
-  "app-nav-share": "Поделиться ботом",
+  "app-nav-share": "Поделиться",
+  "app-nav-edit-me": "Редактировать профиль",
+  "app-nav-edit-content": "Редактировать контент",
 
   "banner-title": "Откройте потрясающий мир дайвинга в Нячанге",
   "banner-slogan": "Хотите погрузиться в удивительный подводный мир? У меня есть для вас уникальное предложение!",

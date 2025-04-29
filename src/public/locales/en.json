@@ -1,13 +1,19 @@
 {
   "app-title": "Diving in Nha Trang",
   "app-footer-button": "t.me/Viktorrrkarp",
-  "app-share-title": "Share the DiveBot:",
+  "app-save-button": "Save",
+  "app-cancel-button": "Cancel",
+
+  "app-share-bot": "Share DiveBot:",
+  "app-share-app": "Share App:",
+
   "app-gallery": "What we'll do & where we'll dive:",
 
   "app-nav-auth": "Sign In",
   "app-nav-main": "Home",
   "app-nav-share": "Share the Bot",
-  "app-nav-gallery": "Photo Gallery",
+  "app-nav-edit-me": "Edit my profile",
+  "app-nav-edit-content": "Edit content",
 
   "banner-title": "Discover the amazing world of diving in Nha Trang",
   "banner-slogan": "Want to dive into the amazing underwater world? I have a unique offer for you!",
@@ -20,7 +26,7 @@
   "me-skills": "I conduct certified courses under the NDL system, suitable for both beginners and those who want to improve their skills. Training takes place in a comfortable and friendly atmosphere with a personal approach, ensuring you feel confident and safe underwater.",
 
   "description-head": "Why choose me?",
-  "description-body": "Personal approach: I give maximum attention to each client\nProfessionalism and care: I guarantee quality training and safety\nCertified courses: Training under the international NDL system\nKnowledge of the best dive spots: We explore the scenic reefs and underwater world of Nha Trang\nFriendly atmosphere",
+  "description-body": "Personal approach: I give maximum attention to each client\nProfessionalism and care: I guarantee quality training and safety\nCertified courses: Training under the international NDL system\nKnowledge of the best dive spots: We explore the scenic reefs and underwater world of Nha Trang\nFriendly atmosphere: You'll be comfortable!'",
   "description-slogan": "Ready for an adventure? Contact me now and book your dives or course!",
 
   "gallery-hontam": "Hon Tam Island",

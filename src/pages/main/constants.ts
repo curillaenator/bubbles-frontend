@@ -1,7 +1,7 @@
 import type { GallerySource } from '@src/features/gallery';
 
 const getCommonSources = (): GallerySource[] =>
-  [...new Array(8)].map((_, i) => ({ src: `./assets/common/p${i + 1}.webp`, caption: '', body: '' }));
+  [...new Array(7)].map((_, i) => ({ src: `./assets/common/p${i + 1}.webp`, caption: '', body: '' }));
 
 const getHontamGallerySources = (t: Function): GallerySource[] => [
   {

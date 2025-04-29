@@ -91,7 +91,7 @@ const Gallery: React.FC<GalleryProps> = (props) => {
         <Dialog.Backdrop />
 
         {/* @ts-expect-error */}
-        <Dialog.Positioner px={{ base: 2, lg: 6 }}>
+        <Dialog.Positioner px={{ base: 2, lg: 6 }} px={{ base: 2, sm: 6 }}>
           {/* @ts-expect-error */}
           <Dialog.Content maxH='90vh' maxW={{ lg: '70vw' }} mx='auto'>
             <Dialog.Body p={4} h='100%'>
