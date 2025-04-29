@@ -1,6 +1,6 @@
 # Best Diving Web App
 
-Фронт-приложение Telegram бота школы дайвинга - [перейти в Telegram бот](https://best-diving-ever.web.app/)
+Фронт-приложение Telegram бота школы дайвинга - [перейти в Telegram бот](https://t.me/best_diving_bot)
 
 Бот может быть неактивен, пожтому можно [посмотреть развёрнутый фронт бота в браузере](https://best-diving-ever.web.app/)
 
