@@ -1,9 +1,9 @@
-import type { GallerySource } from '@src/features/gallery';
+import type { AppUnitGalleryItem } from '@src/entities/unit';
 
-const getCommonSources = (): GallerySource[] =>
+const getCommonSources = (): AppUnitGalleryItem[] =>
   [...new Array(7)].map((_, i) => ({ src: `./assets/common/p${i + 1}.webp`, caption: '', body: '' }));
 
-const getHontamGallerySources = (t: Function): GallerySource[] => [
+const getHontamGallerySources = (t: Function): AppUnitGalleryItem[] => [
   {
     src: './assets/hontam/hontam-arrival.jpeg',
     caption: t('gallery-hontam-arrival'),

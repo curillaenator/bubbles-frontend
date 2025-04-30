@@ -1,20 +1,13 @@
 import type { Photo } from 'react-photo-album';
-
-interface GallerySource {
-  src: string;
-  caption?: string;
-  body?: string;
-  type?: 'img' | 'video';
-  videoSrc?: string;
-}
+import type { AppUnitGalleryItem } from '@src/entities/unit';
 
 interface GalleryProps {
   title: string;
   description?: string;
-  sources?: GallerySource[];
+  sources?: AppUnitGalleryItem[];
   photos?: Photo[];
 }
 
-interface GalleryItem extends Photo, GallerySource {}
+interface GalleryItem extends Photo, AppUnitGalleryItem {}
 
-export type { GalleryProps, GallerySource, GalleryItem };
+export type { GalleryProps, GalleryItem };

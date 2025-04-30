@@ -10,7 +10,7 @@ import { $userStore, logoutUser } from '@src/entities/user';
 
 import { NavButton } from './NavButton';
 
-import { ROOT_ROUTE, SHARE_ROUTE, AUTH_ROUTE, EDIT_ME_ROUTE, EDIT_CONTENT_ROUTE } from '@src/routes';
+import { ROOT_ROUTE, SHARE_ROUTE, AUTH_ROUTE, EDIT_ME_ROUTE } from '@src/routes';
 
 interface MenuProps {
   toggleDrawer: (value: React.SetStateAction<boolean>) => void;
@@ -23,7 +23,7 @@ const MENU_ITEMS = [
 
 const SETTINGS_ITEMS = [
   { to: EDIT_ME_ROUTE, captionId: 'app-nav-edit-me', Icon: TbSettings },
-  { to: EDIT_CONTENT_ROUTE, captionId: 'app-nav-edit-content', Icon: TbSettings },
+  { to: '/unit', captionId: 'app-nav-edit-content', Icon: TbSettings },
 ] as const;
 
 const Menu: React.FC<MenuProps> = ({ toggleDrawer }) => {

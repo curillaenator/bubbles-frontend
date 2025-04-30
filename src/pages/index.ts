@@ -3,4 +3,4 @@ export { AuthPage } from './auth/Auth';
 export { SharePage } from './share/Share';
 
 export { EditMe } from './editMe/EditMe';
-export { EditContent } from './editContent/EditContent';
+export { UnitForm } from './editContent/UnitForm';

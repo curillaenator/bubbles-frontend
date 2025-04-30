@@ -1,20 +1,32 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+
 import { GALLERY_SIZES } from '../constants';
 import { GalleryItem, GalleryProps } from '../interfaces';
 
+import { getImageUrl } from '@src/entities/unit';
+
 const useItems = (props: GalleryProps) => {
-  const { photos, sources = [] } = props;
+  const { sources = [] } = props;
 
-  const items: GalleryItem[] = useMemo(() => {
-    if (!!photos?.length) return photos;
+  const [items, setItems] = useState<GalleryItem[]>([]);
 
+  const sizedItems: GalleryItem[] = useMemo(() => {
     const src = sources.map((source) => {
       const [width, height] = GALLERY_SIZES[Math.floor(Math.random() * GALLERY_SIZES.length)];
       return { width, height, ...source };
     });
 
     return src;
-  }, [sources, photos]);
+  }, [sources]);
+
+  useEffect(() => {
+    Promise.all(
+      sizedItems.map(async (it) => {
+        if (/^https:\/\/.*/.test(it.src)) return it;
+        return { ...it, src: await getImageUrl(it.src) };
+      }),
+    ).then((sourcedItems) => setItems(sourcedItems as GalleryItem[]));
+  }, [sizedItems]);
 
   return { items };
 };
