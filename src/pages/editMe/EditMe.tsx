@@ -55,10 +55,9 @@ const EditMe: React.FC = () => {
   const navigate = useNavigate();
   const qc = useQueryClient();
 
-  const { data: meFieldsData = null, isLoading } = useQuery<AppUserEditFields | null>({
+  const { data: meFieldsData = null, isLoading } = useQuery<AppUserEditFields>({
     queryKey: [ME_QUERY, uid],
-    queryFn: () => getUserData(uid),
-    enabled: !!uid,
+    queryFn: () => getUserData(),
   });
 
   const { data: avatarSrc } = useQuery<string>({ queryKey: [AVATAR_QUERY], queryFn: () => getAvatarUrl() });

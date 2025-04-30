@@ -1,13 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useUnit } from 'effector-react';
 import { useQuery } from '@tanstack/react-query';
 
 import { Card, Stack, Image, SimpleGrid, GridItem, Heading, Text, Button, Center } from '@chakra-ui/react';
 
 import { FaTelegramPlane } from 'react-icons/fa';
 
-import { $userStore, getUserData, getAvatarUrl, type AppUserEditFields } from '@src/entities/user';
+import { getUserData, getAvatarUrl, type AppUserEditFields } from '@src/entities/user';
 import { Loader } from '@src/features/loader';
 
 import { ME_QUERY, AVATAR_QUERY } from '@src/configs/rtq.keys';
@@ -17,19 +16,15 @@ const cap = (str: string) =>
     .split('')
     .map((char, idx) => (idx === 0 ? char.toUpperCase() : char))
     .join('');
-const langed = (name: string, lang: string) => `${name}${cap(lang)}` as keyof Omit<AppUserEditFields, 'photoURL'>;
+
+const appIntl = (name: string, lang: string) => `${name}${cap(lang)}` as keyof Omit<AppUserEditFields, 'photoURL'>;
 
 const Me: React.FC = () => {
-  const { uid } = useUnit($userStore);
   const { t, i18n } = useTranslation();
 
   const lang = i18n.language;
 
-  const { data, isLoading } = useQuery({
-    queryKey: [ME_QUERY, uid],
-    queryFn: () => getUserData(uid),
-    enabled: !!uid,
-  });
+  const { data, isLoading } = useQuery({ queryKey: [ME_QUERY], queryFn: () => getUserData() });
 
   const { data: avatarSrc, isLoading: isAvatarLoading } = useQuery({
     queryKey: [AVATAR_QUERY],
@@ -60,24 +55,24 @@ const Me: React.FC = () => {
           >
             <Stack gap={6}>
               <Stack>
-                <Heading>{data?.[langed('head', lang)]}</Heading>
+                <Heading>{data?.[appIntl('head', lang)]}</Heading>
                 {/* <Heading>{t('me-head')}</Heading> */}
 
                 <Text whiteSpace='pre-line' color='fg.info' fontSize={{ base: 14, sm: 16 }}>
-                  {data?.[langed('slogan', lang)]}
+                  {data?.[appIntl('slogan', lang)]}
                 </Text>
               </Stack>
 
               <Stack>
-                <Heading>{data?.[langed('pricing', lang)]}</Heading>
+                <Heading>{data?.[appIntl('pricing', lang)]}</Heading>
 
                 <Text whiteSpace='pre-line' color='fg.muted' fontSize={{ base: 14, sm: 16 }}>
-                  {data?.[langed('body', lang)]}
+                  {data?.[appIntl('body', lang)]}
                 </Text>
               </Stack>
 
               <Text whiteSpace='pre-line' fontSize={{ base: 14, sm: 16 }}>
-                <b>{data?.[langed('skills', lang)]}</b>
+                <b>{data?.[appIntl('skills', lang)]}</b>
               </Text>
             </Stack>
 
