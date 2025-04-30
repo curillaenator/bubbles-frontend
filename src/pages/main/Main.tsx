@@ -15,8 +15,8 @@ const Main: React.FC = () => {
   return (
     <Stack maxH='100%' overflow='auto' scrollbar='hidden' gap={{ base: 6, lg: 12 }} py={{ base: 6, lg: 12 }}>
       <Banner />
+
       <Me />
-      <Bullets />
 
       <Stack gap={{ base: 6 }}>
         <Heading size='2xl'>{t('app-gallery')}</Heading>
@@ -28,9 +28,9 @@ const Main: React.FC = () => {
         />
 
         <Separator />
-
-        {/* <Gallery title={t('gallery-common')} description={t('gallery-common-description')} photos={EQUPMENT_PHOTOS} /> */}
       </Stack>
+
+      <Bullets />
     </Stack>
   );
 };

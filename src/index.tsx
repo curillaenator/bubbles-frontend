@@ -3,6 +3,7 @@ import './configs/i18n.config';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Provider as ChakraProvider } from './features/chakra/provider';
 
@@ -15,6 +16,8 @@ import './index.css';
 
 const appContainer = document.querySelector('#root[data-bubbles]') as Element;
 const reactRoot = createRoot(appContainer);
+
+const client = new QueryClient();
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,7 +32,9 @@ const router = createBrowserRouter(
 );
 
 reactRoot.render(
-  <ChakraProvider>
-    <RouterProvider router={router} fallbackElement={<div>Loading...</div>} />
-  </ChakraProvider>,
+  <QueryClientProvider client={client}>
+    <ChakraProvider>
+      <RouterProvider router={router} fallbackElement={<div>Loading...</div>} />
+    </ChakraProvider>
+  </QueryClientProvider>,
 );

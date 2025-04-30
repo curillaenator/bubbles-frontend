@@ -1,26 +1,6 @@
-interface MeEditFields {
-  headEn: string;
-  headRu: string;
+import type { AppUserEditFields } from '@src/entities/user';
 
-  sloganEn: string;
-  sloganRu: string;
-
-  pricingEn: string;
-  pricingRu: string;
-
-  bodyEn: string;
-  bodyRu: string;
-
-  skillsEn: string;
-  skillsRu: string;
-
-  photoURL: FileList;
-
-  // unused fake form key, allows separator as fields, never registered
-  separator: string;
-}
-
-type MeEditKeys = keyof MeEditFields;
+type MeEditKeys = keyof AppUserEditFields;
 
 type MeEditFieldType = 'input' | 'textarea';
 
@@ -30,4 +10,4 @@ interface MeEditFieldModel {
   fieldType?: MeEditFieldType;
 }
 
-export type { MeEditKeys, MeEditFieldModel, MeEditFields, MeEditFieldType };
+export type { MeEditKeys, MeEditFieldModel, MeEditFieldType };

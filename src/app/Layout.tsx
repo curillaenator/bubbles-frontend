@@ -16,6 +16,7 @@ import {
   CloseButton,
   Drawer,
   Portal,
+  Center,
   chakra,
 } from '@chakra-ui/react';
 
@@ -57,7 +58,14 @@ const Layout: React.FC = () => {
     }
   }, []);
 
-  if (appLoading) return <Loader />;
+  if (appLoading)
+    return (
+      <Container as='main' position='relative' p={0} maxW='unset' minW='375px' h='100vh'>
+        <Center w='full' h='full'>
+          <Loader />
+        </Center>
+      </Container>
+    );
 
   return (
     <Container as='main' position='relative' p={0} maxW='unset' minW='375px'>

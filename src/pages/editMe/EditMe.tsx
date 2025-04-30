@@ -1,7 +1,11 @@
 import React, { useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useUnit } from 'effector-react';
+import { omit } from 'lodash';
 
 import {
   Card as Form,
@@ -17,13 +21,21 @@ import {
   FileUpload,
   Flex,
   Box,
+  Center,
 } from '@chakra-ui/react';
 
-import { MdSave } from 'react-icons/md';
+import { IoSaveOutline } from 'react-icons/io5';
 import { TbUpload, TbCancel } from 'react-icons/tb';
 
+import { $userStore, updateMeBlock, getUserData, type AppUserEditFields } from '@src/entities/user';
+
+import { Loader } from '@src/features/loader';
+
+import { ROOT_ROUTE } from '@src/routes';
+import { ME_QUERY } from '@src/configs/rtq.keys';
 import { FORM_MODEL } from './form.model';
-import type { MeEditFields, MeEditFieldType } from './interfaces';
+
+import type { MeEditFieldType } from './interfaces';
 
 const FIELD_COMPONENTS: Record<MeEditFieldType, React.ElementType> = {
   input: Input,
@@ -32,7 +44,15 @@ const FIELD_COMPONENTS: Record<MeEditFieldType, React.ElementType> = {
 
 const EditMe: React.FC = () => {
   const { t } = useTranslation();
+  const { uid } = useUnit($userStore);
   const navigate = useNavigate();
+  const qc = useQueryClient();
+
+  const { data: meFieldsData, isLoading } = useQuery<AppUserEditFields | null>({
+    queryKey: [ME_QUERY, uid],
+    queryFn: () => getUserData(uid),
+    enabled: !!uid,
+  });
 
   const {
     reset,
@@ -40,13 +60,30 @@ const EditMe: React.FC = () => {
     register,
     watch,
     formState: { errors },
-  } = useForm<MeEditFields>({
-    // defaultValues: {}
-  });
+  } = useForm<AppUserEditFields>({ defaultValues: meFieldsData || {} });
 
   const avatar = watch('photoURL');
 
+  const { mutate: submitChanges, isPending } = useMutation({
+    mutationFn: async (formData: Partial<AppUserEditFields>) => {
+      updateMeBlock(uid!, formData);
+    },
+    onSuccess: async () => {
+      await qc.invalidateQueries({ queryKey: [ME_QUERY, uid] });
+      navigate(ROOT_ROUTE);
+    },
+  });
+
   useEffect(() => () => reset(), [reset]);
+
+  if (isLoading)
+    return (
+      <Box py={6} h='100%' maxH='100%' overflow='auto' scrollbar='hidden'>
+        <Center w='full' h='full'>
+          <Loader />
+        </Center>
+      </Box>
+    );
 
   return (
     <Box py={6} h='100%' maxH='100%' overflow='auto' scrollbar='hidden'>
@@ -54,9 +91,7 @@ const EditMe: React.FC = () => {
         width='100%'
         variant='subtle'
         as='form'
-        onSubmit={handleSubmit((formData) => {
-          console.log('formData', formData);
-        })}
+        onSubmit={handleSubmit((formData) => submitChanges(omit(formData, 'photoURL')))}
       >
         <Form.Body display='flex' flexDirection='column' gap={6}>
           <SimpleGrid columns={{ base: 1, sm: 3, md: 3, lg: 3 }} gap={6}>
@@ -104,7 +139,12 @@ const EditMe: React.FC = () => {
               )}
 
               <FileUpload.Root accept={['image/png', 'image/jpg', 'image/jpeg']}>
-                <FileUpload.HiddenInput {...register('photoURL', { required: 'required' })} />
+                <FileUpload.HiddenInput
+                  {...register(
+                    'photoURL',
+                    // { required: 'required' }
+                  )}
+                />
 
                 {/* @ts-expect-error */}
                 <FileUpload.Trigger asChild>
@@ -125,12 +165,13 @@ const EditMe: React.FC = () => {
           </SimpleGrid>
 
           <Flex w='full' gap={6}>
-            <Button w='full' type='submit' size='md' colorPalette='blue' flex='1 1 auto'>
-              <MdSave />
+            <Button loading={isPending} w='full' type='submit' size='md' colorPalette='blue' flex='1 1 auto'>
+              <IoSaveOutline />
               {t('app-save-button')}
             </Button>
 
             <Button
+              disabled={isPending}
               w='full'
               variant='surface'
               type='button'
@@ -138,7 +179,7 @@ const EditMe: React.FC = () => {
               flex='1 1 auto'
               onClick={() => {
                 reset();
-                navigate('/');
+                navigate(ROOT_ROUTE);
               }}
             >
               <TbCancel />

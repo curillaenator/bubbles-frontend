@@ -1,7 +1,9 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, updateDoc, getDoc } from 'firebase/firestore';
+
 import { auth, fsdb } from '@src/configs/firebase.config';
-import type { AppUserCreds } from './interfaces';
+
+import type { AppUserCreds, AppUserEditFields } from './interfaces';
 
 const registerUser = async ({ email, password }: AppUserCreds) => {
   createUserWithEmailAndPassword(auth, email, password)
@@ -25,8 +27,13 @@ const logoutUser = async () => {
   });
 };
 
-// const getUserData = async (uid: string) => {
-//   return await getDoc(doc(fsdb, 'users', uid)).then((snap) => snap.data() as AppUser);
-// };
+const updateMeBlock = async (uid: string, updData: Partial<AppUserEditFields>) => {
+  return await updateDoc(doc(fsdb, 'users', uid), updData);
+};
 
-export { loginUser, registerUser, logoutUser };
+const getUserData = async (uid: string | null) => {
+  if (!uid) return null;
+  return await getDoc(doc(fsdb, 'users', uid)).then((snap) => snap.data() as AppUserEditFields);
+};
+
+export { loginUser, registerUser, logoutUser, updateMeBlock, getUserData };

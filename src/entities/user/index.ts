@@ -1,3 +1,3 @@
 export { $userStore, setUid } from './store';
-export { loginUser, registerUser, logoutUser } from './api';
-export type { AppUser, AppUserCreds } from './interfaces';
+export { loginUser, registerUser, logoutUser, updateMeBlock, getUserData } from './api';
+export type { AppUser, AppUserCreds, AppUserEditFields } from './interfaces';

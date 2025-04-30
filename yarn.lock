@@ -2779,6 +2779,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/query-core@npm:5.74.9":
+  version: 5.74.9
+  resolution: "@tanstack/query-core@npm:5.74.9"
+  checksum: d2c3459ba57bbd946dd5996b267ccf0afedc0fbc55ade6f152201382a14c895b1ba676bbef682b6472c53c2672b98daf67f9f34d2f68e3a8b55f626071e47179
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query@npm:5.74.11":
+  version: 5.74.11
+  resolution: "@tanstack/react-query@npm:5.74.11"
+  dependencies:
+    "@tanstack/query-core": 5.74.9
+  peerDependencies:
+    react: ^18 || ^19
+  checksum: 97426a1ff2d75267bc790dee70473ec30daee3082eec2d12e43a5bcbef9a9d8286e49089d403cc125cbb76d5722d0e80a6bb40e88e5efc4bee95a0271db31740
+  languageName: node
+  linkType: hard
+
 "@trysound/sax@npm:0.2.0":
   version: 0.2.0
   resolution: "@trysound/sax@npm:0.2.0"
@@ -4669,6 +4687,7 @@ __metadata:
     "@chakra-ui/react": 3.16.1
     "@emotion/react": 11.14.0
     "@svgr/webpack": 8.1.0
+    "@tanstack/react-query": 5.74.11
     "@types/lodash": 4.17.16
     "@types/node": 22.14.1
     "@types/react": 19.1.2
