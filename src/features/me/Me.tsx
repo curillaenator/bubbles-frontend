@@ -7,13 +7,10 @@ import { Card, Stack, Image, SimpleGrid, GridItem, Heading, Text, Button, Center
 
 import { FaTelegramPlane } from 'react-icons/fa';
 
-import { $userStore, getUserData, type AppUserEditFields } from '@src/entities/user';
+import { $userStore, getUserData, getAvatarUrl, type AppUserEditFields } from '@src/entities/user';
 import { Loader } from '@src/features/loader';
 
-import { ME_QUERY } from '@src/configs/rtq.keys';
-
-//@ts-expect-error
-import me from './vik.jpg';
+import { ME_QUERY, AVATAR_QUERY } from '@src/configs/rtq.keys';
 
 const cap = (str: string) =>
   str
@@ -34,7 +31,12 @@ const Me: React.FC = () => {
     enabled: !!uid,
   });
 
-  if (isLoading)
+  const { data: avatarSrc, isLoading: isAvatarLoading } = useQuery({
+    queryKey: [AVATAR_QUERY],
+    queryFn: () => getAvatarUrl(),
+  });
+
+  if (isLoading || isAvatarLoading)
     return (
       <Card.Root w='full'>
         <Card.Body gap='2' p={0}>
@@ -95,7 +97,7 @@ const Me: React.FC = () => {
           </GridItem>
 
           <GridItem>
-            <Image src={me} alt='Viktor' w='100%' h='100%' objectFit='cover' borderRadius={6} />
+            <Image src={avatarSrc} alt='Viktor' w='100%' h='100%' objectFit='cover' borderRadius={6} />
           </GridItem>
         </SimpleGrid>
       </Card.Body>

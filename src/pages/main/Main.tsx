@@ -1,8 +1,7 @@
 import React from 'react';
-import { Stack, Heading, Separator } from '@chakra-ui/react';
+import { Stack, Heading } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-// import { Dashboard } from '@src/features/dashboard';
 import { Gallery } from '@src/features/gallery';
 import { Banner } from '@src/features/banner';
 import { Me, Bullets } from '@src/features/me';
@@ -26,8 +25,6 @@ const Main: React.FC = () => {
           description={t('gallery-hontam-description')}
           sources={getHontamGallerySources(t)}
         />
-
-        <Separator />
       </Stack>
 
       <Bullets />

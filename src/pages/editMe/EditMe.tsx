@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useUnit } from 'effector-react';
-import { omit } from 'lodash';
 
 import {
   Card as Form,
@@ -27,12 +26,20 @@ import {
 import { IoSaveOutline } from 'react-icons/io5';
 import { TbUpload, TbCancel } from 'react-icons/tb';
 
-import { $userStore, updateMeBlock, getUserData, type AppUserEditFields } from '@src/entities/user';
+import {
+  $userStore,
+  updateMeBlock,
+  getUserData,
+  uploadAvatar,
+  getAvatarUrl,
+  AVATAR_IMAGE_PATH,
+  type AppUserEditFields,
+} from '@src/entities/user';
 
 import { Loader } from '@src/features/loader';
 
 import { ROOT_ROUTE } from '@src/routes';
-import { ME_QUERY } from '@src/configs/rtq.keys';
+import { ME_QUERY, AVATAR_QUERY } from '@src/configs/rtq.keys';
 import { FORM_MODEL } from './form.model';
 
 import type { MeEditFieldType } from './interfaces';
@@ -48,21 +55,20 @@ const EditMe: React.FC = () => {
   const navigate = useNavigate();
   const qc = useQueryClient();
 
-  const { data: meFieldsData, isLoading } = useQuery<AppUserEditFields | null>({
+  const { data: meFieldsData = null, isLoading } = useQuery<AppUserEditFields | null>({
     queryKey: [ME_QUERY, uid],
     queryFn: () => getUserData(uid),
     enabled: !!uid,
   });
 
-  const {
-    reset,
-    handleSubmit,
-    register,
-    watch,
-    formState: { errors },
-  } = useForm<AppUserEditFields>({ defaultValues: meFieldsData || {} });
+  const { data: avatarSrc } = useQuery<string>({ queryKey: [AVATAR_QUERY], queryFn: () => getAvatarUrl() });
 
-  const avatar = watch('photoURL');
+  const { mutate: setAvatarImage, isPending: isAvatarPending } = useMutation({
+    mutationFn: async (file: File) => uploadAvatar(file),
+    onSuccess: async () => {
+      await qc.invalidateQueries({ queryKey: [AVATAR_QUERY] });
+    },
+  });
 
   const { mutate: submitChanges, isPending } = useMutation({
     mutationFn: async (formData: Partial<AppUserEditFields>) => {
@@ -73,6 +79,16 @@ const EditMe: React.FC = () => {
       navigate(ROOT_ROUTE);
     },
   });
+
+  const {
+    reset,
+    handleSubmit,
+    register,
+    watch,
+    formState: { errors },
+  } = useForm<AppUserEditFields>({ values: meFieldsData || undefined });
+
+  const avatar = watch('photoURL');
 
   useEffect(() => () => reset(), [reset]);
 
@@ -91,7 +107,13 @@ const EditMe: React.FC = () => {
         width='100%'
         variant='subtle'
         as='form'
-        onSubmit={handleSubmit((formData) => submitChanges(omit(formData, 'photoURL')))}
+        onSubmit={handleSubmit(async (formData) => {
+          if (typeof formData.photoURL !== 'string' && !!formData.photoURL.length) {
+            await setAvatarImage(formData.photoURL.item(0) as File);
+          }
+
+          submitChanges({ ...formData, photoURL: AVATAR_IMAGE_PATH });
+        })}
       >
         <Form.Body display='flex' flexDirection='column' gap={6}>
           <SimpleGrid columns={{ base: 1, sm: 3, md: 3, lg: 3 }} gap={6}>
@@ -114,6 +136,7 @@ const EditMe: React.FC = () => {
                     </Field.Label>
 
                     <InputComponent
+                      disabled={isPending || isAvatarPending}
                       variant='outline'
                       placeholder={label}
                       {...register(fieldKey, { required })}
@@ -127,7 +150,12 @@ const EditMe: React.FC = () => {
             </GridItem>
 
             <GridItem display='flex' flexDirection='column' gap={6}>
-              {avatar?.item?.(0) && (
+              {/* @ts-expect-error */}
+              {!avatar?.item?.(0) && !!avatarSrc && (
+                <Image src={avatarSrc} alt='Viktor' w='100%' aspectRatio='1 / 1' objectFit='cover' borderRadius={6} />
+              )}
+
+              {typeof avatar !== 'string' && avatar?.item?.(0) && (
                 <Image
                   src={URL.createObjectURL(avatar?.item?.(0) as File)}
                   alt='Viktor'
@@ -139,16 +167,16 @@ const EditMe: React.FC = () => {
               )}
 
               <FileUpload.Root accept={['image/png', 'image/jpg', 'image/jpeg']}>
-                <FileUpload.HiddenInput
-                  {...register(
-                    'photoURL',
-                    // { required: 'required' }
-                  )}
-                />
+                <FileUpload.HiddenInput {...register('photoURL')} />
 
                 {/* @ts-expect-error */}
                 <FileUpload.Trigger asChild>
-                  <Button variant='solid' size='sm' colorPalette={errors.photoURL ? 'red' : 'blue'}>
+                  <Button
+                    disabled={isPending || isAvatarPending}
+                    variant='solid'
+                    size='sm'
+                    colorPalette={errors.photoURL ? 'red' : 'blue'}
+                  >
                     <TbUpload /> Upload avatar
                   </Button>
                 </FileUpload.Trigger>
@@ -165,13 +193,20 @@ const EditMe: React.FC = () => {
           </SimpleGrid>
 
           <Flex w='full' gap={6}>
-            <Button loading={isPending} w='full' type='submit' size='md' colorPalette='blue' flex='1 1 auto'>
+            <Button
+              loading={isPending || isAvatarPending}
+              w='full'
+              type='submit'
+              size='md'
+              colorPalette='blue'
+              flex='1 1 auto'
+            >
               <IoSaveOutline />
               {t('app-save-button')}
             </Button>
 
             <Button
-              disabled={isPending}
+              disabled={isPending || isAvatarPending}
               w='full'
               variant='surface'
               type='button'

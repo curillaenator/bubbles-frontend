@@ -1,3 +1,4 @@
 const ME_QUERY = 'ME_QUERY';
+const AVATAR_QUERY = 'AVATAR_QUERY';
 
-export { ME_QUERY };
+export { ME_QUERY, AVATAR_QUERY };

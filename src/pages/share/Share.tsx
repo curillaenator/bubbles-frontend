@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Stack, Flex, Center, Heading, QrCode, Text } from '@chakra-ui/react';
 
 const BOT_LINK = 'https://t.me/best_diving_bot';
-const APP_LINK = 'https://best-diving-ever.web.app/';
+const APP_LINK = 'https://art-app-2020.web.app';
 
 const SharePage: React.FC = () => {
   const { t } = useTranslation();

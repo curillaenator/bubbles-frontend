@@ -23,7 +23,7 @@ interface AppUserEditFields {
   skillsEn: string;
   skillsRu: string;
 
-  photoURL: FileList;
+  photoURL: FileList | string;
 
   // unused fake form key, allows separator as fields, never registered
   separator: string;
