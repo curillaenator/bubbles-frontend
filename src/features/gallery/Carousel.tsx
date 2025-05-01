@@ -58,6 +58,7 @@ const Carousel: React.FC<CarouselProps> = (props) => {
             <video
               controls
               width='100%'
+              style={{ maxHeight: '100%' }}
               controlsList='nofullscreen nodownload noplaybackrate'
               poster={src}
               disablePictureInPicture

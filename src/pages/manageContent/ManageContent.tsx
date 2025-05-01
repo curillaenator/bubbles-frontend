@@ -23,7 +23,13 @@ const ManageContent: React.FC = () => {
       <Heading>Manage</Heading>
 
       {units.map((unit) => (
-        <Card.Root key={unit.id} flexDirection='row' overflow='hidden' size={{ base: 'sm', sm: 'md', md: 'lg' }}>
+        <Card.Root
+          key={unit.id}
+          flexDirection='row'
+          overflow='hidden'
+          size={{ base: 'sm', sm: 'md', md: 'lg' }}
+          flex='none'
+        >
           <Box>
             <Card.Body>
               <Card.Title mb='2'>{unit['title-en']}</Card.Title>
