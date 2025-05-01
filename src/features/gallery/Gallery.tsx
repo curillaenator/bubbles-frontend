@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { debounce } from 'lodash';
 import { MasonryPhotoAlbum } from 'react-photo-album';
 
-import { Stack, Box, Dialog, CloseButton, Heading, Text, Image } from '@chakra-ui/react';
+import { Stack, Box, Dialog, CloseButton, Heading, Text, Image, Center } from '@chakra-ui/react';
+import { IoPlayOutline } from 'react-icons/io5';
 
 import { useColorModeValue } from '@src/features/chakra/color-mode';
 import { useItems } from './hooks/useItems';
@@ -71,6 +72,12 @@ const Gallery: React.FC<GalleryProps> = (props) => {
           image: (imageProps, { photo }) => (
             <Box {...imageProps} borderRadius={6} position='relative'>
               <Image {...imageProps} borderRadius={6} />
+
+              {photo.type === 'video' && (
+                <Center w='full' h='full' position='absolute' top={0} left={0}>
+                  <IoPlayOutline size={64} />
+                </Center>
+              )}
 
               {!!photo.en && !!photo.ru && (
                 <Stack

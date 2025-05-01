@@ -8,7 +8,6 @@ import { keys, omit } from 'lodash';
 import {
   Card,
   Card as Form,
-  Stack,
   Stack as FormFileds,
   Button,
   Field,
@@ -17,7 +16,6 @@ import {
   Text,
   Separator,
   Flex,
-  Box,
   Center,
   Heading,
 } from '@chakra-ui/react';
@@ -29,7 +27,7 @@ import { createUnit, getUnit, updateUnit, type AppUnitFields } from '@src/entiti
 
 import { Loader } from '@src/features/loader';
 
-import { ROOT_ROUTE } from '@src/routes';
+import { ROOT_ROUTE, MANAGE_UNITS } from '@src/routes';
 import { SINGLE_UNIT_QUERY, UNITS_QUERY } from '@src/configs/rtq.keys';
 
 import { UnitFormGallery } from './UnitFormGallery';
@@ -52,13 +50,13 @@ const UnitForm: React.FC = () => {
     watch,
     getValues,
     formState: { errors, dirtyFields },
-  } = useForm<AppUnitFields>({ values: !isLoading && !!data ? data : undefined });
+  } = useForm<AppUnitFields>({ values: !isLoading && !!data ? omit(data, 'id') : undefined });
 
   const { mutate: createNewUnit, isPending: isCreatePending } = useMutation({
     mutationFn: async (unit: AppUnitFields) => await createUnit(unit),
-    onSuccess: ({ unitId: createdUnitId }) => {
+    onSuccess: () => {
       qc.invalidateQueries({ queryKey: [UNITS_QUERY] });
-      navigate(`/unit/${createdUnitId}`);
+      navigate(MANAGE_UNITS);
     },
   });
 
@@ -71,20 +69,17 @@ const UnitForm: React.FC = () => {
   });
 
   const galleryItems = watch('gallery');
-
-  const isComposedLoading = isCreatePending || isUpdatePending; // || isImageUploading
+  const isComposedLoading = isCreatePending || isUpdatePending;
 
   if (isLoading)
     return (
-      <Box py={6} h='100%' maxH='100%' overflow='auto' scrollbar='hidden'>
-        <Center w='full' h='full'>
-          <Loader />
-        </Center>
-      </Box>
+      <Center w='full' h='full'>
+        <Loader />
+      </Center>
     );
 
   return (
-    <Stack py={6} h='100%' maxH='100%' overflow='auto' scrollbar='hidden' gap={6}>
+    <>
       <Form.Root
         width='100%'
         variant='subtle'
@@ -213,7 +208,7 @@ const UnitForm: React.FC = () => {
           </Form.Body>
         </Card.Root>
       )}
-    </Stack>
+    </>
   );
 };
 

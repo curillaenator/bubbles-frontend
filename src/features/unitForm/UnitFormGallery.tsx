@@ -9,8 +9,8 @@ import { IoImageOutline, IoVideocamOutline } from 'react-icons/io5';
 import { uploadImage, uploadVideo, type AppUnitGalleryItem } from '@src/entities/unit';
 import { Loader } from '@src/features/loader';
 
-import { UnitFormImageItem } from './UnitFormImageItem';
-import { UnitFormItemEditor } from './UnitFormItemEditor';
+import { UnitFormImageItem } from './components/UnitFormImageItem';
+import { UnitFormItemEditor } from './components/UnitFormItemEditor';
 
 import { UnitFormGalleryProps } from './interfaces';
 

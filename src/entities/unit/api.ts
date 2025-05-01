@@ -7,7 +7,7 @@ import resizeImage from 'image-resize';
 import { fsdb, storage } from '@src/configs/firebase.config';
 import { IMAGE_RESIZE_SETUP } from '@src/configs/imageresizer.config';
 
-import type { AppUnitFields } from './interfaces';
+import type { AppUnitFields, AppUnit } from './interfaces';
 
 const DB_PATH = 'units';
 
@@ -22,18 +22,21 @@ const updateUnit = async (unitId: string, updData: Partial<AppUnitFields>) => {
 };
 
 const getUnits = async () => {
-  const loadedUnits: AppUnitFields[] = [];
+  const loadedUnits: AppUnit[] = [];
   const snapshot = await getDocs(collection(fsdb, DB_PATH));
 
   snapshot.forEach((snap) => {
-    if (snap.exists()) loadedUnits.push(snap.data() as AppUnitFields);
+    if (snap.exists()) loadedUnits.push({ ...snap.data(), id: snap.id } as AppUnit);
   });
 
   return loadedUnits;
 };
 
 const getUnit = async (unitId: string) => {
-  return await getDoc(doc(fsdb, DB_PATH, unitId)).then((res) => (res.exists() ? (res.data() as AppUnitFields) : null));
+  return await getDoc(doc(fsdb, DB_PATH, unitId)).then((res) => {
+    if (res.exists()) return { ...res.data(), id: res.id } as AppUnit;
+    return null;
+  });
 };
 
 const uploadImage = async (imageId: string, image: File, unitId: string) => {

@@ -27,8 +27,7 @@ const BannerForm: React.FC<BannerFormProps> = ({ close }) => {
     <Stack
       as='form'
       gap={6}
-      onSubmit={handleSubmit((formData) => {
-        console.log('FormData', formData);
+      onSubmit={handleSubmit(() => {
         reset();
         close?.();
       })}

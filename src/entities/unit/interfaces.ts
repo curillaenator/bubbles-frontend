@@ -14,4 +14,8 @@ interface AppUnitFields {
   gallery: AppUnitGalleryItem[];
 }
 
-export type { AppUnitFields, AppUnitGalleryItem };
+interface AppUnit extends AppUnitFields {
+  id: string;
+}
+
+export type { AppUnitFields, AppUnitGalleryItem, AppUnit };

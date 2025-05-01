@@ -41,7 +41,7 @@ const Main: React.FC = () => {
           <>
             {units?.map((u) => (
               <Gallery
-                key={u['title-en']}
+                key={u.id}
                 title={decideUnitLanguage('title', i18n.language, u)}
                 description={decideUnitLanguage('description', i18n.language, u)}
                 sources={u.gallery || []}
