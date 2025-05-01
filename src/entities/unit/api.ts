@@ -49,8 +49,14 @@ const uploadImage = async (imageId: string, image: File, unitId: string) => {
   return uploadResult;
 };
 
+const uploadVideo = async (videoId: string, video: File, unitId: string) => {
+  const ext = video.name.match(/\.mp4$/)?.[0];
+  const storageRef = ref(storage, `${unitId}/${videoId}${ext}`);
+  return await uploadBytes(storageRef, video);
+};
+
 const getImageUrl = async (imagePath: string) => {
   return await getDownloadURL(ref(storage, imagePath));
 };
 
-export { createUnit, getUnits, getUnit, updateUnit, uploadImage, getImageUrl };
+export { createUnit, getUnits, getUnit, updateUnit, uploadImage, getImageUrl, uploadVideo };

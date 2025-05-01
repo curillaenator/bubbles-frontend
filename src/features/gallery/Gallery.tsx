@@ -1,22 +1,26 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { debounce } from 'lodash';
 import { MasonryPhotoAlbum } from 'react-photo-album';
 
-import { Stack, Box, Dialog, CloseButton, Heading, Text, Image, Center } from '@chakra-ui/react';
-import { GoPlay } from 'react-icons/go';
+import { Stack, Box, Dialog, CloseButton, Heading, Text, Image } from '@chakra-ui/react';
 
-import { Carousel } from './Carousel';
-
+import { useColorModeValue } from '@src/features/chakra/color-mode';
 import { useItems } from './hooks/useItems';
+import { Carousel } from './Carousel';
 
 import { MOBILE_VIEW_MAX_WIDTH } from './constants';
 import { GalleryProps } from './interfaces';
 
-import 'keen-slider/keen-slider.min.css';
 import 'react-photo-album/masonry.css';
+
+const decideLanguage = (language: string, locales: Record<string, string>) => locales[language];
 
 const Gallery: React.FC<GalleryProps> = (props) => {
   const { title, description } = props;
+  const { i18n } = useTranslation();
+
+  const imageItemCaptionOverlayBg = useColorModeValue('whiteAlpha.600', 'blackAlpha.600');
 
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -62,17 +66,26 @@ const Gallery: React.FC<GalleryProps> = (props) => {
         onClick={({ index }) => {
           setIsLightbox(true);
           setInitial(index);
-          // setTimeout(() => carouselRef.current?.moveToIdx(index), 0);
         }}
         render={{
-          image: (imageProps) => (
+          image: (imageProps, { photo }) => (
             <Box {...imageProps} borderRadius={6} position='relative'>
               <Image {...imageProps} borderRadius={6} />
 
-              {imageProps.src.includes('video-cover') && (
-                <Center w='100%' h='100%' position='absolute' top={0} left={0}>
-                  <GoPlay size={64} color='white' />
-                </Center>
+              {!!photo.en && !!photo.ru && (
+                <Stack
+                  w='full'
+                  p={4}
+                  position='absolute'
+                  top={0}
+                  left={0}
+                  bg={imageItemCaptionOverlayBg}
+                  borderRadius={6}
+                >
+                  <Text fontSize={{ base: 14, sm: 16 }} lineHeight='24px' maxW='calc(100% - 2rem)'>
+                    {decideLanguage(i18n.language, { en: photo.en, ru: photo.ru })}
+                  </Text>
+                </Stack>
               )}
             </Box>
           ),

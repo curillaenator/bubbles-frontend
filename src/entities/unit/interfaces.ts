@@ -1,7 +1,7 @@
 interface AppUnitGalleryItem {
   src: string;
-  caption?: string;
-  body?: string;
+  en?: string;
+  ru?: string;
   type?: 'img' | 'video';
   videoSrc?: string;
 }

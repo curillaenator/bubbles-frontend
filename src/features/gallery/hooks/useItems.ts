@@ -23,7 +23,13 @@ const useItems = (props: GalleryProps) => {
     Promise.all(
       sizedItems.map(async (it) => {
         if (/^https:\/\/.*/.test(it.src)) return it;
-        return { ...it, src: await getImageUrl(it.src) };
+
+        const itWithUrls = { ...it };
+
+        itWithUrls.src = await getImageUrl(it.src);
+        if (it.type === 'video') itWithUrls.videoSrc = await getImageUrl(it.videoSrc!);
+
+        return itWithUrls;
       }),
     ).then((sourcedItems) => setItems(sourcedItems as GalleryItem[]));
   }, [sizedItems]);

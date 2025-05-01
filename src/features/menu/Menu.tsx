@@ -3,7 +3,16 @@ import { useUnit } from 'effector-react';
 import { Stack, Flex, Button } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
-import { TbLogin2, TbLogout2, TbHome2, TbShare2, TbSettings } from 'react-icons/tb';
+import {
+  IoLogInOutline,
+  IoLogOutOutline,
+  IoHomeOutline,
+  IoSettingsOutline,
+  IoGlobeOutline,
+  //
+  IoPersonOutline,
+  IoAddCircleOutline,
+} from 'react-icons/io5';
 
 import { ColorModeButton } from '@src/features/chakra/color-mode';
 import { $userStore, logoutUser } from '@src/entities/user';
@@ -17,13 +26,14 @@ interface MenuProps {
 }
 
 const MENU_ITEMS = [
-  { to: ROOT_ROUTE, captionId: 'app-nav-main', Icon: TbHome2 },
-  { to: SHARE_ROUTE, captionId: 'app-nav-share', Icon: TbShare2 },
+  { to: ROOT_ROUTE, captionId: 'app-nav-main', Icon: IoHomeOutline },
+  { to: SHARE_ROUTE, captionId: 'app-nav-share', Icon: IoGlobeOutline },
 ] as const;
 
 const SETTINGS_ITEMS = [
-  { to: EDIT_ME_ROUTE, captionId: 'app-nav-edit-me', Icon: TbSettings },
-  { to: '/unit', captionId: 'app-nav-edit-content', Icon: TbSettings },
+  { to: EDIT_ME_ROUTE, captionId: 'app-nav-edit-me', Icon: IoPersonOutline },
+  { to: '/unit', captionId: 'app-nav-add-unit', Icon: IoAddCircleOutline },
+  { to: '/units', captionId: 'app-nav-manage-units', Icon: IoSettingsOutline },
 ] as const;
 
 const Menu: React.FC<MenuProps> = ({ toggleDrawer }) => {
@@ -31,8 +41,8 @@ const Menu: React.FC<MenuProps> = ({ toggleDrawer }) => {
   const { uid } = useUnit($userStore);
 
   return (
-    <Stack w='100' h='100%' flex='1 1 auto' justifyContent='space-between'>
-      <Stack flex='1 1 auto' gap={12}>
+    <Stack w='100' h='100%' flex='1 1 auto' justifyContent='space-between' gap={12}>
+      <Stack flex='1 1 auto' gap={12} justifyContent='space-between'>
         <Stack gap={{ base: 1, sm: 1, md: 2, lg: 3 }}>
           {MENU_ITEMS.map(({ to, captionId, Icon }) => (
             <NavButton key={`menu-item-${captionId}`} to={to} onClick={() => toggleDrawer(false)}>
@@ -65,12 +75,12 @@ const Menu: React.FC<MenuProps> = ({ toggleDrawer }) => {
       >
         {uid ? (
           <Button variant='surface' w='full' flex='1 1 auto' onClick={() => logoutUser()} justifyContent='flex-start'>
-            <TbLogout2 />
+            <IoLogOutOutline />
             {t('app-nav-logout')}
           </Button>
         ) : (
           <NavButton to={AUTH_ROUTE} color='fg.muted' onClick={() => toggleDrawer(false)} w='100%'>
-            <TbLogin2 />
+            <IoLogInOutline />
             {t('app-nav-auth')}
           </NavButton>
         )}

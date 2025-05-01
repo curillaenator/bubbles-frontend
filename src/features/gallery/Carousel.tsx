@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useKeenSlider, KeenSliderInstance, KeenSliderHooks } from 'keen-slider/react';
+import { useTranslation } from 'react-i18next';
 import { Stack, Box, Text, Image, Center } from '@chakra-ui/react';
 
 import { useColorModeValue } from '@src/features/chakra/color-mode';
@@ -14,8 +15,12 @@ interface CarouselProps {
   onCarouselInstanceChange?: (inst: KeenSliderInstance<{}, {}, KeenSliderHooks> | null) => void;
 }
 
+const decideLanguage = (language: string, locales: Record<string, string>) => locales[language];
+
 const Carousel: React.FC<CarouselProps> = (props) => {
   const { photoItems, isMobile, initial, onCarouselInstanceChange } = props;
+
+  const { i18n } = useTranslation();
 
   const imageBg = useColorModeValue('blackAlpha.300', 'whiteAlpha.200');
   const imageItemCaptionOverlayBg = useColorModeValue('whiteAlpha.600', 'blackAlpha.600');
@@ -27,12 +32,12 @@ const Carousel: React.FC<CarouselProps> = (props) => {
 
   return (
     <Box ref={sliderRef} className='keen-slider' h='100%' bg={imageBg} borderRadius={6}>
-      {photoItems.map(({ src, videoSrc, type = 'img', caption }) => {
+      {photoItems.map(({ src, videoSrc, type = 'img', en, ru }) => {
         return type === 'img' ? (
           <Box key={`keen-${src}`} className='keen-slider__slide' position='relative'>
             <Image src={src} w='100%' h='100%' objectFit={isMobile ? 'contain' : 'cover'} />
 
-            {caption && (
+            {!!en && !!ru && (
               <Stack
                 w='full'
                 p={4}
@@ -43,7 +48,7 @@ const Carousel: React.FC<CarouselProps> = (props) => {
                 borderRadius={6}
               >
                 <Text fontSize={{ base: 14, sm: 16 }} lineHeight='24px' maxW='calc(100% - 2rem)'>
-                  {caption}
+                  {decideLanguage(i18n.language, { en, ru })}
                 </Text>
               </Stack>
             )}
@@ -58,7 +63,7 @@ const Carousel: React.FC<CarouselProps> = (props) => {
               disablePictureInPicture
             >
               <source src={videoSrc} type='video/mp4' />
-              <p>Your browser does not support the video tag.</p>
+              <p>Your browser does not support the video tag</p>
             </video>
           </Center>
         );
