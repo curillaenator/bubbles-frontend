@@ -22,8 +22,8 @@ import {
 
 import { TbCancel, TbUpload } from 'react-icons/tb';
 
-import { getImageUrl, uploadImage, type AppUnitGalleryItem } from '@src/entities/unit';
-import { GALLERY_IMAGE_QUERY, SINGLE_UNIT_QUERY } from '@src/configs/rtq.keys';
+import { getImageUrl, uploadImage, removeGalleryItem, type AppUnitGalleryItem } from '@src/entities/unit';
+import { GALLERY_IMAGE_QUERY, SINGLE_UNIT_QUERY, UNITS_QUERY } from '@src/configs/rtq.keys';
 
 import { UnitFormItemEditorProps } from '../interfaces';
 
@@ -55,6 +55,17 @@ const ItemContentForm: React.FC<UnitFormItemEditorProps> = (props) => {
     },
     [getUnitValues, updateExistingUnit, toggleUnitEditor],
   );
+
+  const { mutate: removeSelectedGalleryItem, isPending: isGalleryItemRemoving } = useMutation({
+    mutationFn: (item: AppUnitGalleryItem) =>
+      removeGalleryItem(item, { ...getUnitValues(), id: unitId, gallery: items }),
+
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: [SINGLE_UNIT_QUERY, unitId] });
+      qc.invalidateQueries({ queryKey: [UNITS_QUERY] });
+      toggleUnitEditor(null);
+    },
+  });
 
   const { mutate: uploadNewImage, isPending: isImageUploading } = useMutation({
     mutationFn: ({ imageId, image }: { imageId: string; image: File }) => uploadImage(imageId, image, unitId!),
@@ -146,7 +157,7 @@ const ItemContentForm: React.FC<UnitFormItemEditorProps> = (props) => {
 
             {/* @ts-expect-error */}
             <FileUpload.Trigger asChild>
-              <Button variant='surface' disabled={isImageUploading} loading={isImageUploading}>
+              <Button variant='surface' disabled={isGalleryItemRemoving || isImageUploading} loading={isImageUploading}>
                 <TbUpload /> Upload photo
               </Button>
             </FileUpload.Trigger>
@@ -167,8 +178,26 @@ const ItemContentForm: React.FC<UnitFormItemEditorProps> = (props) => {
         </Button>
 
         <Button
+          disabled={isGalleryItemRemoving || isImageUploading}
+          loading={isGalleryItemRemoving}
           w='full'
-          disabled={isImageUploading}
+          type='button'
+          size='md'
+          colorPalette='red'
+          variant='surface'
+          flex='1 1 auto'
+          onClick={() => {
+            if (confirm('Are you sure to remove item?')) {
+              removeSelectedGalleryItem(currentEditItem as AppUnitGalleryItem);
+            }
+          }}
+        >
+          Remove
+        </Button>
+
+        <Button
+          w='full'
+          disabled={isGalleryItemRemoving || isImageUploading}
           variant='surface'
           type='button'
           size='md'

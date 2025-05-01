@@ -49,8 +49,16 @@ const UnitFormImageItem: React.FC<UnitFormImageItem> = (props) => {
       )}
 
       {!!en && !!ru && (
-        <Stack w='full' p={4} position='absolute' top={0} left={0} bg={imageItemCaptionOverlayBg} borderRadius={6}>
-          <Text fontSize={{ base: 14, sm: 16 }} lineHeight='24px' maxW='calc(100% - 2rem)'>
+        <Stack
+          w='full'
+          p={{ base: 2, sm: 4 }}
+          position='absolute'
+          top={0}
+          left={0}
+          bg={imageItemCaptionOverlayBg}
+          borderRadius={6}
+        >
+          <Text fontSize={{ base: 12, sm: 14 }} lineHeight={{ base: '16px', sm: '20px' }}>
             {decideLanguage(i18n.language, { en, ru })}
           </Text>
         </Stack>

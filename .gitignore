@@ -12,6 +12,7 @@ build
 !.yarn/releases
 !.yarn/versions
 
+tmp
 .DS_Store
 *.pem
 npm-debug.log*

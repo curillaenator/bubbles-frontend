@@ -1,5 +1,5 @@
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { doc, setDoc, updateDoc, getDoc, collection, getDocs } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { doc, setDoc, updateDoc, getDoc, collection, getDocs, deleteDoc } from 'firebase/firestore';
 import { v4 as getId } from 'uuid';
 
 import resizeImage from 'image-resize';
@@ -7,7 +7,7 @@ import resizeImage from 'image-resize';
 import { fsdb, storage } from '@src/configs/firebase.config';
 import { IMAGE_RESIZE_SETUP } from '@src/configs/imageresizer.config';
 
-import type { AppUnitFields, AppUnit } from './interfaces';
+import type { AppUnitFields, AppUnit, AppUnitGalleryItem } from './interfaces';
 
 const DB_PATH = 'units';
 
@@ -19,6 +19,26 @@ const createUnit = async (unit: AppUnitFields) => {
 
 const updateUnit = async (unitId: string, updData: Partial<AppUnitFields>) => {
   return await updateDoc(doc(fsdb, DB_PATH, unitId), { ...updData });
+};
+
+const removeUnit = async (unit: AppUnit) => {
+  const fileRemovePromises = unit.gallery
+    .map(({ src, videoSrc }) => {
+      const filePathsToRemove: string[] = [];
+
+      if (!src.includes('video_default')) filePathsToRemove.push(src);
+      if (!!videoSrc) filePathsToRemove.push(videoSrc);
+
+      return filePathsToRemove;
+    })
+    .flat()
+    .map((filePath) => deleteObject(ref(storage, filePath)));
+
+  await Promise.all(fileRemovePromises);
+
+  await deleteDoc(doc(fsdb, 'units', unit.id));
+
+  return { deletedUnit: unit.id };
 };
 
 const getUnits = async () => {
@@ -62,4 +82,36 @@ const getImageUrl = async (imagePath: string) => {
   return await getDownloadURL(ref(storage, imagePath));
 };
 
-export { createUnit, getUnits, getUnit, updateUnit, uploadImage, getImageUrl, uploadVideo };
+const removeGalleryItem = async (item: AppUnitGalleryItem, unit: AppUnit) => {
+  const { type, videoSrc, src: imagePath } = item;
+
+  const pathsToRemove: string[] = [];
+  if (!imagePath.includes('video_default')) pathsToRemove.push(imagePath);
+  if (!!videoSrc) pathsToRemove.push(videoSrc);
+
+  const removePromises = pathsToRemove.map(async (filePath) => deleteObject(ref(storage, filePath)));
+  await Promise.all(removePromises);
+
+  const removedItemIdx = unit.gallery.findIndex((el) =>
+    type === 'video' ? el.videoSrc === videoSrc : el.src === imagePath,
+  );
+
+  const gallery = [...unit.gallery];
+  gallery.splice(removedItemIdx, 1);
+
+  await updateDoc(doc(fsdb, DB_PATH, unit.id), { gallery });
+
+  return { removedItemIdx };
+};
+
+export {
+  createUnit,
+  getUnits,
+  getUnit,
+  updateUnit,
+  uploadImage,
+  getImageUrl,
+  uploadVideo,
+  removeUnit,
+  removeGalleryItem,
+};

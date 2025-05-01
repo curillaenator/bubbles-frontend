@@ -50,7 +50,7 @@ const UnitForm: React.FC = () => {
     watch,
     getValues,
     formState: { errors, dirtyFields },
-  } = useForm<AppUnitFields>({ values: !isLoading && !!data ? omit(data, 'id') : undefined });
+  } = useForm<AppUnitFields>({ values: !!data ? omit(data, 'id') : undefined });
 
   const { mutate: createNewUnit, isPending: isCreatePending } = useMutation({
     mutationFn: async (unit: AppUnitFields) => await createUnit(unit),
@@ -86,7 +86,7 @@ const UnitForm: React.FC = () => {
         as='form'
         onSubmit={handleSubmit(async (formData) => {
           if (!!unitId) {
-            console.log('update unit', formData);
+            updateExistingUnit(formData);
           } else {
             createNewUnit(formData);
           }

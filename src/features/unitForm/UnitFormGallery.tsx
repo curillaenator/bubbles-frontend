@@ -79,7 +79,7 @@ const UnitFormGallery: React.FC<UnitFormGalleryProps> = (props) => {
         ))}
 
         <GridItem cursor='pointer' role='button'>
-          <FileUpload.Root accept={['image/png', 'image/jpg', 'image/jpeg', 'image/webp']} maxFiles={5}>
+          <FileUpload.Root accept={['image/png', 'image/jpg', 'image/jpeg', 'image/webp']}>
             <FileUpload.HiddenInput
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onImageSelect(e.target.files, unitId)}
             />
