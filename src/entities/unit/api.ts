@@ -9,11 +9,13 @@ import { IMAGE_RESIZE_SETUP } from '@src/configs/imageresizer.config';
 
 import type { AppUnitFields, AppUnit, AppUnitGalleryItem } from './interfaces';
 
-const DB_PATH = 'units';
+const DB_PATH = 'divebot';
 
-const createUnit = async (unit: AppUnitFields) => {
+const createUnit = async (unitFields: AppUnitFields) => {
+  console.log('createUnit', unitFields);
+
   const unitId = getId();
-  await setDoc(doc(fsdb, DB_PATH, unitId), { ...unit, order: 999 });
+  await setDoc(doc(fsdb, DB_PATH, unitId), { ...unitFields, order: 999 });
   return { unitId };
 };
 
@@ -36,7 +38,7 @@ const removeUnit = async (unit: AppUnit) => {
 
   await Promise.all(fileRemovePromises);
 
-  await deleteDoc(doc(fsdb, 'units', unit.id));
+  await deleteDoc(doc(fsdb, DB_PATH, unit.id));
 
   return { deletedUnit: unit.id };
 };
@@ -70,7 +72,7 @@ const reorderUnits = async (reordered: AppUnit[]) => {
 const uploadImage = async (imageId: string, image: File, unitId: string) => {
   const blob = (await resizeImage(image, IMAGE_RESIZE_SETUP)) as Blob;
   const file = new File([blob], `${imageId}.webp`, { type: blob.type });
-  const storageRef = ref(storage, `${unitId}/${imageId}.webp`);
+  const storageRef = ref(storage, `divebot/${unitId}/${imageId}.webp`);
 
   const uploadResult = await uploadBytes(storageRef, file, {
     cacheControl: 'public,max-age=3600',
@@ -82,7 +84,7 @@ const uploadImage = async (imageId: string, image: File, unitId: string) => {
 
 const uploadVideo = async (videoId: string, video: File, unitId: string) => {
   const ext = video.name.match(/\.mp4$/)?.[0];
-  const storageRef = ref(storage, `${unitId}/${videoId}${ext}`);
+  const storageRef = ref(storage, `divebot/${unitId}/${videoId}${ext}`);
   return await uploadBytes(storageRef, video);
 };
 

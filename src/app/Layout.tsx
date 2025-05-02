@@ -36,6 +36,8 @@ import { FaTelegramPlane } from 'react-icons/fa';
 
 //@ts-expect-error
 import headBg from './assets/head.png';
+//@ts-expect-error
+import footBg from './assets/footer.jpg';
 
 const HEADER_PD = { base: 4, sm: 4, md: 4, lg: 6 };
 
@@ -155,10 +157,18 @@ const Layout: React.FC = () => {
           overflow='hidden'
           borderTop='1px solid'
           borderColor='border'
-          background='no-repeat url("./assets/footer.jpg")'
-          backgroundPosition='center'
-          backgroundSize='cover'
         >
+          <Image
+            src={footBg}
+            w='100%'
+            objectFit='cover'
+            transform='translateY(-42%)'
+            zIndex={-1}
+            position='absolute'
+            top={0}
+            left={0}
+          />
+
           <Button
             size='md'
             colorPalette='blue'

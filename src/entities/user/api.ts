@@ -7,7 +7,7 @@ import resizeImage from 'image-resize';
 import { auth, fsdb, storage } from '@src/configs/firebase.config';
 import { IMAGE_RESIZE_SETUP } from '@src/configs/imageresizer.config';
 
-import { AVATAR_IMAGE_PATH, ME_UID } from './constants';
+import { ME_UID, AVATAR_IMAGE_PATH } from './constants';
 import type { AppUserCreds, AppUserEditFields } from './interfaces';
 
 const registerUser = async ({ email, password }: AppUserCreds) => {

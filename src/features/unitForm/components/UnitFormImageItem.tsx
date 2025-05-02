@@ -28,8 +28,16 @@ const UnitFormImageItem = React.forwardRef<HTMLDivElement, UnitFormImageItem>((p
   });
 
   return (
-    <Box ref={ref} onClick={() => onEdit()} position='relative' cursor='pointer' role='button' maxW='220px'>
-      <Center w='full' aspectRatio='1 / 1' border='1px solid' borderColor='border' borderRadius={6}>
+    <Box
+      ref={ref}
+      onClick={() => onEdit()}
+      position='relative'
+      cursor='pointer'
+      role='button'
+      maxW={{ base: 'calc(100% / 2 - 8px / 2)', sm: 'calc(100% / 3 - 64px / 3 + 4px)' }}
+      aspectRatio='1 / 1'
+    >
+      <Center w='full' border='1px solid' borderColor='border' borderRadius={6}>
         {imageSrc && (
           <Image
             alt='Beast diving ever'

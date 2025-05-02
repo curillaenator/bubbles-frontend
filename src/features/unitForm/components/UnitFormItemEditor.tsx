@@ -87,12 +87,12 @@ const ItemContentForm: React.FC<UnitFormItemEditorProps> = (props) => {
       const gallery: AppUnitGalleryItem[] = [...items];
 
       for (const imageFile of fileList) {
-        // unitId/imageId.ext - parsed
-        let imageId = imagePath?.split('/')[1].split('.')[0];
+        // approot/unitId/imageId.ext - parsed
+        let imageId = imagePath?.split('/')[2].split('.')[0];
 
         if (imageId === 'video_default') {
           imageId = getId();
-          gallery.splice(currentItemIdx, 1, { ...currentEditItem, src: `${targetUnitId}/${imageId}.webp` });
+          gallery.splice(currentItemIdx, 1, { ...currentEditItem, src: `divebot/${targetUnitId}/${imageId}.webp` });
         }
 
         await uploadNewImage({ imageId: imageId, image: imageFile });

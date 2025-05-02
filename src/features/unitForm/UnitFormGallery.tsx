@@ -5,7 +5,7 @@ import arrayMoveImmutable from 'array-move';
 import { debounce } from 'lodash';
 import { v4 as getId } from 'uuid';
 
-import { Box, Flex, FileUpload, Center, chakra } from '@chakra-ui/react';
+import { Box, Flex, FileUpload, Center, chakra, Heading } from '@chakra-ui/react';
 import { IoImageOutline, IoVideocamOutline } from 'react-icons/io5';
 
 import { uploadImage, uploadVideo, type AppUnitGalleryItem } from '@src/entities/unit';
@@ -46,7 +46,7 @@ const UnitFormGallery: React.FC<UnitFormGalleryProps> = (props) => {
         const newImageId = getId();
 
         newGalleryItems.push({
-          src: `${targetUnitId}/${newImageId}.webp`,
+          src: `divebot/${targetUnitId}/${newImageId}.webp`,
           type: 'img',
           order: items.length,
         });
@@ -54,7 +54,7 @@ const UnitFormGallery: React.FC<UnitFormGalleryProps> = (props) => {
         await uploadNewImage({ imageId: newImageId, image: imageFile });
       }
 
-      updateExistingUnit({ ...getUnitValues(), gallery: [...items, ...newGalleryItems] });
+      await updateExistingUnit({ ...getUnitValues(), gallery: [...items, ...newGalleryItems] });
     }, 500),
     [items, getUnitValues, updateExistingUnit],
   );
@@ -71,9 +71,9 @@ const UnitFormGallery: React.FC<UnitFormGalleryProps> = (props) => {
         const newVideoExt = videoFile.name.match(/\.mp4$/)?.[0];
 
         newGalleryItems.push({
-          src: 'common/video_default.avif',
+          src: 'divebot/common/video_default.avif',
           type: 'video',
-          videoSrc: `${targetUnitId}/${newVideoId}${newVideoExt}`,
+          videoSrc: `divebot/${targetUnitId}/${newVideoId}${newVideoExt}`,
           order: items.length,
         });
 
@@ -99,7 +99,7 @@ const UnitFormGallery: React.FC<UnitFormGalleryProps> = (props) => {
 
   return (
     <>
-      <ChakraSortableList display='flex' flexWrap='wrap' gap={6} onSortEnd={onSortEnd}>
+      <ChakraSortableList display='flex' flexWrap='wrap' gap={{ base: 2, sm: 6 }} onSortEnd={onSortEnd}>
         {sortGalleryItems(items).map((item) => (
           <SortableItem key={item.src}>
             <UnitFormImageItem {...item} onEdit={() => toggleUnitEditor(item)} />
@@ -107,9 +107,15 @@ const UnitFormGallery: React.FC<UnitFormGalleryProps> = (props) => {
         ))}
       </ChakraSortableList>
 
+      <Heading>Upload</Heading>
+
       <Flex gap={6} flexWrap='wrap'>
         <Box w='220px' cursor='pointer'>
-          <FileUpload.Root accept={['image/png', 'image/jpg', 'image/jpeg', 'image/webp']}>
+          <FileUpload.Root
+            key={Date.now()}
+            maxFiles={8}
+            accept={['image/png', 'image/jpg', 'image/jpeg', 'image/webp']}
+          >
             <FileUpload.HiddenInput
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onImageSelect(e.target.files, unitId)}
             />
