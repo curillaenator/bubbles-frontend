@@ -13,7 +13,7 @@ const DB_PATH = 'units';
 
 const createUnit = async (unit: AppUnitFields) => {
   const unitId = getId();
-  await setDoc(doc(fsdb, DB_PATH, unitId), unit);
+  await setDoc(doc(fsdb, DB_PATH, unitId), { ...unit, order: 999 });
   return { unitId };
 };
 
@@ -58,6 +58,14 @@ const getUnit = async (unitId: string) => {
     return null;
   });
 };
+
+const reorderUnits = async (reordered: AppUnit[]) => {
+  for (const { id, order } of reordered) {
+    await updateDoc(doc(fsdb, DB_PATH, id), { order });
+  }
+};
+
+/// ----- ///
 
 const uploadImage = async (imageId: string, image: File, unitId: string) => {
   const blob = (await resizeImage(image, IMAGE_RESIZE_SETUP)) as Blob;
@@ -109,9 +117,11 @@ export {
   getUnits,
   getUnit,
   updateUnit,
+  removeUnit,
+  reorderUnits,
+  //
   uploadImage,
   getImageUrl,
   uploadVideo,
-  removeUnit,
   removeGalleryItem,
 };

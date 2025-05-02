@@ -1,9 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import SortableList, { SortableItem } from 'react-easy-sort';
+import arrayMoveImmutable from 'array-move';
 import { debounce } from 'lodash';
 import { v4 as getId } from 'uuid';
 
-import { SimpleGrid, GridItem, FileUpload, Center } from '@chakra-ui/react';
+import { Box, Flex, FileUpload, Center, chakra } from '@chakra-ui/react';
 import { IoImageOutline, IoVideocamOutline } from 'react-icons/io5';
 
 import { uploadImage, uploadVideo, type AppUnitGalleryItem } from '@src/entities/unit';
@@ -13,6 +15,11 @@ import { UnitFormImageItem } from './components/UnitFormImageItem';
 import { UnitFormItemEditor } from './components/UnitFormItemEditor';
 
 import { UnitFormGalleryProps } from './interfaces';
+
+const ChakraSortableList = chakra(SortableList);
+
+const sortGalleryItems = (units: AppUnitGalleryItem[]) =>
+  units.toSorted(({ order: oA }, { order: oB }) => (oA || 0) - (oB || 0));
 
 const UnitFormGallery: React.FC<UnitFormGalleryProps> = (props) => {
   const { unitId, items = [], getUnitValues, updateExistingUnit } = props;
@@ -37,7 +44,13 @@ const UnitFormGallery: React.FC<UnitFormGalleryProps> = (props) => {
 
       for (const imageFile of fileList) {
         const newImageId = getId();
-        newGalleryItems.push({ src: `${targetUnitId}/${newImageId}.webp`, type: 'img' });
+
+        newGalleryItems.push({
+          src: `${targetUnitId}/${newImageId}.webp`,
+          type: 'img',
+          order: items.length,
+        });
+
         await uploadNewImage({ imageId: newImageId, image: imageFile });
       }
 
@@ -61,6 +74,7 @@ const UnitFormGallery: React.FC<UnitFormGalleryProps> = (props) => {
           src: 'common/video_default.avif',
           type: 'video',
           videoSrc: `${targetUnitId}/${newVideoId}${newVideoExt}`,
+          order: items.length,
         });
 
         await uploadNewVideo({ imageId: newVideoId, video: videoFile });
@@ -71,14 +85,30 @@ const UnitFormGallery: React.FC<UnitFormGalleryProps> = (props) => {
     [items, getUnitValues, updateExistingUnit],
   );
 
+  const onSortEnd = useCallback(
+    (oldIndex: number, newIndex: number) => {
+      const gallery = arrayMoveImmutable(sortGalleryItems(items), oldIndex, newIndex).map((it, order) => ({
+        ...it,
+        order,
+      }));
+
+      updateExistingUnit({ ...getUnitValues(), gallery });
+    },
+    [items, getUnitValues, updateExistingUnit],
+  );
+
   return (
     <>
-      <SimpleGrid columns={{ base: 2, sm: 3, md: 4, lg: 5 }} gap={6}>
-        {items.map((item) => (
-          <UnitFormImageItem {...item} key={item.src} onEdit={() => toggleUnitEditor(item)} />
+      <ChakraSortableList display='flex' flexWrap='wrap' gap={6} onSortEnd={onSortEnd}>
+        {sortGalleryItems(items).map((item) => (
+          <SortableItem key={item.src}>
+            <UnitFormImageItem {...item} onEdit={() => toggleUnitEditor(item)} />
+          </SortableItem>
         ))}
+      </ChakraSortableList>
 
-        <GridItem cursor='pointer' role='button'>
+      <Flex gap={6} flexWrap='wrap'>
+        <Box w='220px' cursor='pointer'>
           <FileUpload.Root accept={['image/png', 'image/jpg', 'image/jpeg', 'image/webp']}>
             <FileUpload.HiddenInput
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onImageSelect(e.target.files, unitId)}
@@ -91,9 +121,9 @@ const UnitFormGallery: React.FC<UnitFormGalleryProps> = (props) => {
               </Center>
             </FileUpload.Trigger>
           </FileUpload.Root>
-        </GridItem>
+        </Box>
 
-        <GridItem cursor='pointer' role='button'>
+        <Box w='220px' cursor='pointer'>
           <FileUpload.Root accept={['video/mp4']}>
             <FileUpload.HiddenInput
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onVideoSelect(e.target.files, unitId)}
@@ -106,8 +136,8 @@ const UnitFormGallery: React.FC<UnitFormGalleryProps> = (props) => {
               </Center>
             </FileUpload.Trigger>
           </FileUpload.Root>
-        </GridItem>
-      </SimpleGrid>
+        </Box>
+      </Flex>
 
       <UnitFormItemEditor {...props} currentEditItem={currentEditItem} toggleUnitEditor={toggleUnitEditor} />
     </>

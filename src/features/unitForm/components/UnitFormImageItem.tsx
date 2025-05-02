@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { GridItem, Image, Center, Stack, Text } from '@chakra-ui/react';
+import { Box, Image, Center, Stack, Text } from '@chakra-ui/react';
 import { IoPlayOutline } from 'react-icons/io5';
 
 import { useColorModeValue } from '@src/features/chakra/color-mode';
@@ -15,7 +15,7 @@ interface UnitFormImageItem extends AppUnitGalleryItem {
 
 const decideLanguage = (language: string, locales: Record<string, string>) => locales[language];
 
-const UnitFormImageItem: React.FC<UnitFormImageItem> = (props) => {
+const UnitFormImageItem = React.forwardRef<HTMLDivElement, UnitFormImageItem>((props, ref) => {
   const { type, src: imagePath, onEdit, en, ru } = props;
 
   const { i18n } = useTranslation();
@@ -28,7 +28,7 @@ const UnitFormImageItem: React.FC<UnitFormImageItem> = (props) => {
   });
 
   return (
-    <GridItem onClick={() => onEdit()} position='relative' cursor='pointer' role='button'>
+    <Box ref={ref} onClick={() => onEdit()} position='relative' cursor='pointer' role='button' maxW='220px'>
       <Center w='full' aspectRatio='1 / 1' border='1px solid' borderColor='border' borderRadius={6}>
         {imageSrc && (
           <Image
@@ -38,6 +38,7 @@ const UnitFormImageItem: React.FC<UnitFormImageItem> = (props) => {
             objectFit='cover'
             borderRadius={6}
             src={imageSrc}
+            draggable={false}
           />
         )}
       </Center>
@@ -63,8 +64,8 @@ const UnitFormImageItem: React.FC<UnitFormImageItem> = (props) => {
           </Text>
         </Stack>
       )}
-    </GridItem>
+    </Box>
   );
-};
+});
 
 export { UnitFormImageItem };

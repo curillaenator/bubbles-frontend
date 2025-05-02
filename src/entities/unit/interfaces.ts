@@ -4,6 +4,7 @@ interface AppUnitGalleryItem {
   ru?: string;
   type?: 'img' | 'video';
   videoSrc?: string;
+  order?: number;
 }
 
 interface AppUnitFields {
@@ -16,6 +17,7 @@ interface AppUnitFields {
 
 interface AppUnit extends AppUnitFields {
   id: string;
+  order?: number;
 }
 
 export type { AppUnitFields, AppUnitGalleryItem, AppUnit };

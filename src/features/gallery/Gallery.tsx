@@ -11,11 +11,14 @@ import { useItems } from './hooks/useItems';
 import { Carousel } from './Carousel';
 
 import { MOBILE_VIEW_MAX_WIDTH } from './constants';
-import { GalleryProps } from './interfaces';
+import type { GalleryProps, GalleryItem } from './interfaces';
 
 import 'react-photo-album/masonry.css';
 
 const decideLanguage = (language: string, locales: Record<string, string>) => locales[language];
+
+const sortGalleryItems = (units: GalleryItem[]) =>
+  units.toSorted(({ order: oA }, { order: oB }) => (oA || 0) - (oB || 0));
 
 const Gallery: React.FC<GalleryProps> = (props) => {
   const { title, description } = props;
@@ -57,7 +60,7 @@ const Gallery: React.FC<GalleryProps> = (props) => {
       )}
 
       <MasonryPhotoAlbum
-        photos={photoItems}
+        photos={sortGalleryItems(photoItems)}
         spacing={isMobile ? 8 : 24}
         columns={(parentWidth) => {
           if (parentWidth >= MOBILE_VIEW_MAX_WIDTH) return 4;

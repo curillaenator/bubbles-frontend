@@ -11,7 +11,6 @@ import { Banner } from '@src/features/banner';
 import { Me, Bullets } from '@src/features/me';
 
 import { UNITS_QUERY } from '@src/configs/rtq.keys';
-// import { getHontamGallerySources } from './constants';
 
 const decideUnitLanguage = (field: string, lang: string, unit: Omit<AppUnitFields, 'gallery'>) =>
   unit[`${field}-${lang}` as keyof Omit<AppUnitFields, 'gallery'>];
@@ -39,20 +38,16 @@ const Main: React.FC = () => {
           </Center>
         ) : (
           <>
-            {units?.map((u) => (
-              <Gallery
-                key={u.id}
-                title={decideUnitLanguage('title', i18n.language, u)}
-                description={decideUnitLanguage('description', i18n.language, u)}
-                sources={u.gallery || []}
-              />
-            ))}
-
-            {/* <Gallery
-              title={t('gallery-hontam')}
-              description={t('gallery-hontam-description')}
-              sources={getHontamGallerySources(t)}
-            /> */}
+            {units
+              ?.toSorted(({ order: oA }, { order: oB }) => (oA || 0) - (oB || 0))
+              .map((u) => (
+                <Gallery
+                  key={u.id}
+                  title={decideUnitLanguage('title', i18n.language, u)}
+                  description={decideUnitLanguage('description', i18n.language, u)}
+                  sources={u.gallery || []}
+                />
+              ))}
           </>
         )}
       </Stack>
