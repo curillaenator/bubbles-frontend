@@ -112,8 +112,8 @@ const UnitFormGallery: React.FC<UnitFormGalleryProps> = (props) => {
       <Flex gap={6} flexWrap='wrap'>
         <Box w='220px' cursor='pointer'>
           <FileUpload.Root
-            key={Date.now()}
-            maxFiles={8}
+            // key={Date.now()}
+            // maxFiles={8}
             accept={['image/png', 'image/jpg', 'image/jpeg', 'image/webp']}
           >
             <FileUpload.HiddenInput
