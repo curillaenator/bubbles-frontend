@@ -5,8 +5,9 @@ import { Box, Image, Center, Stack, Text } from '@chakra-ui/react';
 import { IoPlayOutline } from 'react-icons/io5';
 
 import { useColorModeValue } from '@src/features/chakra/color-mode';
+import { getImageUrl } from '@src/entities/asset';
 
-import { getImageUrl, type AppUnitGalleryItem } from '@src/entities/unit';
+import type { AppUnitGalleryItem } from '@src/entities/unit';
 import { GALLERY_IMAGE_QUERY } from '@src/configs/rtq.keys';
 
 interface UnitFormImageItem extends AppUnitGalleryItem {

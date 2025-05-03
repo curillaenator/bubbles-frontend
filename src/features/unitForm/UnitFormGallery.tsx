@@ -8,12 +8,16 @@ import { v4 as getId } from 'uuid';
 import { Box, Flex, FileUpload, Center, chakra, Heading } from '@chakra-ui/react';
 import { IoImageOutline, IoVideocamOutline } from 'react-icons/io5';
 
-import { uploadImage, uploadVideo, type AppUnitGalleryItem } from '@src/entities/unit';
+import { useAppContext } from '@src/providers/AppBotnameProvider';
+
+import { type AppUnitGalleryItem } from '@src/entities/unit';
+import { uploadImage, uploadVideo } from '@src/entities/asset';
 import { Loader } from '@src/features/loader';
 
 import { UnitFormImageItem } from './components/UnitFormImageItem';
 import { UnitFormItemEditor } from './components/UnitFormItemEditor';
 
+import { STATIC_PATHS } from '@src/configs/assets.config';
 import { UnitFormGalleryProps } from './interfaces';
 
 const ChakraSortableList = chakra(SortableList);
@@ -22,17 +26,21 @@ const sortGalleryItems = (units: AppUnitGalleryItem[]) =>
   units.toSorted(({ order: oA }, { order: oB }) => (oA || 0) - (oB || 0));
 
 const UnitFormGallery: React.FC<UnitFormGalleryProps> = (props) => {
+  const appCtx = useAppContext();
+
   const { unitId, items = [], getUnitValues, updateExistingUnit } = props;
 
   const [currentEditItem, setCurrentEditItem] = useState<AppUnitGalleryItem | null>(null);
   const toggleUnitEditor = useCallback((unit: AppUnitGalleryItem | null) => setCurrentEditItem(unit), []);
 
   const { mutate: uploadNewImage, isPending: isImageUploading } = useMutation({
-    mutationFn: ({ imageId, image }: { imageId: string; image: File }) => uploadImage(imageId, image, unitId!),
+    mutationFn: ({ imageId, image }: { imageId: string; image: File }) =>
+      uploadImage.call(appCtx, { imageId, image, unitId }),
   });
 
   const { mutate: uploadNewVideo, isPending: isVideoUploading } = useMutation({
-    mutationFn: ({ imageId, video }: { imageId: string; video: File }) => uploadVideo(imageId, video, unitId!),
+    mutationFn: ({ videoId, video }: { videoId: string; video: File }) =>
+      uploadVideo.call(appCtx, { videoId, video, unitId }),
   });
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -46,7 +54,7 @@ const UnitFormGallery: React.FC<UnitFormGalleryProps> = (props) => {
         const newImageId = getId();
 
         newGalleryItems.push({
-          src: `divebot/${targetUnitId}/${newImageId}.webp`,
+          src: `${appCtx.botname}/${targetUnitId}/${newImageId}.webp`,
           type: 'img',
           order: items.length,
         });
@@ -56,7 +64,7 @@ const UnitFormGallery: React.FC<UnitFormGalleryProps> = (props) => {
 
       await updateExistingUnit({ ...getUnitValues(), gallery: [...items, ...newGalleryItems] });
     }, 500),
-    [items, getUnitValues, updateExistingUnit],
+    [appCtx, items, getUnitValues, updateExistingUnit],
   );
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -71,18 +79,18 @@ const UnitFormGallery: React.FC<UnitFormGalleryProps> = (props) => {
         const newVideoExt = videoFile.name.match(/\.mp4$/)?.[0];
 
         newGalleryItems.push({
-          src: 'divebot/common/video_default.avif',
+          src: `${appCtx.botname}/${STATIC_PATHS.videoCover}`,
           type: 'video',
-          videoSrc: `divebot/${targetUnitId}/${newVideoId}${newVideoExt}`,
+          videoSrc: `${appCtx.botname}/${targetUnitId}/${newVideoId}${newVideoExt}`,
           order: items.length,
         });
 
-        await uploadNewVideo({ imageId: newVideoId, video: videoFile });
+        await uploadNewVideo({ videoId: newVideoId, video: videoFile });
       }
 
       updateExistingUnit({ ...getUnitValues(), gallery: [...items, ...newGalleryItems] });
     }, 500),
-    [items, getUnitValues, updateExistingUnit],
+    [appCtx, items, getUnitValues, updateExistingUnit],
   );
 
   const onSortEnd = useCallback(

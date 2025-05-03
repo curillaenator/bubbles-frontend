@@ -1,14 +1,18 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { doc, setDoc, updateDoc, getDoc } from 'firebase/firestore';
-
 import resizeImage from 'image-resize';
 
 import { auth, fsdb, storage } from '@src/configs/firebase.config';
 import { IMAGE_RESIZE_SETUP } from '@src/configs/imageresizer.config';
+import { STATIC_PATHS } from '@src/configs/assets.config';
 
-import { ME_UID, AVATAR_IMAGE_PATH } from './constants';
+import type { AppGlobalCTX } from '@src/app';
+
+import { BOTNAME_TO_OWNER_UID } from './constants';
 import type { AppUserCreds, AppUserEditFields } from './interfaces';
+
+// AUTH API
 
 const registerUser = async ({ email, password }: AppUserCreds) => {
   createUserWithEmailAndPassword(auth, email, password)
@@ -32,18 +36,26 @@ const logoutUser = async () => {
   });
 };
 
+// EDIT USER DATA API
+
 const updateMeBlock = async (uid: string, updData: Partial<AppUserEditFields>) => {
   return await updateDoc(doc(fsdb, 'users', uid), updData);
 };
 
-const getUserData = async () => {
-  return await getDoc(doc(fsdb, 'users', ME_UID)).then((snap) => snap.data() as AppUserEditFields);
-};
+async function getUserData(this: AppGlobalCTX) {
+  if (!this.botname) return null;
 
-const uploadAvatar = async (imageFile: File) => {
+  return await getDoc(doc(fsdb, 'users', BOTNAME_TO_OWNER_UID[this.botname])).then(
+    (snap) => snap.data() as AppUserEditFields,
+  );
+}
+
+async function uploadAvatar(this: AppGlobalCTX, imageFile: File) {
+  if (!this.botname) return;
+
   const blob = (await resizeImage(imageFile, IMAGE_RESIZE_SETUP)) as Blob;
   const upload = new File([blob], 'avatar.webp', { type: blob.type });
-  const storageRef = ref(storage, AVATAR_IMAGE_PATH);
+  const storageRef = ref(storage, `${this.botname}/${STATIC_PATHS.avatar}`);
 
   const uploadResult = await uploadBytes(storageRef, upload, {
     cacheControl: 'public,max-age=3600',
@@ -51,10 +63,11 @@ const uploadAvatar = async (imageFile: File) => {
   });
 
   return uploadResult;
-};
+}
 
-const getAvatarUrl = async () => {
-  return await getDownloadURL(ref(storage, AVATAR_IMAGE_PATH));
-};
+async function getAvatarUrl(this: AppGlobalCTX) {
+  if (!this.botname) return null;
+  return await getDownloadURL(ref(storage, `${this.botname}/${STATIC_PATHS.avatar}`));
+}
 
 export { loginUser, registerUser, logoutUser, updateMeBlock, getUserData, uploadAvatar, getAvatarUrl };

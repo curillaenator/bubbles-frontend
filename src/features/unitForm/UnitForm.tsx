@@ -23,6 +23,7 @@ import {
 import { IoSaveOutline } from 'react-icons/io5';
 import { TbCancel } from 'react-icons/tb';
 
+import { useAppContext } from '@src/providers/AppBotnameProvider';
 import { createUnit, getUnit, updateUnit, type AppUnitFields } from '@src/entities/unit';
 
 import { Loader } from '@src/features/loader';
@@ -36,10 +37,11 @@ const UnitForm: React.FC = () => {
   const { unitId } = useParams<{ unitId: string }>();
   const navigate = useNavigate();
   const qc = useQueryClient();
+  const appCtx = useAppContext();
 
   const { data = null, isLoading } = useQuery({
     queryKey: [SINGLE_UNIT_QUERY, unitId],
-    queryFn: () => getUnit(unitId!),
+    queryFn: () => getUnit.call(appCtx, unitId!),
     enabled: !!unitId,
   });
 
@@ -53,7 +55,8 @@ const UnitForm: React.FC = () => {
   } = useForm<AppUnitFields>({ values: !!data ? omit(data, 'id') : undefined });
 
   const { mutate: createNewUnit, isPending: isCreatePending } = useMutation({
-    mutationFn: async (unit: AppUnitFields) => await createUnit(unit),
+    mutationFn: async (unit: AppUnitFields) => await createUnit.call(appCtx, unit),
+
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [UNITS_QUERY] });
       navigate(MANAGE_UNITS);
@@ -61,7 +64,12 @@ const UnitForm: React.FC = () => {
   });
 
   const { mutate: updateExistingUnit, isPending: isUpdatePending } = useMutation({
-    mutationFn: async (unit: AppUnitFields) => await updateUnit(unitId!, unit),
+    mutationFn: async (unitFields: AppUnitFields) =>
+      await updateUnit.call(appCtx, {
+        unitId: unitId!,
+        updData: unitFields,
+      }),
+
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [UNITS_QUERY] });
       qc.invalidateQueries({ queryKey: [SINGLE_UNIT_QUERY, unitId] });
@@ -98,7 +106,7 @@ const UnitForm: React.FC = () => {
 
             <Field.Root invalid={!!errors['title-en']}>
               <Field.Label>
-                <Text color='white'>Unit title EN</Text>
+                <Text color='fg.subtle'>Unit title EN</Text>
               </Field.Label>
 
               <Input
@@ -113,7 +121,7 @@ const UnitForm: React.FC = () => {
 
             <Field.Root invalid={!!errors['title-ru']}>
               <Field.Label>
-                <Text color='white'>Заголовок RU</Text>
+                <Text color='fg.subtle'>Заголовок RU</Text>
               </Field.Label>
 
               <Input
@@ -130,7 +138,7 @@ const UnitForm: React.FC = () => {
 
             <Field.Root invalid={!!errors['description-en']}>
               <Field.Label>
-                <Text color='white'>Unit description EN</Text>
+                <Text color='fg.subtle'>Unit description EN</Text>
               </Field.Label>
 
               <Textarea
@@ -146,7 +154,7 @@ const UnitForm: React.FC = () => {
 
             <Field.Root invalid={!!errors['description-ru']}>
               <Field.Label>
-                <Text color='white'>Описание RU</Text>
+                <Text color='fg.subtle'>Описание RU</Text>
               </Field.Label>
 
               <Textarea

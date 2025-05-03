@@ -9,7 +9,8 @@ import { Heading, Stack, HStack, Button, chakra } from '@chakra-ui/react';
 import { IoCreate } from 'react-icons/io5';
 import { TbCancel } from 'react-icons/tb';
 
-import { type AppUnit, getUnits, removeUnit, reorderUnits } from '@src/entities/unit';
+import { useAppContext } from '@src/providers/AppBotnameProvider';
+import { getUnits, removeUnit, reorderUnits, type AppUnit } from '@src/entities/unit';
 import { UNITS_QUERY } from '@src/configs/rtq.keys';
 import { ROOT_ROUTE } from '@src/routes';
 
@@ -22,21 +23,24 @@ const sortUnits = (units: AppUnit[]) => units.toSorted(({ order: oA }, { order: 
 const ManageContent: React.FC = () => {
   const navigate = useNavigate();
   const qc = useQueryClient();
+  const appCtx = useAppContext();
 
   const { data: units = [] } = useQuery({
     queryKey: [UNITS_QUERY],
-    queryFn: () => getUnits(),
+    queryFn: getUnits.bind(appCtx),
   });
 
   const { mutate: removeSelectedUnit, isPending: isRemovingUnit } = useMutation({
-    mutationFn: removeUnit,
+    mutationFn: removeUnit.bind(appCtx),
+
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [UNITS_QUERY] });
     },
   });
 
   const { mutate: reorderUnitList, isPending: isReorderingUnits } = useMutation({
-    mutationFn: reorderUnits,
+    mutationFn: reorderUnits.bind(appCtx),
+
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [UNITS_QUERY] });
     },

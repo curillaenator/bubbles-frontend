@@ -1,4 +1,7 @@
-const AVATAR_IMAGE_PATH = 'divebot/profile/avatar.webp';
-const ME_UID = 'zRjxS4A4egRmzoHvSxM2C3jEE6W2';
+import type { AppBotname } from '@src/providers/AppBotnameProvider';
 
-export { AVATAR_IMAGE_PATH, ME_UID };
+const BOTNAME_TO_OWNER_UID: Record<AppBotname, string> = {
+  divebot: 'zRjxS4A4egRmzoHvSxM2C3jEE6W2', // Vik
+};
+
+export { BOTNAME_TO_OWNER_UID };

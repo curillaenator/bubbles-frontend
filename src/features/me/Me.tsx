@@ -1,10 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+
 import { useQuery } from '@tanstack/react-query';
 
 import { Card, Stack, Image, SimpleGrid, GridItem, Heading, Text, Button, Center } from '@chakra-ui/react';
-
 import { FaTelegramPlane } from 'react-icons/fa';
+
+import { useAppContext } from '@src/providers/AppBotnameProvider';
 
 import { getUserData, getAvatarUrl, type AppUserEditFields } from '@src/entities/user';
 import { Loader } from '@src/features/loader';
@@ -21,17 +23,20 @@ const appIntl = (name: string, lang: string) => `${name}${cap(lang)}` as keyof O
 
 const Me: React.FC = () => {
   const { t, i18n } = useTranslation();
+  const appCtx = useAppContext();
 
-  const lang = i18n.language;
-
-  const { data, isLoading } = useQuery({ queryKey: [ME_QUERY], queryFn: () => getUserData() });
+  const { data = null, isLoading } = useQuery({
+    queryKey: [ME_QUERY],
+    queryFn: getUserData.bind(appCtx),
+  });
 
   const { data: avatarSrc, isLoading: isAvatarLoading } = useQuery({
     queryKey: [AVATAR_QUERY],
-    queryFn: () => getAvatarUrl(),
+    queryFn: getAvatarUrl.bind(appCtx),
+    enabled: !!appCtx.botname,
   });
 
-  if (isLoading || isAvatarLoading)
+  if (isLoading || isAvatarLoading) {
     return (
       <Card.Root w='full'>
         <Card.Body gap='2' p={0}>
@@ -41,6 +46,9 @@ const Me: React.FC = () => {
         </Card.Body>
       </Card.Root>
     );
+  }
+
+  if (!data) return null;
 
   return (
     <Card.Root width='100%' variant='subtle'>
@@ -55,24 +63,23 @@ const Me: React.FC = () => {
           >
             <Stack gap={6}>
               <Stack>
-                <Heading>{data?.[appIntl('head', lang)]}</Heading>
-                {/* <Heading>{t('me-head')}</Heading> */}
+                <Heading>{data[appIntl('head', i18n.language)]}</Heading>
 
                 <Text whiteSpace='pre-line' color='fg.info' fontSize={{ base: 14, sm: 16 }}>
-                  {data?.[appIntl('slogan', lang)]}
+                  {data[appIntl('slogan', i18n.language)]}
                 </Text>
               </Stack>
 
               <Stack>
-                <Heading>{data?.[appIntl('pricing', lang)]}</Heading>
+                <Heading>{data?.[appIntl('pricing', i18n.language)]}</Heading>
 
                 <Text whiteSpace='pre-line' color='fg.muted' fontSize={{ base: 14, sm: 16 }}>
-                  {data?.[appIntl('body', lang)]}
+                  {data[appIntl('body', i18n.language)]}
                 </Text>
               </Stack>
 
               <Text whiteSpace='pre-line' fontSize={{ base: 14, sm: 16 }}>
-                <b>{data?.[appIntl('skills', lang)]}</b>
+                <b>{data[appIntl('skills', i18n.language)]}</b>
               </Text>
             </Stack>
 
@@ -92,7 +99,7 @@ const Me: React.FC = () => {
           </GridItem>
 
           <GridItem>
-            <Image src={avatarSrc} alt='Viktor' w='100%' h='100%' objectFit='cover' borderRadius={6} />
+            {!!avatarSrc && <Image src={avatarSrc} alt='Viktor' w='100%' h='100%' objectFit='cover' borderRadius={6} />}
           </GridItem>
         </SimpleGrid>
       </Card.Body>

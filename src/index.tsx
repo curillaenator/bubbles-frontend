@@ -6,6 +6,7 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { Provider as ChakraProvider } from './features/chakra/provider';
+import { AppBotnameProvider } from './providers/AppBotnameProvider';
 
 import { Layout } from './app';
 import { Main, AuthPage, SharePage, EditMe, EditContent, ManageContent } from './pages';
@@ -35,7 +36,9 @@ const router = createBrowserRouter(
 reactRoot.render(
   <QueryClientProvider client={client}>
     <ChakraProvider>
-      <RouterProvider router={router} fallbackElement={<div>Loading...</div>} />
+      <AppBotnameProvider>
+        <RouterProvider router={router} fallbackElement={<div>Loading...</div>} />
+      </AppBotnameProvider>
     </ChakraProvider>
   </QueryClientProvider>,
 );

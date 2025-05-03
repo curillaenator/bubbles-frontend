@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useUnit } from 'effector-react';
 
@@ -32,14 +32,16 @@ import {
   getUserData,
   uploadAvatar,
   getAvatarUrl,
-  AVATAR_IMAGE_PATH,
   type AppUserEditFields,
 } from '@src/entities/user';
+
+import { useAppContext } from '@src/providers/AppBotnameProvider';
 
 import { Loader } from '@src/features/loader';
 
 import { ROOT_ROUTE } from '@src/routes';
 import { ME_QUERY, AVATAR_QUERY } from '@src/configs/rtq.keys';
+import { STATIC_PATHS } from '@src/configs/assets.config';
 import { FORM_MODEL } from './form.model';
 
 import type { MeEditFieldType } from './interfaces';
@@ -50,29 +52,35 @@ const FIELD_COMPONENTS: Record<MeEditFieldType, React.ElementType> = {
 };
 
 const EditMe: React.FC = () => {
+  const qc = useQueryClient();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const { uid } = useUnit($userStore);
-  const navigate = useNavigate();
-  const qc = useQueryClient();
+  const appCtx = useAppContext();
 
-  const { data: meFieldsData = null, isLoading } = useQuery<AppUserEditFields>({
+  const { data: meFieldsData = null, isLoading } = useQuery<AppUserEditFields | null>({
     queryKey: [ME_QUERY, uid],
-    queryFn: () => getUserData(),
+    queryFn: getUserData.bind(appCtx),
+    enabled: !!appCtx.botname,
   });
 
-  const { data: avatarSrc } = useQuery<string>({ queryKey: [AVATAR_QUERY], queryFn: () => getAvatarUrl() });
+  const { data: avatarURL } = useQuery<string | null>({
+    queryKey: [AVATAR_QUERY],
+    queryFn: getAvatarUrl.bind(appCtx),
+    enabled: !!appCtx.botname,
+  });
 
-  const { mutate: setAvatarImage, isPending: isAvatarPending } = useMutation({
-    mutationFn: async (file: File) => uploadAvatar(file),
+  const { mutate: uploadAvatarFile, isPending: isAvatarPending } = useMutation({
+    mutationFn: async (file: File) => uploadAvatar.call(appCtx, file),
+
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: [AVATAR_QUERY] });
     },
   });
 
   const { mutate: submitChanges, isPending } = useMutation({
-    mutationFn: async (formData: Partial<AppUserEditFields>) => {
-      updateMeBlock(uid!, formData);
-    },
+    mutationFn: async (formData: Partial<AppUserEditFields>) => updateMeBlock(uid!, formData),
+
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: [ME_QUERY, uid] });
       navigate(ROOT_ROUTE);
@@ -87,9 +95,11 @@ const EditMe: React.FC = () => {
     formState: { errors },
   } = useForm<AppUserEditFields>({ values: meFieldsData || undefined });
 
+  useEffect(() => () => reset(), [reset]);
+
   const avatar = watch('photoURL');
 
-  useEffect(() => () => reset(), [reset]);
+  if (!appCtx.botname) return <Navigate to={ROOT_ROUTE} replace />;
 
   if (isLoading)
     return (
@@ -108,10 +118,13 @@ const EditMe: React.FC = () => {
         as='form'
         onSubmit={handleSubmit(async (formData) => {
           if (typeof formData.photoURL !== 'string' && !!formData.photoURL.length) {
-            await setAvatarImage(formData.photoURL.item(0) as File);
+            await uploadAvatarFile(formData.photoURL.item(0) as File);
           }
 
-          submitChanges({ ...formData, photoURL: AVATAR_IMAGE_PATH });
+          submitChanges({
+            ...formData,
+            photoURL: `${appCtx.botname}/${STATIC_PATHS.avatar}`,
+          });
         })}
       >
         <Form.Body display='flex' flexDirection='column' gap={6}>
@@ -131,7 +144,7 @@ const EditMe: React.FC = () => {
                 return (
                   <Field.Root key={fieldKey} invalid={!!errors[fieldKey]}>
                     <Field.Label>
-                      <Text color='white'>{label}</Text>
+                      <Text color='fg.subtle'>{label}</Text>
                     </Field.Label>
 
                     <InputComponent
@@ -150,8 +163,8 @@ const EditMe: React.FC = () => {
 
             <GridItem display='flex' flexDirection='column' gap={6}>
               {/* @ts-expect-error */}
-              {!avatar?.item?.(0) && !!avatarSrc && (
-                <Image src={avatarSrc} alt='Viktor' w='100%' aspectRatio='1 / 1' objectFit='cover' borderRadius={6} />
+              {!avatar?.item?.(0) && !!avatarURL && (
+                <Image src={avatarURL} alt='Viktor' w='100%' aspectRatio='1 / 1' objectFit='cover' borderRadius={6} />
               )}
 
               {typeof avatar !== 'string' && avatar?.item?.(0) && (

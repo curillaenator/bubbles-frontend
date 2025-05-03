@@ -22,7 +22,10 @@ import {
 
 import { TbCancel, TbUpload } from 'react-icons/tb';
 
-import { getImageUrl, uploadImage, removeGalleryItem, type AppUnitGalleryItem } from '@src/entities/unit';
+import { useAppContext } from '@src/providers/AppBotnameProvider';
+
+import { removeGalleryItem, type AppUnitGalleryItem } from '@src/entities/unit';
+import { getImageUrl, uploadImage } from '@src/entities/asset';
 import { GALLERY_IMAGE_QUERY, SINGLE_UNIT_QUERY, UNITS_QUERY } from '@src/configs/rtq.keys';
 
 import { UnitFormItemEditorProps } from '../interfaces';
@@ -31,6 +34,7 @@ const ItemContentForm: React.FC<UnitFormItemEditorProps> = (props) => {
   const { currentEditItem, toggleUnitEditor, items = [], updateExistingUnit, getUnitValues, unitId } = props;
 
   const qc = useQueryClient();
+  const appCtx = useAppContext();
 
   const { type = 'img', en = '', ru = '', src: imagePath, videoSrc } = (currentEditItem || {}) as AppUnitGalleryItem;
   const currentItemIdx = items.findIndex((el) => (type === 'video' ? el.videoSrc === videoSrc : el.src === imagePath));
@@ -58,7 +62,7 @@ const ItemContentForm: React.FC<UnitFormItemEditorProps> = (props) => {
 
   const { mutate: removeSelectedGalleryItem, isPending: isGalleryItemRemoving } = useMutation({
     mutationFn: (item: AppUnitGalleryItem) =>
-      removeGalleryItem(item, { ...getUnitValues(), id: unitId, gallery: items }),
+      removeGalleryItem.call(appCtx, { item, unit: { ...getUnitValues(), id: unitId, gallery: items } }),
 
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [SINGLE_UNIT_QUERY, unitId] });
@@ -68,7 +72,8 @@ const ItemContentForm: React.FC<UnitFormItemEditorProps> = (props) => {
   });
 
   const { mutate: uploadNewImage, isPending: isImageUploading } = useMutation({
-    mutationFn: ({ imageId, image }: { imageId: string; image: File }) => uploadImage(imageId, image, unitId!),
+    mutationFn: ({ imageId, image }: { imageId: string; image: File }) =>
+      uploadImage.call(appCtx, { imageId, image, unitId }),
     onSuccess: () => {
       if (imagePath.includes('video_default')) {
         qc.invalidateQueries({ queryKey: [SINGLE_UNIT_QUERY, unitId] });
@@ -87,12 +92,16 @@ const ItemContentForm: React.FC<UnitFormItemEditorProps> = (props) => {
       const gallery: AppUnitGalleryItem[] = [...items];
 
       for (const imageFile of fileList) {
-        // approot/unitId/imageId.ext - parsed
+        // botname/unitId/imageId.ext - parsed
         let imageId = imagePath?.split('/')[2].split('.')[0];
 
         if (imageId === 'video_default') {
           imageId = getId();
-          gallery.splice(currentItemIdx, 1, { ...currentEditItem, src: `divebot/${targetUnitId}/${imageId}.webp` });
+
+          gallery.splice(currentItemIdx, 1, {
+            ...currentEditItem,
+            src: `${appCtx.botname}/${targetUnitId}/${imageId}.webp`,
+          });
         }
 
         await uploadNewImage({ imageId: imageId, image: imageFile });
@@ -100,7 +109,7 @@ const ItemContentForm: React.FC<UnitFormItemEditorProps> = (props) => {
 
       updateExistingUnit({ ...getUnitValues(), gallery });
     }, 500),
-    [items, getUnitValues, updateExistingUnit, type],
+    [appCtx, items, getUnitValues, updateExistingUnit, imagePath],
   );
 
   return (

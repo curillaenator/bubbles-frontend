@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Outlet } from 'react-router-dom';
 
 import {
   Container,
@@ -8,50 +8,31 @@ import {
   Heading,
   Stack as AppInteractiveUI,
   Flex,
-  IconButton,
-  Button,
-  Flex as AppHeader,
-  Flex as AppFooter,
-  Image,
   CloseButton,
   Drawer,
   Portal,
   Center,
-  chakra,
 } from '@chakra-ui/react';
 
-import { Outlet } from 'react-router-dom';
-
-import { Bubbles } from '@src/features/bubbles';
 import { Logo } from '@src/features/logo';
+import { AppHeader, AppFooter } from '@src/features/layout';
+import { Bubbles } from '@src/features/bubbles';
 
+import { useAppContext } from '@src/providers/AppBotnameProvider';
 import { useAuthState } from '@src/hooks/useAuthState';
 import { useColorModeValue } from '@src/features/chakra/color-mode';
+
 import { Menu } from '@src/features/menu';
-import { LangSelector } from '@src/features/langSelector';
 import { Loader } from '@src/features/loader';
-
-import { MdMenu } from 'react-icons/md';
-import { FaTelegramPlane } from 'react-icons/fa';
-
-//@ts-expect-error
-import headBg from './assets/head.png';
-//@ts-expect-error
-import footBg from './assets/footer.jpg';
-
-const HEADER_PD = { base: 4, sm: 4, md: 4, lg: 6 };
 
 const getMaxH = (head: string, foot: string) => `calc(100vh - ${head} - ${foot})`;
 
-const ChakraLink = chakra(Link);
-
 const Layout: React.FC = () => {
-  const headerOpacity = useColorModeValue('0.9', '0.5');
   const menuHeaderColor = useColorModeValue('bg.inverted', 'bg');
   const { t } = useTranslation();
+  const { botname } = useAppContext();
 
   const { appLoading } = useAuthState();
-
   const [drawerOpen, toggleDrawer] = useState<boolean>(false);
 
   useEffect(() => {
@@ -71,54 +52,10 @@ const Layout: React.FC = () => {
 
   return (
     <Container as='main' position='relative' p={0} maxW='unset' minW='375px'>
-      <Bubbles />
+      {botname === 'divebot' && <Bubbles />}
 
       <AppInteractiveUI w='100%' h='100vh' gap={0} position='relative'>
-        <AppHeader
-          data-app-header
-          p={HEADER_PD}
-          flex='0 0 auto'
-          gap={4}
-          justifyContent='space-between'
-          alignItems='center'
-          as='header'
-          position='relative'
-          overflow='hidden'
-          borderBottom='1px solid'
-          borderColor='border'
-        >
-          <Image
-            src={headBg}
-            w='100%'
-            objectFit='cover'
-            transform='translateY(-38%)'
-            zIndex={-1}
-            opacity={headerOpacity}
-            position='absolute'
-            top={0}
-            left={0}
-          />
-
-          <Flex alignItems='center' gap={2}>
-            <IconButton variant='ghost' size='md' color='white' onClick={() => toggleDrawer((o) => !o)}>
-              <MdMenu />
-            </IconButton>
-
-            <ChakraLink to='/'>
-              <Logo />
-            </ChakraLink>
-
-            <Heading size={{ base: 'md', sm: 'xl', md: '2xl', lg: '2xl' }} color='white'>
-              {t('app-title')}
-            </Heading>
-          </Flex>
-
-          <Flex gap={2}>
-            {/* <ColorModeButton size='md' variant='ghost' color='white' /> */}
-
-            <LangSelector />
-          </Flex>
-        </AppHeader>
+        <AppHeader toggleDrawer={toggleDrawer} />
 
         <AppBody
           as='div'
@@ -126,63 +63,12 @@ const Layout: React.FC = () => {
           m='0 auto'
           px={6}
           flex='1 1 auto'
-          maxH={{
-            base: getMaxH('73px', '72px'),
-            sm: getMaxH('73px', '96px'),
-            md: getMaxH('73px', '96px'),
-            lg: getMaxH('97px', '144px'),
-            xl: getMaxH('97px', '200px'),
-            '2xl': getMaxH('97px', '200px'),
-          }}
+          maxH={{ base: getMaxH('73px', '72px'), sm: getMaxH('73px', '96px') }}
         >
           <Outlet />
         </AppBody>
 
-        <AppFooter
-          w='100%'
-          h={{
-            base: '72px',
-            sm: '96px',
-            md: '96px',
-            lg: '144px',
-            xl: '200px',
-            '2xl': '200px',
-          }}
-          data-app-footer
-          p={HEADER_PD}
-          flex='0 0 auto'
-          alignItems='flex-end'
-          as='footer'
-          position='relative'
-          overflow='hidden'
-          borderTop='1px solid'
-          borderColor='border'
-        >
-          <Image
-            src={footBg}
-            w='100%'
-            objectFit='cover'
-            transform='translateY(-42%)'
-            zIndex={-1}
-            position='absolute'
-            top={0}
-            left={0}
-          />
-
-          <Button
-            size='md'
-            colorPalette='blue'
-            border='1px solid'
-            borderColor='white'
-            onClick={() => {
-              //@ts-expect-error
-              window.Telegram?.WebApp?.openTelegramLink?.('https://t.me/Viktorrrkarp');
-            }}
-          >
-            <FaTelegramPlane />
-            {t('app-footer-button')}
-          </Button>
-        </AppFooter>
+        <AppFooter />
       </AppInteractiveUI>
 
       <Drawer.Root
@@ -196,7 +82,7 @@ const Layout: React.FC = () => {
 
           <Drawer.Positioner>
             <Drawer.Content>
-              <Drawer.Header p={HEADER_PD} borderBottom='1px solid' borderColor='border' bg={menuHeaderColor}>
+              <Drawer.Header p={4} borderBottom='1px solid' borderColor='border' bg={menuHeaderColor}>
                 <Drawer.Title>
                   <Flex alignItems='center' gap={4}>
                     <Logo />

@@ -1,29 +1,52 @@
-import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { ref, deleteObject } from 'firebase/storage';
 import { doc, setDoc, updateDoc, getDoc, collection, getDocs, deleteDoc } from 'firebase/firestore';
 import { v4 as getId } from 'uuid';
 
-import resizeImage from 'image-resize';
-
 import { fsdb, storage } from '@src/configs/firebase.config';
-import { IMAGE_RESIZE_SETUP } from '@src/configs/imageresizer.config';
 
+import type { AppGlobalCTX } from '@src/app';
 import type { AppUnitFields, AppUnit, AppUnitGalleryItem } from './interfaces';
 
-const DB_PATH = 'divebot';
+// COMMON PUBLIC API
 
-const createUnit = async (unitFields: AppUnitFields) => {
-  console.log('createUnit', unitFields);
+async function getUnits(this: AppGlobalCTX) {
+  if (!this.botname) return [];
+
+  const loadedUnits: AppUnit[] = [];
+  const snapshot = await getDocs(collection(fsdb, this.botname));
+
+  snapshot.forEach((snap) => {
+    if (snap.exists()) loadedUnits.push({ ...snap.data(), id: snap.id } as AppUnit);
+  });
+
+  return loadedUnits;
+}
+
+// AUTHED UNIT API
+
+async function createUnit(this: AppGlobalCTX, unitFields: AppUnitFields) {
+  if (!this.botname) return;
 
   const unitId = getId();
-  await setDoc(doc(fsdb, DB_PATH, unitId), { ...unitFields, order: 999 });
+  await setDoc(doc(fsdb, this.botname, unitId), { ...unitFields, order: 999 });
   return { unitId };
-};
+}
 
-const updateUnit = async (unitId: string, updData: Partial<AppUnitFields>) => {
-  return await updateDoc(doc(fsdb, DB_PATH, unitId), { ...updData });
-};
+interface UpdateUnitPayload {
+  unitId: string;
+  updData: Partial<AppUnitFields>;
+}
 
-const removeUnit = async (unit: AppUnit) => {
+async function updateUnit(this: AppGlobalCTX, payload: UpdateUnitPayload) {
+  if (!this.botname) return;
+
+  const { unitId, updData } = payload;
+  return await updateDoc(doc(fsdb, this.botname, unitId), { ...updData });
+}
+
+async function removeUnit(this: AppGlobalCTX, unit: AppUnit) {
+  if (!this.botname) return;
+
   const fileRemovePromises = unit.gallery
     .map(({ src, videoSrc }) => {
       const filePathsToRemove: string[] = [];
@@ -38,61 +61,37 @@ const removeUnit = async (unit: AppUnit) => {
 
   await Promise.all(fileRemovePromises);
 
-  await deleteDoc(doc(fsdb, DB_PATH, unit.id));
+  await deleteDoc(doc(fsdb, this.botname, unit.id));
 
   return { deletedUnit: unit.id };
-};
+}
 
-const getUnits = async () => {
-  const loadedUnits: AppUnit[] = [];
-  const snapshot = await getDocs(collection(fsdb, DB_PATH));
+async function getUnit(this: AppGlobalCTX, unitId: string) {
+  if (!this.botname) return null;
 
-  snapshot.forEach((snap) => {
-    if (snap.exists()) loadedUnits.push({ ...snap.data(), id: snap.id } as AppUnit);
-  });
-
-  return loadedUnits;
-};
-
-const getUnit = async (unitId: string) => {
-  return await getDoc(doc(fsdb, DB_PATH, unitId)).then((res) => {
+  return await getDoc(doc(fsdb, this.botname, unitId)).then((res) => {
     if (res.exists()) return { ...res.data(), id: res.id } as AppUnit;
     return null;
   });
-};
+}
 
-const reorderUnits = async (reordered: AppUnit[]) => {
+async function reorderUnits(this: AppGlobalCTX, reordered: AppUnit[]) {
+  if (!this.botname) return;
+
   for (const { id, order } of reordered) {
-    await updateDoc(doc(fsdb, DB_PATH, id), { order });
+    await updateDoc(doc(fsdb, this.botname, id), { order });
   }
-};
+}
 
-/// ----- ///
+interface RemoveGalleryItemPayload {
+  item: AppUnitGalleryItem;
+  unit: AppUnit;
+}
 
-const uploadImage = async (imageId: string, image: File, unitId: string) => {
-  const blob = (await resizeImage(image, IMAGE_RESIZE_SETUP)) as Blob;
-  const file = new File([blob], `${imageId}.webp`, { type: blob.type });
-  const storageRef = ref(storage, `divebot/${unitId}/${imageId}.webp`);
+async function removeGalleryItem(this: AppGlobalCTX, payload: RemoveGalleryItemPayload) {
+  if (!this.botname) return;
 
-  const uploadResult = await uploadBytes(storageRef, file, {
-    cacheControl: 'public,max-age=3600',
-    contentType: 'image/webp',
-  });
-
-  return uploadResult;
-};
-
-const uploadVideo = async (videoId: string, video: File, unitId: string) => {
-  const ext = video.name.match(/\.mp4$/)?.[0];
-  const storageRef = ref(storage, `divebot/${unitId}/${videoId}${ext}`);
-  return await uploadBytes(storageRef, video);
-};
-
-const getImageUrl = async (imagePath: string) => {
-  return await getDownloadURL(ref(storage, imagePath));
-};
-
-const removeGalleryItem = async (item: AppUnitGalleryItem, unit: AppUnit) => {
+  const { item, unit } = payload;
   const { type, videoSrc, src: imagePath } = item;
 
   const pathsToRemove: string[] = [];
@@ -109,21 +108,9 @@ const removeGalleryItem = async (item: AppUnitGalleryItem, unit: AppUnit) => {
   const gallery = [...unit.gallery];
   gallery.splice(removedItemIdx, 1);
 
-  await updateDoc(doc(fsdb, DB_PATH, unit.id), { gallery });
+  await updateDoc(doc(fsdb, this.botname, unit.id), { gallery });
 
   return { removedItemIdx };
-};
+}
 
-export {
-  createUnit,
-  getUnits,
-  getUnit,
-  updateUnit,
-  removeUnit,
-  reorderUnits,
-  //
-  uploadImage,
-  getImageUrl,
-  uploadVideo,
-  removeGalleryItem,
-};
+export { createUnit, getUnits, getUnit, updateUnit, removeUnit, reorderUnits, removeGalleryItem };

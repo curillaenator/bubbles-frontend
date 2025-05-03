@@ -4,6 +4,7 @@ import { Stack, Heading, Center } from '@chakra-ui/react';
 import { useTranslation } from 'react-i18next';
 
 import { getUnits, AppUnitFields } from '@src/entities/unit';
+import { useAppContext } from '@src/providers/AppBotnameProvider';
 
 import { Loader } from '@src/features/loader';
 import { Gallery } from '@src/features/gallery';
@@ -17,10 +18,11 @@ const decideUnitLanguage = (field: string, lang: string, unit: Omit<AppUnitField
 
 const Main: React.FC = () => {
   const { t, i18n } = useTranslation();
+  const appCtx = useAppContext();
 
-  const { data: units, isLoading } = useQuery({
+  const { data: units = [], isLoading } = useQuery({
     queryKey: [UNITS_QUERY],
-    queryFn: () => getUnits(),
+    queryFn: getUnits.bind(appCtx),
   });
 
   return (

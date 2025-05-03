@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { GALLERY_SIZES } from '../constants';
 import { GalleryItem, GalleryProps } from '../interfaces';
 
-import { getImageUrl } from '@src/entities/unit';
+import { getImageUrl } from '@src/entities/asset';
 
 const useItems = (props: GalleryProps) => {
   const { sources = [] } = props;
