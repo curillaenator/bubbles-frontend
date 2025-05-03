@@ -21,6 +21,7 @@ import {
   Flex,
   Box,
   Center,
+  Stack,
 } from '@chakra-ui/react';
 
 import { IoSaveOutline } from 'react-icons/io5';
@@ -136,7 +137,7 @@ const EditMe: React.FC = () => {
               gap={6}
               colSpan={{ base: 1, sm: 2, md: 2, lg: 2 }}
             >
-              {FORM_MODEL.map(([fieldKey, { required, label, fieldType = 'input' }]) => {
+              {FORM_MODEL.map(([fieldKey, { required, label, fieldType = 'input', description }]) => {
                 const InputComponent = FIELD_COMPONENTS[fieldType];
 
                 if (fieldKey === 'separator') return <Separator key={label} borderColor='bg.inverted' />;
@@ -144,13 +145,16 @@ const EditMe: React.FC = () => {
                 return (
                   <Field.Root key={fieldKey} invalid={!!errors[fieldKey]}>
                     <Field.Label>
-                      <Text color='fg.subtle'>{label}</Text>
+                      <Stack>
+                        <Text color='fg.subtle'>{label}</Text>
+                        {!!description && <Text color='fg.subtle'>{description}</Text>}
+                      </Stack>
                     </Field.Label>
 
                     <InputComponent
                       disabled={isPending || isAvatarPending}
                       variant='outline'
-                      placeholder={label}
+                      placeholder={description || label}
                       {...register(fieldKey, { required })}
                       rows={8}
                     />

@@ -1,20 +1,21 @@
 import React from 'react';
-
-import { useTranslation } from 'react-i18next';
+import { useUnit } from 'effector-react';
+// import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 
 import { Flex, Button, Image } from '@chakra-ui/react';
-import { FaTelegramPlane } from 'react-icons/fa';
+import { FaTelegramPlane, FaWhatsapp } from 'react-icons/fa';
 
 import { getImageUrl } from '@src/entities/asset';
+import { $userStore, getUserData, type AppUserEditFields } from '@src/entities/user';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 
-import { COMMON_ASSET_QUERY } from '@src/configs/rtq.keys';
+import { COMMON_ASSET_QUERY, ME_QUERY } from '@src/configs/rtq.keys';
 import { STATIC_PATHS } from '@src/configs/assets.config';
 
 const AppFooter: React.FC = () => {
-  const { t } = useTranslation();
   const appCtx = useAppContext();
+  const { uid } = useUnit($userStore);
 
   const { data: footerBackgroundURL } = useQuery({
     queryKey: [COMMON_ASSET_QUERY, 'footer-bg'],
@@ -22,10 +23,16 @@ const AppFooter: React.FC = () => {
     enabled: !!appCtx.botname,
   });
 
+  const { data: footerData = null } = useQuery<AppUserEditFields | null>({
+    queryKey: [ME_QUERY, uid],
+    queryFn: getUserData.bind(appCtx),
+    enabled: !!appCtx.botname,
+  });
+
   return (
     <Flex
       w='100%'
-      h={{ base: '72px', sm: '96px' }}
+      h='72px'
       data-app-footer
       p={4}
       flex='0 0 auto'
@@ -40,26 +47,55 @@ const AppFooter: React.FC = () => {
         src={footerBackgroundURL}
         w='100%'
         objectFit='cover'
-        transform='translateY(-42%)'
         zIndex={-1}
         position='absolute'
-        top={0}
+        top='50%'
+        transform='translateY(-50%)'
         left={0}
       />
 
-      <Button
-        size='md'
-        colorPalette='blue'
-        border='1px solid'
-        borderColor='white'
-        onClick={() => {
-          //@ts-expect-error
-          window.Telegram?.WebApp?.openTelegramLink?.('https://t.me/Viktorrrkarp');
-        }}
-      >
-        <FaTelegramPlane />
-        {t('app-footer-button')}
-      </Button>
+      {footerData && (
+        <Flex
+          gap={6}
+          h='full'
+          alignItems='center'
+          w='full'
+          justifyContent={{ base: 'space-between', sm: 'flex-start' }}
+        >
+          {!!footerData.telegram && (
+            <Button
+              size={{ base: 'xs', sm: 'md' }}
+              colorPalette='blue'
+              border='1px solid'
+              borderColor='white'
+              onClick={() => {
+                //@ts-expect-error
+                window.Telegram?.WebApp?.openTelegramLink?.(`https://${footerData.telegram}`);
+              }}
+            >
+              <FaTelegramPlane />
+              {footerData.telegram}
+            </Button>
+          )}
+
+          {!!footerData.whatsapp && (
+            <Button
+              as='a'
+              size={{ base: 'xs', sm: 'md' }}
+              colorPalette='green'
+              border='1px solid'
+              borderColor='white'
+              //@ts-expect-error
+              href={`https://${footerData.whatsapp}`}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <FaWhatsapp />
+              {footerData.whatsapp}
+            </Button>
+          )}
+        </Flex>
+      )}
     </Flex>
   );
 };

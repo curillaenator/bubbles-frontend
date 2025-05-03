@@ -57,14 +57,7 @@ const Layout: React.FC = () => {
       <AppInteractiveUI w='100%' h='100vh' gap={0} position='relative'>
         <AppHeader toggleDrawer={toggleDrawer} />
 
-        <AppBody
-          as='div'
-          w='100%'
-          m='0 auto'
-          px={6}
-          flex='1 1 auto'
-          maxH={{ base: getMaxH('73px', '72px'), sm: getMaxH('73px', '96px') }}
-        >
+        <AppBody as='div' w='100%' m='0 auto' px={6} flex='1 1 auto' maxH={getMaxH('73px', '72px')}>
           <Outlet />
         </AppBody>
 
@@ -82,7 +75,14 @@ const Layout: React.FC = () => {
 
           <Drawer.Positioner>
             <Drawer.Content>
-              <Drawer.Header p={4} borderBottom='1px solid' borderColor='border' bg={menuHeaderColor}>
+              <Drawer.Header
+                flex='none'
+                p={4}
+                h='72px'
+                borderBottom='1px solid'
+                borderColor='border'
+                bg={menuHeaderColor}
+              >
                 <Drawer.Title>
                   <Flex alignItems='center' gap={4}>
                     <Logo />

@@ -8,6 +8,18 @@ interface AppUserCreds {
 }
 
 interface AppUserEditFields {
+  botNameEn: string;
+  botNameRu: string;
+
+  telegram: string;
+  whatsapp: string;
+
+  bannerTitleEn: string;
+  bannerTitleRu: string;
+
+  bannerSloganEn: string;
+  bannerSloganRu: string;
+
   headEn: string;
   headRu: string;
 

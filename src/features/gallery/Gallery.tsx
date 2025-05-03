@@ -51,10 +51,10 @@ const Gallery: React.FC<GalleryProps> = (props) => {
 
   return (
     <Stack ref={containerRef} my={4}>
-      <Heading>{title}</Heading>
+      <Heading py={4}>{title}</Heading>
 
       {!!description && (
-        <Text fontSize={{ base: 14, sm: 16 }} color='fg.muted' mb={6}>
+        <Text whiteSpace='pre-line' fontSize={{ base: 14, sm: 16 }} color='fg.muted' mb={6}>
           {description}
         </Text>
       )}
@@ -92,7 +92,12 @@ const Gallery: React.FC<GalleryProps> = (props) => {
                   bg={imageItemCaptionOverlayBg}
                   borderRadius={6}
                 >
-                  <Text textAlign='left' fontSize={{ base: 12, sm: 14 }} lineHeight={{ base: '16px', sm: '20px' }}>
+                  <Text
+                    whiteSpace='pre-line'
+                    textAlign='left'
+                    fontSize={{ base: 12, sm: 14 }}
+                    lineHeight={{ base: '16px', sm: '20px' }}
+                  >
                     {decideLanguage(i18n.language, { en: photo.en, ru: photo.ru })}
                   </Text>
                 </Stack>

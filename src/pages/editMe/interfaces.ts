@@ -7,6 +7,7 @@ type MeEditFieldType = 'input' | 'textarea';
 interface MeEditFieldModel {
   required: string | boolean;
   label: string;
+  description?: string;
   fieldType?: MeEditFieldType;
 }
 

@@ -20,17 +20,16 @@ import { $userStore, logoutUser } from '@src/entities/user';
 import { NavButton } from './NavButton';
 
 import { ROOT_ROUTE, SHARE_ROUTE, AUTH_ROUTE, EDIT_ME_ROUTE } from '@src/routes';
+import { useAppContext } from '@src/providers/AppBotnameProvider';
 
 interface MenuProps {
   toggleDrawer: (value: React.SetStateAction<boolean>) => void;
 }
 
-const MENU_ITEMS = [
-  { to: ROOT_ROUTE, captionId: 'app-nav-main', Icon: IoHomeOutline },
-  { to: SHARE_ROUTE, captionId: 'app-nav-share', Icon: IoGlobeOutline },
-] as const;
+const MENU_ITEMS = [{ to: ROOT_ROUTE, captionId: 'app-nav-main', Icon: IoHomeOutline }] as const;
 
 const SETTINGS_ITEMS = [
+  { to: SHARE_ROUTE, captionId: 'app-nav-share', Icon: IoGlobeOutline },
   { to: EDIT_ME_ROUTE, captionId: 'app-nav-edit-me', Icon: IoPersonOutline },
   { to: '/unit', captionId: 'app-nav-add-unit', Icon: IoAddCircleOutline },
   { to: '/units', captionId: 'app-nav-manage-units', Icon: IoSettingsOutline },
@@ -39,6 +38,7 @@ const SETTINGS_ITEMS = [
 const Menu: React.FC<MenuProps> = ({ toggleDrawer }) => {
   const { t } = useTranslation();
   const { uid } = useUnit($userStore);
+  const { botname } = useAppContext();
 
   return (
     <Stack w='100' h='100%' flex='1 1 auto' justifyContent='space-between' gap={12}>
@@ -52,7 +52,7 @@ const Menu: React.FC<MenuProps> = ({ toggleDrawer }) => {
           ))}
         </Stack>
 
-        {!!uid && (
+        {!!uid && !!botname && (
           <Stack gap={{ base: 1, sm: 1, md: 2, lg: 3 }}>
             {SETTINGS_ITEMS.map(({ to, captionId, Icon }) => (
               <NavButton key={`menu-item-${captionId}`} to={to} onClick={() => toggleDrawer(false)}>
