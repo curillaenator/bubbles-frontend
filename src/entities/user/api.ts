@@ -45,9 +45,9 @@ const updateMeBlock = async (uid: string, updData: Partial<AppUserEditFields>) =
 async function getUserData(this: AppGlobalCTX) {
   if (!this.botname) return null;
 
-  return await getDoc(doc(fsdb, 'users', BOTNAME_TO_OWNER_UID[this.botname])).then(
-    (snap) => snap.data() as AppUserEditFields,
-  );
+  return await getDoc(doc(fsdb, 'users', BOTNAME_TO_OWNER_UID[this.botname]))
+    .then((snap) => snap.data() as AppUserEditFields)
+    .catch(() => null);
 }
 
 async function uploadAvatar(this: AppGlobalCTX, imageFile: File) {

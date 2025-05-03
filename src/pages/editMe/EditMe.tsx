@@ -182,7 +182,7 @@ const EditMe: React.FC = () => {
                 />
               )}
 
-              <FileUpload.Root accept={['image/png', 'image/jpg', 'image/jpeg']}>
+              <FileUpload.Root accept={['image/png', 'image/jpg', 'image/jpeg', 'image/webp']}>
                 <FileUpload.HiddenInput {...register('photoURL')} />
 
                 {/* @ts-expect-error */}

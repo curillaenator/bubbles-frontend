@@ -1,4 +1,4 @@
-type AppBotname = 'divebot';
+type AppBotname = 'divebot' | 'lashes';
 
 interface AppGlobalCTX {
   botname: AppBotname | null;

@@ -15,7 +15,7 @@ import {
 } from 'react-icons/io5';
 
 import { ColorModeButton } from '@src/features/chakra/color-mode';
-import { $userStore, logoutUser } from '@src/entities/user';
+import { $userStore, logoutUser, BOTNAME_TO_OWNER_UID } from '@src/entities/user';
 
 import { NavButton } from './NavButton';
 
@@ -52,7 +52,7 @@ const Menu: React.FC<MenuProps> = ({ toggleDrawer }) => {
           ))}
         </Stack>
 
-        {!!uid && !!botname && (
+        {!!uid && !!botname && BOTNAME_TO_OWNER_UID[botname] === uid && (
           <Stack gap={{ base: 1, sm: 1, md: 2, lg: 3 }}>
             {SETTINGS_ITEMS.map(({ to, captionId, Icon }) => (
               <NavButton key={`menu-item-${captionId}`} to={to} onClick={() => toggleDrawer(false)}>

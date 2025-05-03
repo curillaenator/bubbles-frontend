@@ -4,7 +4,7 @@ import { auth } from '@src/configs/firebase.config';
 import { setUid } from '@src/entities/user';
 
 const useAuthState = () => {
-  const [appLoading, setAppLoading] = useState(true);
+  const [appLoading, setAppLoading] = useState(false);
 
   useEffect(() => {
     setAppLoading(true);

@@ -44,7 +44,7 @@ const Layout: React.FC = () => {
   if (appLoading)
     return (
       <Container as='main' position='relative' p={0} maxW='unset' minW='375px' h='100vh'>
-        <Center w='full' h='full'>
+        <Center data-layout-loader w='full' h='full'>
           <Loader />
         </Center>
       </Container>
