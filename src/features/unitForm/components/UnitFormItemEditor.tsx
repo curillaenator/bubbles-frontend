@@ -39,7 +39,7 @@ const ItemContentForm: React.FC<UnitFormItemEditorProps> = (props) => {
   const { type = 'img', en = '', ru = '', src: imagePath, videoSrc } = (currentEditItem || {}) as AppUnitGalleryItem;
   const currentItemIdx = items.findIndex((el) => (type === 'video' ? el.videoSrc === videoSrc : el.src === imagePath));
 
-  const { data: imageSrc } = useQuery({
+  const { data: imageSrc = null } = useQuery({
     queryKey: [GALLERY_IMAGE_QUERY, imagePath],
     queryFn: () => getImageUrl(imagePath),
     enabled: !!imagePath,

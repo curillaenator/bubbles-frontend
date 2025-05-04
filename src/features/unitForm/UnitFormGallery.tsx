@@ -76,12 +76,11 @@ const UnitFormGallery: React.FC<UnitFormGalleryProps> = (props) => {
 
       for (const videoFile of fileList) {
         const newVideoId = getId();
-        const newVideoExt = videoFile.name.match(/\.mp4$/)?.[0];
 
         newGalleryItems.push({
           src: `${appCtx.botname}/${STATIC_PATHS.videoCover}`,
           type: 'video',
-          videoSrc: `${appCtx.botname}/${targetUnitId}/${newVideoId}${newVideoExt}`,
+          videoSrc: `${appCtx.botname}/${targetUnitId}/${newVideoId}.mp4`,
           order: items.length,
         });
 

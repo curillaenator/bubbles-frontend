@@ -43,16 +43,18 @@ const AppFooter: React.FC = () => {
       borderTop='1px solid'
       borderColor='border'
     >
-      <Image
-        src={footerBackgroundURL}
-        w='100%'
-        objectFit='cover'
-        zIndex={-1}
-        position='absolute'
-        top='50%'
-        transform='translateY(-50%)'
-        left={0}
-      />
+      {!!footerBackgroundURL && (
+        <Image
+          src={footerBackgroundURL}
+          w='100%'
+          objectFit='cover'
+          zIndex={-1}
+          position='absolute'
+          top='50%'
+          transform='translateY(-50%)'
+          left={0}
+        />
+      )}
 
       {footerData && (
         <Flex

@@ -66,17 +66,19 @@ const AppHeader: React.FC<AppHeaderProps> = ({ toggleDrawer }) => {
       borderBottom='1px solid'
       borderColor='border'
     >
-      <Image
-        src={headerBackgroundURL}
-        w='100%'
-        objectFit='cover'
-        zIndex={-1}
-        opacity={headerOpacity}
-        position='absolute'
-        top='50%'
-        transform='translateY(-50%)'
-        left={0}
-      />
+      {!!headerBackgroundURL && (
+        <Image
+          src={headerBackgroundURL}
+          w='100%'
+          objectFit='cover'
+          zIndex={-1}
+          opacity={headerOpacity}
+          position='absolute'
+          top='50%'
+          transform='translateY(-50%)'
+          left={0}
+        />
+      )}
 
       <Flex alignItems='center' gap={2}>
         <IconButton variant='ghost' size='md' color='white' onClick={() => toggleDrawer((o) => !o)}>

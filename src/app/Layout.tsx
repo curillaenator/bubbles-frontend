@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
+// import { useMutation } from '@tanstack/react-query';
+// import type { TelegramWebApps } from 'telegram-webapps-types';
 
 import {
   Container,
@@ -25,7 +27,11 @@ import { useColorModeValue } from '@src/features/chakra/color-mode';
 import { Menu } from '@src/features/menu';
 import { Loader } from '@src/features/loader';
 
+// type TelegramInitailDataUnsafe = TelegramWebApps.WebApp['initDataUnsafe'];
+
 const getMaxH = (head: string, foot: string) => `calc(100vh - ${head} - ${foot})`;
+
+// const NGROK_BOT_ENDPOINT = process.env.NGROK_BOT_ENDPOINT;
 
 const Layout: React.FC = () => {
   const menuHeaderColor = useColorModeValue('bg.inverted', 'bg');
@@ -35,10 +41,37 @@ const Layout: React.FC = () => {
   const { appLoading } = useAuthState();
   const [drawerOpen, toggleDrawer] = useState<boolean>(false);
 
+  // const { mutate: initiateTgDilaog } = useMutation({
+  //   // mutationFn: async (tgData: TelegramInitailDataUnsafe) => {
+  //   mutationFn: async (tguser?: TelegramWebApps.WebAppUser) => {
+  //     if (!NGROK_BOT_ENDPOINT) return;
+
+  //     try {
+  //       const response = await fetch(NGROK_BOT_ENDPOINT, {
+  //         method: 'POST',
+  //         headers: { 'Content-Type': 'application/json' },
+  //         body: JSON.stringify(tguser || { tguser: 'is undefined' }),
+  //       });
+
+  //       if (!response.ok) {
+  //         console.log('InitiateTgDilaog: ', 'bot data failed');
+  //       }
+  //     } catch (err) {
+  //       console.log('InitiateTgDilaog: ', 'bot data failed');
+  //       console.error(err);
+  //     }
+  //   },
+  // });
+
   useEffect(() => {
-    if (window.Telegram?.WebApp) {
-      window.Telegram?.WebApp.ready();
-    }
+    setTimeout(() => {
+      const tg = window.Telegram?.WebApp;
+
+      if (!!tg) {
+        // initiateTgDilaog(tg.initDataUnsafe?.user);
+        tg.ready();
+      }
+    }, 2000);
   }, []);
 
   if (appLoading)

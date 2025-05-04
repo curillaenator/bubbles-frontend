@@ -22,7 +22,7 @@ const UnitFormImageItem = React.forwardRef<HTMLDivElement, UnitFormImageItem>((p
   const { i18n } = useTranslation();
   const imageItemCaptionOverlayBg = useColorModeValue('whiteAlpha.600', 'blackAlpha.600');
 
-  const { data: imageSrc } = useQuery({
+  const { data: imageSrc = null } = useQuery({
     queryKey: [GALLERY_IMAGE_QUERY, imagePath],
     queryFn: () => getImageUrl(imagePath),
     enabled: !!imagePath,

@@ -74,19 +74,21 @@ const Banner: React.FC = () => {
       position='relative'
       flex='none'
     >
-      <Image
-        src={bannerBackgroundURL}
-        borderRadius={6}
-        border='1px solid'
-        borderColor='border'
-        w='full'
-        h='full'
-        objectFit='cover'
-        zIndex={-1}
-        position='absolute'
-        top={0}
-        left={0}
-      />
+      {!!bannerBackgroundURL && (
+        <Image
+          src={bannerBackgroundURL}
+          borderRadius={6}
+          border='1px solid'
+          borderColor='border'
+          w='full'
+          h='full'
+          objectFit='cover'
+          zIndex={-1}
+          position='absolute'
+          top={0}
+          left={0}
+        />
+      )}
 
       <Heading size={{ base: '2xl', sm: '2xl', md: '3xl', lg: '5xl' }} color='white' filter={TEXT_SHADOW}>
         {bannerData?.[appIntl('bannerTitle', i18n.language)]}

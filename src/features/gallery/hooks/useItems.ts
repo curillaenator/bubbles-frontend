@@ -26,8 +26,14 @@ const useItems = (props: GalleryProps) => {
 
         const itWithUrls = { ...it };
 
-        itWithUrls.src = await getImageUrl(it.src);
-        if (it.type === 'video') itWithUrls.videoSrc = await getImageUrl(it.videoSrc!);
+        const imageUrl = await getImageUrl(it.src);
+
+        if (imageUrl) itWithUrls.src = imageUrl;
+
+        if (it.type === 'video') {
+          const videoUrl = await getImageUrl(it.videoSrc!);
+          itWithUrls.videoSrc = videoUrl || '';
+        }
 
         return itWithUrls;
       }),

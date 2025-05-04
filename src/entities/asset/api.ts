@@ -43,6 +43,6 @@ async function uploadVideo(this: AppGlobalCTX, payload: UploadVideoPayload) {
   return await uploadBytes(storageRef, video);
 }
 
-const getImageUrl = async (imagePath: string) => await getDownloadURL(ref(storage, imagePath));
+const getImageUrl = async (imagePath: string) => await getDownloadURL(ref(storage, imagePath)).catch(() => null);
 
 export { uploadImage, uploadVideo, getImageUrl };
