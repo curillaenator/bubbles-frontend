@@ -7,7 +7,7 @@ import { useUnit } from 'effector-react';
 import { Heading, Flex, IconButton, Image, chakra } from '@chakra-ui/react';
 import { IoMenu } from 'react-icons/io5';
 
-import { getImageUrl } from '@src/entities/asset';
+import { getAssetUrl } from '@src/entities/asset';
 import { $userStore, getUserData, type AppUserEditFields } from '@src/entities/user';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 
@@ -42,7 +42,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ toggleDrawer }) => {
 
   const { data: headerBackgroundURL } = useQuery({
     queryKey: [COMMON_ASSET_QUERY, 'header-bg'],
-    queryFn: () => getImageUrl(`${appCtx.botname}/${STATIC_PATHS.header}`),
+    queryFn: () => getAssetUrl(`${appCtx.botname}/${STATIC_PATHS.header}`),
     enabled: !!appCtx.botname,
   });
 

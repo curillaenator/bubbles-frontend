@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { GALLERY_SIZES } from '../constants';
 import { GalleryItem, GalleryProps } from '../interfaces';
 
-import { getImageUrl } from '@src/entities/asset';
+import { getAssetUrl } from '@src/entities/asset';
 
 const useItems = (props: GalleryProps) => {
   const { sources = [] } = props;
@@ -26,12 +26,12 @@ const useItems = (props: GalleryProps) => {
 
         const itWithUrls = { ...it };
 
-        const imageUrl = await getImageUrl(it.src);
+        const imageUrl = await getAssetUrl(it.src);
 
         if (imageUrl) itWithUrls.src = imageUrl;
 
         if (it.type === 'video') {
-          const videoUrl = await getImageUrl(it.videoSrc!);
+          const videoUrl = await getAssetUrl(it.videoSrc!);
           itWithUrls.videoSrc = videoUrl || '';
         }
 

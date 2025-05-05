@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Flex, Button, Image } from '@chakra-ui/react';
 import { FaTelegramPlane, FaWhatsapp } from 'react-icons/fa';
 
-import { getImageUrl } from '@src/entities/asset';
+import { getAssetUrl } from '@src/entities/asset';
 import { $userStore, getUserData, type AppUserEditFields } from '@src/entities/user';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 
@@ -19,7 +19,7 @@ const AppFooter: React.FC = () => {
 
   const { data: footerBackgroundURL } = useQuery({
     queryKey: [COMMON_ASSET_QUERY, 'footer-bg'],
-    queryFn: () => getImageUrl(`${appCtx.botname}/${STATIC_PATHS.footer}`),
+    queryFn: () => getAssetUrl(`${appCtx.botname}/${STATIC_PATHS.footer}`),
     enabled: !!appCtx.botname,
   });
 

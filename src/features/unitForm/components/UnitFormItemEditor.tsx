@@ -25,7 +25,7 @@ import { TbCancel, TbUpload } from 'react-icons/tb';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 
 import { removeGalleryItem, type AppUnitGalleryItem } from '@src/entities/unit';
-import { getImageUrl, uploadImage } from '@src/entities/asset';
+import { getAssetUrl, uploadImage } from '@src/entities/asset';
 import { GALLERY_IMAGE_QUERY, SINGLE_UNIT_QUERY, UNITS_QUERY } from '@src/configs/rtq.keys';
 
 import { UnitFormItemEditorProps } from '../interfaces';
@@ -41,7 +41,7 @@ const ItemContentForm: React.FC<UnitFormItemEditorProps> = (props) => {
 
   const { data: imageSrc = null } = useQuery({
     queryKey: [GALLERY_IMAGE_QUERY, imagePath],
-    queryFn: () => getImageUrl(imagePath),
+    queryFn: () => getAssetUrl(imagePath),
     enabled: !!imagePath,
   });
 

@@ -7,7 +7,7 @@ import { Center, Stack, Heading, Text, Image } from '@chakra-ui/react';
 
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 import { $userStore, getUserData, type AppUserEditFields } from '@src/entities/user';
-import { getImageUrl } from '@src/entities/asset';
+import { getAssetUrl } from '@src/entities/asset';
 
 import { Loader } from '@src/features/loader';
 
@@ -32,7 +32,7 @@ const Banner: React.FC = () => {
 
   const { data: bannerBackgroundURL, isLoading: isBgLoading } = useQuery({
     queryKey: [COMMON_ASSET_QUERY, 'banner-bg'],
-    queryFn: () => getImageUrl(`${appCtx.botname}/${STATIC_PATHS.banner}`),
+    queryFn: () => getAssetUrl(`${appCtx.botname}/${STATIC_PATHS.banner}`),
     enabled: !!appCtx.botname,
   });
 
