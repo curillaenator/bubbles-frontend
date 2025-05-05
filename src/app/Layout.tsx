@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Outlet } from 'react-router-dom';
 
 import {
@@ -20,6 +19,7 @@ import { Bubbles } from '@src/features/bubbles';
 
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 import { useAuthState } from '@src/hooks/useAuthState';
+import { useTranslation } from '@src/hooks/useTranslation';
 import { useColorModeValue } from '@src/features/chakra/color-mode';
 
 import { Menu } from '@src/features/menu';

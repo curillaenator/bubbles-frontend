@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { useTranslation } from 'react-i18next';
+
 import { debounce } from 'lodash';
 import { MasonryPhotoAlbum } from 'react-photo-album';
 
 import { Stack, Box, Dialog, CloseButton, Heading, Text, Image, Center } from '@chakra-ui/react';
 import { IoPlayOutline } from 'react-icons/io5';
 
+import { useTranslation } from '@src/hooks/useTranslation';
 import { useColorModeValue } from '@src/features/chakra/color-mode';
 import { useItems } from './hooks/useItems';
 import { Carousel } from './Carousel';
@@ -22,7 +23,7 @@ const sortGalleryItems = (units: GalleryItem[]) =>
 
 const Gallery: React.FC<GalleryProps> = (props) => {
   const { title, description } = props;
-  const { i18n } = useTranslation();
+  const { curLanguage } = useTranslation();
 
   const imageItemCaptionOverlayBg = useColorModeValue('whiteAlpha.600', 'blackAlpha.600');
 
@@ -98,7 +99,7 @@ const Gallery: React.FC<GalleryProps> = (props) => {
                     fontSize={{ base: 12, sm: 14 }}
                     lineHeight={{ base: '16px', sm: '20px' }}
                   >
-                    {decideLanguage(i18n.language, { en: photo.en, ru: photo.ru })}
+                    {decideLanguage(curLanguage, { en: photo.en, ru: photo.ru })}
                   </Text>
                 </Stack>
               )}

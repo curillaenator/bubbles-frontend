@@ -8,6 +8,7 @@ import arrayMoveImmutable from 'array-move';
 import { Heading, Stack, HStack, Button, chakra } from '@chakra-ui/react';
 import { IoCreate, IoHomeOutline } from 'react-icons/io5';
 
+import { useTranslation } from '@src/hooks/useTranslation';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 import { getUnits, removeUnit, reorderUnits, type AppUnit } from '@src/entities/unit';
 import { UNITS_QUERY } from '@src/configs/rtq.keys';
@@ -23,6 +24,7 @@ const ManageContent: React.FC = () => {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const appCtx = useAppContext();
+  const { t } = useTranslation();
 
   const { data: units = [] } = useQuery({
     queryKey: [UNITS_QUERY],
@@ -61,20 +63,12 @@ const ManageContent: React.FC = () => {
 
   return (
     <Stack py={6} h='100%' maxH='100%' overflow='auto' scrollbar='hidden' gap={6}>
-      <Heading>Manage</Heading>
-
-      <ChakraSortableList display='flex' flexDirection='column' gap={6} onSortEnd={onSortEnd}>
-        {sortUnits(units).map((unit) => (
-          <SortableItem key={unit.id}>
-            <ContentCard {...unit} removeSelectedUnit={removeSelectedUnit} isControlsDisabled={isControlsDisabled} />
-          </SortableItem>
-        ))}
-      </ChakraSortableList>
+      <Heading>{t('app-nav-manage-units')}</Heading>
 
       <HStack>
         <Button colorPalette='blue' w='100%' flex='auto' onClick={() => navigate('/unit')} loading={isControlsDisabled}>
           <IoCreate />
-          Crate new
+          {t('unit-form-create-unit')}
         </Button>
 
         <Button
@@ -85,9 +79,17 @@ const ManageContent: React.FC = () => {
           disabled={isControlsDisabled}
         >
           <IoHomeOutline />
-          Main page
+          {t('app-nav-main')}
         </Button>
       </HStack>
+
+      <ChakraSortableList display='flex' flexDirection='column' gap={6} onSortEnd={onSortEnd}>
+        {sortUnits(units).map((unit) => (
+          <SortableItem key={unit.id}>
+            <ContentCard {...unit} removeSelectedUnit={removeSelectedUnit} isControlsDisabled={isControlsDisabled} />
+          </SortableItem>
+        ))}
+      </ChakraSortableList>
     </Stack>
   );
 };

@@ -1,6 +1,7 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+
 import { Menu, Portal, IconButton } from '@chakra-ui/react';
+import { useTranslation } from '@src/hooks/useTranslation';
 
 import { toPairs } from 'lodash';
 
@@ -15,7 +16,7 @@ const LANG_ASSOC: Record<AppLanguage, { name: string; flag: string }> = {
 };
 
 const LangSelector: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { curLanguage, i18n } = useTranslation();
 
   return (
     <Menu.Root
@@ -27,7 +28,7 @@ const LangSelector: React.FC = () => {
       {/* @ts-expect-error */}
       <Menu.Trigger asChild>
         <IconButton variant='ghost' size='md'>
-          {LANG_ASSOC[i18n.language as AppLanguage]?.flag || '🇬🇧'}
+          {LANG_ASSOC[curLanguage as AppLanguage]?.flag || '🇬🇧'}
         </IconButton>
       </Menu.Trigger>
 

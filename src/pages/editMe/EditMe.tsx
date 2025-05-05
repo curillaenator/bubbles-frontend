@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -36,6 +35,7 @@ import {
   type AppUserEditFields,
 } from '@src/entities/user';
 
+import { useTranslation } from '@src/hooks/useTranslation';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 
 import { Loader } from '@src/features/loader';

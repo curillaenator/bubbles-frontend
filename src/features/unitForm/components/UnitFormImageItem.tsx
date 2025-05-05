@@ -1,9 +1,10 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+
 import { useQuery } from '@tanstack/react-query';
 import { Box, Image, Center, Stack, Text } from '@chakra-ui/react';
 import { IoPlayOutline } from 'react-icons/io5';
 
+import { useTranslation } from '@src/hooks/useTranslation';
 import { useColorModeValue } from '@src/features/chakra/color-mode';
 import { getAssetUrl } from '@src/entities/asset';
 
@@ -19,7 +20,7 @@ const decideLanguage = (language: string, locales: Record<string, string>) => lo
 const UnitFormImageItem = React.forwardRef<HTMLDivElement, UnitFormImageItem>((props, ref) => {
   const { type, src: imagePath, onEdit, en, ru } = props;
 
-  const { i18n } = useTranslation();
+  const { curLanguage } = useTranslation();
   const imageItemCaptionOverlayBg = useColorModeValue('whiteAlpha.600', 'blackAlpha.600');
 
   const { data: imageSrc = null } = useQuery({
@@ -69,7 +70,7 @@ const UnitFormImageItem = React.forwardRef<HTMLDivElement, UnitFormImageItem>((p
           borderRadius={6}
         >
           <Text fontSize={{ base: 12, sm: 14 }} lineHeight={{ base: '16px', sm: '20px' }}>
-            {decideLanguage(i18n.language, { en, ru })}
+            {decideLanguage(curLanguage, { en, ru })}
           </Text>
         </Stack>
       )}

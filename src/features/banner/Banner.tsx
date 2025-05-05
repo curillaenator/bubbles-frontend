@@ -1,10 +1,10 @@
 import React from 'react';
 import { useUnit } from 'effector-react';
 import { useQuery } from '@tanstack/react-query';
-import { useTranslation } from 'react-i18next';
 
 import { Center, Stack, Heading, Text, Image } from '@chakra-ui/react';
 
+import { useTranslation } from '@src/hooks/useTranslation';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 import { $userStore, getUserData, type AppUserEditFields } from '@src/entities/user';
 import { getAssetUrl } from '@src/entities/asset';
@@ -26,7 +26,7 @@ const TEXT_SHADOW =
   'drop-shadow(0 0 4px var(--chakra-colors-black-alpha-950)) drop-shadow(0 0 12px var(--chakra-colors-black-alpha-950))';
 
 const Banner: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { curLanguage } = useTranslation();
   const { uid } = useUnit($userStore);
   const appCtx = useAppContext();
 
@@ -91,11 +91,11 @@ const Banner: React.FC = () => {
       )}
 
       <Heading size={{ base: '2xl', sm: '2xl', md: '3xl', lg: '5xl' }} color='white' filter={TEXT_SHADOW}>
-        {bannerData?.[appIntl('bannerTitle', i18n.language)]}
+        {bannerData?.[appIntl('bannerTitle', curLanguage)]}
       </Heading>
 
       <Text color='white' fontWeight='bold' fontSize={{ base: 14, sm: 16 }} filter={TEXT_SHADOW}>
-        {bannerData?.[appIntl('bannerSlogan', i18n.language)]}
+        {bannerData?.[appIntl('bannerSlogan', curLanguage)]}
       </Text>
     </Stack>
   );

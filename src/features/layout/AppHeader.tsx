@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+
 import { useQuery } from '@tanstack/react-query';
 import { useUnit } from 'effector-react';
 
@@ -10,6 +10,7 @@ import { IoMenu } from 'react-icons/io5';
 import { getAssetUrl } from '@src/entities/asset';
 import { $userStore, getUserData, type AppUserEditFields } from '@src/entities/user';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
+import { useTranslation } from '@src/hooks/useTranslation';
 
 import { useColorModeValue } from '@src/features/chakra/color-mode';
 
@@ -36,7 +37,7 @@ const appIntl = (name: string, lang: string) => `${name}${cap(lang)}` as keyof O
 
 const AppHeader: React.FC<AppHeaderProps> = ({ toggleDrawer }) => {
   const headerOpacity = useColorModeValue('0.9', '0.5');
-  const { i18n } = useTranslation();
+  const { curLanguage } = useTranslation();
   const appCtx = useAppContext();
   const { uid } = useUnit($userStore);
 
@@ -90,7 +91,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ toggleDrawer }) => {
         </ChakraLink>
 
         <Heading size={{ base: 'md', sm: 'xl', md: '2xl' }} color='white'>
-          {headerData?.[appIntl('botName', i18n.language)]}
+          {headerData?.[appIntl('botName', curLanguage)]}
         </Heading>
       </Flex>
 

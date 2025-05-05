@@ -1,17 +1,21 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-
 import { useQuery } from '@tanstack/react-query';
 
-import { Card, Stack, Image, SimpleGrid, GridItem, Heading, Text, Button, Center, Flex } from '@chakra-ui/react';
+import { Card, Stack, Image, SimpleGrid, GridItem, Heading, Text, Button, Center, Flex, Box } from '@chakra-ui/react';
 import { FaTelegramPlane, FaWhatsapp } from 'react-icons/fa';
 
+import { useTranslation } from '@src/hooks/useTranslation';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 
 import { getUserData, getAvatarUrl, type AppUserEditFields } from '@src/entities/user';
+import { getAssetUrl } from '@src/entities/asset';
 import { Loader } from '@src/features/loader';
 
-import { ME_QUERY, AVATAR_QUERY } from '@src/configs/rtq.keys';
+import { ME_QUERY, AVATAR_QUERY, COMMON_ASSET_QUERY } from '@src/configs/rtq.keys';
+import { STATIC_PATHS } from '@src/configs/assets.config';
+
+// const TEXT_SHADOW =
+//   'drop-shadow(0 0 4px var(--chakra-colors-black-alpha-950)) drop-shadow(0 0 12px var(--chakra-colors-black-alpha-950))';
 
 const cap = (str: string) =>
   str
@@ -22,7 +26,7 @@ const cap = (str: string) =>
 const appIntl = (name: string, lang: string) => `${name}${cap(lang)}` as keyof Omit<AppUserEditFields, 'photoURL'>;
 
 const Me: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { curLanguage } = useTranslation();
   const appCtx = useAppContext();
 
   const { data: meData = null, isLoading } = useQuery({
@@ -37,7 +41,13 @@ const Me: React.FC = () => {
     enabled: !!appCtx.botname,
   });
 
-  if (isLoading || isAvatarLoading) {
+  const { data: bannerBackgroundURL, isLoading: isBannerBackgroundLoading } = useQuery({
+    queryKey: [COMMON_ASSET_QUERY, 'banner-bg'],
+    queryFn: () => getAssetUrl(`${appCtx.botname}/${STATIC_PATHS.banner}`),
+    enabled: !!appCtx.botname,
+  });
+
+  if (isLoading || isAvatarLoading || isBannerBackgroundLoading) {
     return (
       <Card.Root w='full'>
         <Card.Body gap='2' p={0}>
@@ -53,8 +63,37 @@ const Me: React.FC = () => {
 
   return (
     <Card.Root width='100%' variant='subtle'>
-      <Card.Body gap='2'>
-        <SimpleGrid columns={{ base: 1, sm: 3, md: 3, lg: 3 }} gap={6}>
+      <Card.Body gap='2' position='relative'>
+        {!!(bannerBackgroundURL && false) && (
+          <>
+            <Image
+              src={bannerBackgroundURL || undefined}
+              borderRadius={6}
+              border='1px solid'
+              borderColor='border'
+              w='full'
+              h='full'
+              objectFit='cover'
+              position='absolute'
+              top={0}
+              left={0}
+              opacity={0.2}
+            />
+
+            <Box
+              position='absolute'
+              top={0}
+              left={0}
+              w='full'
+              h='full'
+              bg='blue.solid'
+              opacity={0.05}
+              borderRadius={6}
+            />
+          </>
+        )}
+
+        <SimpleGrid columns={{ base: 1, sm: 3, md: 3, lg: 3 }} gap={6} zIndex={1}>
           <GridItem
             display='flex'
             flexDirection='column'
@@ -63,24 +102,12 @@ const Me: React.FC = () => {
             colSpan={{ base: 1, sm: 2, md: 2, lg: 2 }}
           >
             <Stack gap={6}>
-              <Stack>
-                <Heading>{meData[appIntl('head', i18n.language)]}</Heading>
+              <Heading>{meData[appIntl('head', curLanguage)]}</Heading>
 
-                <Text whiteSpace='pre-line' color='fg.info' fontSize={{ base: 14, sm: 16 }}>
-                  {meData[appIntl('slogan', i18n.language)]}
-                </Text>
-              </Stack>
+              <Heading>{meData?.[appIntl('pricing', curLanguage)]}</Heading>
 
-              <Stack>
-                <Heading>{meData?.[appIntl('pricing', i18n.language)]}</Heading>
-
-                <Text whiteSpace='pre-line' color='fg.muted' fontSize={{ base: 14, sm: 16 }}>
-                  {meData[appIntl('body', i18n.language)]}
-                </Text>
-              </Stack>
-
-              <Text whiteSpace='pre-line' fontSize={{ base: 14, sm: 16 }}>
-                <b>{meData[appIntl('skills', i18n.language)]}</b>
+              <Text whiteSpace='pre-line' color='fg.muted' fontSize={{ base: 14, sm: 16 }}>
+                {meData[appIntl('body', curLanguage)]}
               </Text>
             </Stack>
 

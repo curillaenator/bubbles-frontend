@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { useKeenSlider, KeenSliderInstance, KeenSliderHooks } from 'keen-slider/react';
-import { useTranslation } from 'react-i18next';
+
 import { Stack, Box, Text, Image, Center } from '@chakra-ui/react';
 
+import { useTranslation } from '@src/hooks/useTranslation';
 import { useColorModeValue } from '@src/features/chakra/color-mode';
 import type { GalleryItem } from './interfaces';
 
@@ -20,7 +21,7 @@ const decideLanguage = (language: string, locales: Record<string, string>) => lo
 const Carousel: React.FC<CarouselProps> = (props) => {
   const { photoItems, isMobile, initial, onCarouselInstanceChange } = props;
 
-  const { i18n } = useTranslation();
+  const { curLanguage } = useTranslation();
 
   const imageBg = useColorModeValue('blackAlpha.300', 'whiteAlpha.200');
   const imageItemCaptionOverlayBg = useColorModeValue('whiteAlpha.600', 'blackAlpha.600');
@@ -48,7 +49,7 @@ const Carousel: React.FC<CarouselProps> = (props) => {
                 borderRadius={6}
               >
                 <Text fontSize={{ base: 14, sm: 16 }} lineHeight='24px' maxW='calc(100% - 2rem)'>
-                  {decideLanguage(i18n.language, { en, ru })}
+                  {decideLanguage(curLanguage, { en, ru })}
                 </Text>
               </Stack>
             )}

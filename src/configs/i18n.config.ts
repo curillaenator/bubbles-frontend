@@ -8,7 +8,7 @@ i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    fallbackLng: 'en',
+    fallbackLng: 'ru',
     interpolation: { escapeValue: false },
     backend: {
       loadPath: '/locales/{{lng}}.json',
@@ -17,6 +17,8 @@ i18n
       order: ['localStorage', 'navigator'], // в каком порядке искать язык
       caches: ['localStorage'], // где сохранять выбранный язык
     },
+    supportedLngs: ['en', 'ru'],
+    nonExplicitSupportedLngs: true,
   });
 
 export default i18n;

@@ -19,7 +19,9 @@
   "app-nav-manage-units": "Управление разделами",
 
   "unit-form-create-unit": "Создать раздел",
+  "unit-form-remove-unit": "Удалить раздел",
   "unit-form-update-unit": "Обновить описание раздела",
+  "unit-form-edit-unit": "Редактировать раздел",
   "unit-form-media-block": "Управление галлереей раздела",
   "unit-form-media-block-upload": "Загрузить элемент",
 

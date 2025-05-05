@@ -1,8 +1,8 @@
 import React from 'react';
 import { useUnit } from 'effector-react';
 import { useQuery } from '@tanstack/react-query';
-import { Stack, Center, VStack, Button } from '@chakra-ui/react';
-import { useTranslation } from 'react-i18next';
+import { Stack, Center, VStack, Button, Separator } from '@chakra-ui/react';
+
 import { toPairs } from 'lodash';
 
 import { getUnits, AppUnitFields } from '@src/entities/unit';
@@ -11,9 +11,10 @@ import { useAppContext } from '@src/providers/AppBotnameProvider';
 
 import { Loader } from '@src/features/loader';
 import { Gallery } from '@src/features/gallery';
-import { Banner } from '@src/features/banner';
+// import { Banner } from '@src/features/banner';
 import { Me } from '@src/features/me';
 
+import { useTranslation } from '@src/hooks/useTranslation';
 import { UNITS_QUERY, ME_QUERY } from '@src/configs/rtq.keys';
 import { AVAILBALE_BOTS } from '@src/configs/assets.config';
 
@@ -21,7 +22,7 @@ const decideUnitLanguage = (field: string, lang: string, unit: Omit<AppUnitField
   unit[`${field}-${lang}` as keyof Omit<AppUnitFields, 'gallery'>];
 
 const Main: React.FC = () => {
-  const { i18n } = useTranslation();
+  const { curLanguage } = useTranslation();
   const { uid } = useUnit($userStore);
   const appCtx = useAppContext();
 
@@ -65,9 +66,10 @@ const Main: React.FC = () => {
       gap={{ base: 6, lg: 12 }}
       py={{ base: 6, lg: 12 }}
     >
-      <Banner />
-
       <Me />
+
+      <Separator />
+      {/* <Banner /> */}
 
       {!!appCtx.botname && (
         <Stack gap={6}>
@@ -76,8 +78,8 @@ const Main: React.FC = () => {
             .map((u) => (
               <Gallery
                 key={u.id}
-                title={decideUnitLanguage('title', i18n.language, u)}
-                description={decideUnitLanguage('description', i18n.language, u)}
+                title={decideUnitLanguage('title', curLanguage, u)}
+                description={decideUnitLanguage('description', curLanguage, u)}
                 sources={u.gallery || []}
               />
             ))}

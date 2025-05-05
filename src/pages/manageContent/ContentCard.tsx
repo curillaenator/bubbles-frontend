@@ -7,6 +7,8 @@ import { IoRemove } from 'react-icons/io5';
 import { TbEdit } from 'react-icons/tb';
 import { MdDragIndicator } from 'react-icons/md';
 
+import { useTranslation } from '@src/hooks/useTranslation';
+
 interface ContentCardProps extends AppUnit {
   isControlsDisabled: boolean;
   removeSelectedUnit: (unit: AppUnit) => void;
@@ -15,6 +17,7 @@ interface ContentCardProps extends AppUnit {
 const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>((props, ref) => {
   const { isControlsDisabled, removeSelectedUnit, ...unit } = props;
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <Card.Root
@@ -37,7 +40,7 @@ const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>((props, r
 
         <Card.Footer>
           <Button variant='surface' onClick={() => navigate(`/unit/${unit.id}`)} disabled={isControlsDisabled}>
-            <TbEdit /> Edit
+            <TbEdit /> {t('unit-form-edit-unit')}
           </Button>
 
           <Button
@@ -48,7 +51,7 @@ const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>((props, r
               if (confirm(`Are u sure to delete "${unit['title-en']}"`)) removeSelectedUnit(unit);
             }}
           >
-            <IoRemove /> Delete
+            <IoRemove /> {t('unit-form-remove-unit')}
           </Button>
         </Card.Footer>
       </Box>

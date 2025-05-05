@@ -19,7 +19,9 @@
   "app-nav-manage-units": "Manage Sections",
 
   "unit-form-create-unit": "Create Section",
+  "unit-form-remove-unit": "Remove Section",
   "unit-form-update-unit": "Update Section Description",
+  "unit-form-edit-unit": "Edit Section",
   "unit-form-media-block": "Manage Section Gallery",
   "unit-form-media-block-upload": "Upload Item",
 
