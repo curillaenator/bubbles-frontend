@@ -28,6 +28,7 @@ const Main: React.FC = () => {
   const { data: units = [], isLoading: isUnitsLoading } = useQuery({
     queryKey: [UNITS_QUERY],
     queryFn: getUnits.bind(appCtx),
+    enabled: !!appCtx.botname,
   });
 
   // load user data on main page init -> internal data queries get cached data

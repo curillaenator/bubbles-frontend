@@ -28,6 +28,7 @@ const Me: React.FC = () => {
   const { data: meData = null, isLoading } = useQuery({
     queryKey: [ME_QUERY],
     queryFn: getUserData.bind(appCtx),
+    enabled: !!appCtx.botname,
   });
 
   const { data: avatarSrc, isLoading: isAvatarLoading } = useQuery({
@@ -120,7 +121,7 @@ const Me: React.FC = () => {
           </GridItem>
 
           <GridItem>
-            {!!avatarSrc && <Image src={avatarSrc} alt='Viktor' w='100%' h='100%' objectFit='cover' borderRadius={6} />}
+            {!!avatarSrc && <Image src={avatarSrc} alt='Avatar' w='100%' h='100%' objectFit='cover' borderRadius={6} />}
           </GridItem>
         </SimpleGrid>
       </Card.Body>

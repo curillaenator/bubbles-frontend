@@ -8,6 +8,6 @@ const $userStore = createStore<AppUser>({
   uid: null,
 });
 
-$userStore.on(setUid, (_, u) => u);
+$userStore.on(setUid, (_, user) => user);
 
 export { $userStore, setUid };
