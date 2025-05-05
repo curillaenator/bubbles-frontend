@@ -76,7 +76,7 @@ const AppFooter: React.FC = () => {
               }}
             >
               <FaTelegramPlane />
-              {footerData.telegram}
+              Telegram
             </Button>
           )}
 
@@ -93,7 +93,7 @@ const AppFooter: React.FC = () => {
               rel='noopener noreferrer'
             >
               <FaWhatsapp />
-              {footerData.whatsapp}
+              WhatsApp
             </Button>
           )}
         </Flex>

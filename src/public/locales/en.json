@@ -16,6 +16,7 @@
   "app-nav-share": "Share",
   "app-nav-edit-me": "Edit Profile",
   "app-nav-add-unit": "Add Section",
+  "app-nav-chats": "Telegram chats",
   "app-nav-manage-units": "Manage Sections",
 
   "unit-form-create-unit": "Create Section",
@@ -38,5 +39,7 @@
   "item-content-form-controls-video-remove": "Delete Video",
   "item-content-form-controls-img-remove": "Delete Photo",
   "item-content-form-controls-video-save": "Update Video Description",
-  "item-content-form-controls-img-save": "Update Photo Description"
+  "item-content-form-controls-img-save": "Update Photo Description",
+
+  "chats-user-started-bot-at": "User started bot at"
 }

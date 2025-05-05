@@ -9,9 +9,17 @@ import { Provider as ChakraProvider } from './features/chakra/provider';
 import { AppBotnameProvider } from './providers/AppBotnameProvider';
 
 import { Layout } from './app';
-import { Main, AuthPage, SharePage, EditMe, EditContent, ManageContent } from './pages';
+import { Main, AuthPage, SharePage, EditMe, EditContent, ManageContent, ManageChats } from './pages';
 
-import { ROOT_ROUTE, SHARE_ROUTE, AUTH_ROUTE, EDIT_ME_ROUTE, EDIT_UNIT_ROUTE, MANAGE_UNITS } from './routes';
+import {
+  ROOT_ROUTE,
+  SHARE_ROUTE,
+  AUTH_ROUTE,
+  EDIT_ME_ROUTE,
+  EDIT_UNIT_ROUTE,
+  MANAGE_UNITS,
+  MANAGE_CHATS,
+} from './routes';
 
 import './index.css';
 
@@ -29,6 +37,7 @@ const router = createBrowserRouter(
       <Route path={EDIT_ME_ROUTE} element={<EditMe />} />
       <Route path={EDIT_UNIT_ROUTE} element={<EditContent />} />
       <Route path={MANAGE_UNITS} element={<ManageContent />} />
+      <Route path={MANAGE_CHATS} element={<ManageChats />} />
     </Route>,
   ),
 );
