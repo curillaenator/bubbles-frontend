@@ -84,7 +84,7 @@ const Me: React.FC = () => {
               </Text>
             </Stack>
 
-            <Flex gap={6}>
+            <Flex gap={6} flexWrap='wrap'>
               {!!meData.telegram && (
                 <Button
                   size='xl'
