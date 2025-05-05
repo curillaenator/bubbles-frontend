@@ -3,6 +3,8 @@
 
   "app-save-button": "Сохранить",
   "app-cancel-button": "Отмена",
+  "app-remove-button": "Удалить",
+  "app-close-button": "Закрыть",
 
   "app-share-bot": "Поделиться ботом:",
   "app-share-app": "Поделиться сайтом:",
@@ -14,5 +16,25 @@
   "app-nav-share": "Поделиться",
   "app-nav-edit-me": "Редактировать профиль",
   "app-nav-add-unit": "Добавить раздел",
-  "app-nav-manage-units": "Управление разделами"
+  "app-nav-manage-units": "Управление разделами",
+
+  "unit-form-create-unit": "Создать раздел",
+  "unit-form-update-unit": "Обновить описание раздела",
+  "unit-form-media-block": "Управление галлереей раздела",
+  "unit-form-media-block-upload": "Загрузить элемент",
+
+  "item-content-form-video-descr": "Описание видео",
+  "item-content-form-img-descr": "Описание фото",
+  "item-content-form-en": "На английском",
+  "item-content-form-ru": "На русском",
+  "item-content-form-video-source": "Обложка видео",
+  "item-content-form-img-source": "Фото",
+  "item-content-form-change-photo": "Заменить фотографию",
+  "item-content-form-change-video-cover": "Заменить обложку видео",
+  "item-content-form-upload-video-cover": "Загрузить обложку видео",
+  "item-content-form-controls": "Управление элементом",
+  "item-content-form-controls-video-remove": "Удалить видео",
+  "item-content-form-controls-img-remove": "Удалить фото",
+  "item-content-form-controls-video-save": "Обновить описание видео",
+  "item-content-form-controls-img-save": "Обновить описание фото"
 }

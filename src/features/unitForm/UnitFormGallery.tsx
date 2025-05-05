@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import SortableList, { SortableItem } from 'react-easy-sort';
 import arrayMoveImmutable from 'array-move';
 import { debounce } from 'lodash';
@@ -27,8 +28,9 @@ const sortGalleryItems = (units: AppUnitGalleryItem[]) =>
 
 const UnitFormGallery: React.FC<UnitFormGalleryProps> = (props) => {
   const appCtx = useAppContext();
+  const { t } = useTranslation();
 
-  const { unitId, items = [], getUnitValues, updateExistingUnit } = props;
+  const { disabled, unitId, items = [], getUnitValues, updateExistingUnit } = props;
 
   const [currentEditItem, setCurrentEditItem] = useState<AppUnitGalleryItem | null>(null);
   const toggleUnitEditor = useCallback((unit: AppUnitGalleryItem | null) => setCurrentEditItem(unit), []);
@@ -106,45 +108,54 @@ const UnitFormGallery: React.FC<UnitFormGalleryProps> = (props) => {
 
   return (
     <>
-      <ChakraSortableList display='flex' flexWrap='wrap' gap={{ base: 2, sm: 6 }} onSortEnd={onSortEnd}>
+      <ChakraSortableList
+        display='flex'
+        flexWrap='wrap'
+        gap={{ base: 2, sm: 6 }}
+        onSortEnd={onSortEnd}
+        allowDrag={!disabled}
+      >
         {sortGalleryItems(items).map((item) => (
           <SortableItem key={item.src}>
-            <UnitFormImageItem {...item} onEdit={() => toggleUnitEditor(item)} />
+            <UnitFormImageItem
+              {...item}
+              onEdit={() => {
+                if (!disabled) toggleUnitEditor(item);
+              }}
+            />
           </SortableItem>
         ))}
       </ChakraSortableList>
 
-      <Heading>Upload</Heading>
+      <Heading>{t('unit-form-media-block-upload')}</Heading>
 
-      <Flex gap={6} flexWrap='wrap'>
-        <Box w='220px' cursor='pointer'>
-          <FileUpload.Root
-            // key={Date.now()}
-            // maxFiles={8}
-            accept={['image/png', 'image/jpg', 'image/jpeg', 'image/webp']}
-          >
+      <Flex gap={{ base: 2, sm: 6 }} flexWrap='wrap'>
+        <Box w={{ base: 'calc(50% - 4px)', sm: 'calc(50% - 12px)' }} cursor='pointer'>
+          <FileUpload.Root accept={['image/png', 'image/jpg', 'image/jpeg', 'image/webp']}>
             <FileUpload.HiddenInput
+              disabled={disabled}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onImageSelect(e.target.files, unitId)}
             />
 
             {/* @ts-expect-error */}
             <FileUpload.Trigger asChild>
-              <Center w='full' aspectRatio='1 / 1' border='1px solid' borderColor='border' borderRadius={6}>
+              <Center w='full' bg='blue.solid' h='128px' borderRadius={6}>
                 {isImageUploading ? <Loader /> : <IoImageOutline size={64} />}
               </Center>
             </FileUpload.Trigger>
           </FileUpload.Root>
         </Box>
 
-        <Box w='220px' cursor='pointer'>
+        <Box w={{ base: 'calc(50% - 4px)', sm: 'calc(50% - 12px)' }} cursor='pointer'>
           <FileUpload.Root accept={['video/mp4']}>
             <FileUpload.HiddenInput
+              disabled={disabled}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => onVideoSelect(e.target.files, unitId)}
             />
 
             {/* @ts-expect-error */}
             <FileUpload.Trigger asChild>
-              <Center w='full' aspectRatio='1 / 1' border='1px solid' borderColor='border' borderRadius={6}>
+              <Center w='full' bg='blue.solid' h='128px' borderRadius={6}>
                 {isVideoUploading ? <Loader /> : <IoVideocamOutline size={64} />}
               </Center>
             </FileUpload.Trigger>

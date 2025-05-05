@@ -5,6 +5,7 @@ interface UnitFormGalleryProps {
   items: AppUnitGalleryItem[];
   getUnitValues: () => Omit<AppUnitFields, 'gallery'>;
   updateExistingUnit: Function;
+  disabled?: boolean;
 }
 
 interface UnitFormItemEditorProps extends UnitFormGalleryProps {

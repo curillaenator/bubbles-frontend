@@ -3,16 +3,38 @@
 
   "app-save-button": "Save",
   "app-cancel-button": "Cancel",
+  "app-remove-button": "Delete",
+  "app-close-button": "Close",
 
-  "app-share-bot": "Share DiveBot:",
-  "app-share-app": "Share App:",
+  "app-share-bot": "Share the bot:",
+  "app-share-app": "Share the website:",
 
-  "app-nav-auth": "Login",
-  "app-nav-logout": "Logout",
+  "app-nav-auth": "Sign In",
+  "app-nav-logout": "Sign Out",
 
   "app-nav-main": "Home",
-  "app-nav-share": "Share the Bot",
-  "app-nav-edit-me": "Edit my profile",
-  "app-nav-add-unit": "Add section",
-  "app-nav-manage-units": "Manage sections"
+  "app-nav-share": "Share",
+  "app-nav-edit-me": "Edit Profile",
+  "app-nav-add-unit": "Add Section",
+  "app-nav-manage-units": "Manage Sections",
+
+  "unit-form-create-unit": "Create Section",
+  "unit-form-update-unit": "Update Section Description",
+  "unit-form-media-block": "Manage Section Gallery",
+  "unit-form-media-block-upload": "Upload Item",
+
+  "item-content-form-video-descr": "Video Description",
+  "item-content-form-img-descr": "Photo Description",
+  "item-content-form-en": "In English",
+  "item-content-form-ru": "In Russian",
+  "item-content-form-video-source": "Video Cover",
+  "item-content-form-img-source": "Photo",
+  "item-content-form-change-photo": "Replace Photo",
+  "item-content-form-change-video-cover": "Replace Video Cover",
+  "item-content-form-upload-video-cover": "Upload Video Cover",
+  "item-content-form-controls": "Item Controls",
+  "item-content-form-controls-video-remove": "Delete Video",
+  "item-content-form-controls-img-remove": "Delete Photo",
+  "item-content-form-controls-video-save": "Update Video Description",
+  "item-content-form-controls-img-save": "Update Photo Description"
 }

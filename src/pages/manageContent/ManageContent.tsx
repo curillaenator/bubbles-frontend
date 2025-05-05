@@ -6,8 +6,7 @@ import SortableList, { SortableItem } from 'react-easy-sort';
 import arrayMoveImmutable from 'array-move';
 
 import { Heading, Stack, HStack, Button, chakra } from '@chakra-ui/react';
-import { IoCreate } from 'react-icons/io5';
-import { TbCancel } from 'react-icons/tb';
+import { IoCreate, IoHomeOutline } from 'react-icons/io5';
 
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 import { getUnits, removeUnit, reorderUnits, type AppUnit } from '@src/entities/unit';
@@ -85,8 +84,8 @@ const ManageContent: React.FC = () => {
           onClick={() => navigate(ROOT_ROUTE)}
           disabled={isControlsDisabled}
         >
-          <TbCancel />
-          Cancel
+          <IoHomeOutline />
+          Main page
         </Button>
       </HStack>
     </Stack>

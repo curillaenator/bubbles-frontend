@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { keys, omit } from 'lodash';
 
 import {
@@ -15,13 +16,11 @@ import {
   Input,
   Text,
   Separator,
-  Flex,
   Center,
   Heading,
 } from '@chakra-ui/react';
 
-import { IoSaveOutline } from 'react-icons/io5';
-import { TbCancel } from 'react-icons/tb';
+import { IoSaveOutline, IoHomeOutline } from 'react-icons/io5';
 
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 import { createUnit, getUnit, updateUnit, type AppUnitFields } from '@src/entities/unit';
@@ -33,11 +32,15 @@ import { SINGLE_UNIT_QUERY, UNITS_QUERY } from '@src/configs/rtq.keys';
 
 import { UnitFormGallery } from './UnitFormGallery';
 
+const I18N_KEY = 'unit-form';
+const resolveI18NKey = (key: string) => `${I18N_KEY}-${key}`;
+
 const UnitForm: React.FC = () => {
   const { unitId } = useParams<{ unitId: string }>();
   const navigate = useNavigate();
   const qc = useQueryClient();
   const appCtx = useAppContext();
+  const { t } = useTranslation();
 
   const { data = null, isLoading } = useQuery({
     queryKey: [SINGLE_UNIT_QUERY, unitId],
@@ -77,7 +80,7 @@ const UnitForm: React.FC = () => {
   });
 
   const galleryItems = watch('gallery');
-  const isComposedLoading = isCreatePending || isUpdatePending;
+  const isPending = isCreatePending || isUpdatePending;
 
   if (isLoading)
     return (
@@ -102,7 +105,7 @@ const UnitForm: React.FC = () => {
       >
         <Form.Body display='flex' flexDirection='column' gap={6}>
           <FormFileds gap={6}>
-            <Heading>{!!unitId ? 'Edit Unit' : 'New Unit'}</Heading>
+            <Heading>{t(!!unitId ? resolveI18NKey('update-unit') : resolveI18NKey('create-unit'))}</Heading>
 
             <Field.Root invalid={!!errors['title-en']}>
               <Field.Label>
@@ -110,7 +113,7 @@ const UnitForm: React.FC = () => {
               </Field.Label>
 
               <Input
-                disabled={isComposedLoading}
+                disabled={isPending}
                 variant='outline'
                 placeholder='Title EN'
                 {...register('title-en', { required: 'Required' })}
@@ -125,7 +128,7 @@ const UnitForm: React.FC = () => {
               </Field.Label>
 
               <Input
-                disabled={isComposedLoading}
+                disabled={isPending}
                 variant='outline'
                 placeholder='Заголовок RU'
                 {...register('title-ru', { required: 'Required' })}
@@ -142,7 +145,7 @@ const UnitForm: React.FC = () => {
               </Field.Label>
 
               <Textarea
-                disabled={isComposedLoading}
+                disabled={isPending}
                 variant='outline'
                 placeholder='Description EN'
                 rows={8}
@@ -158,7 +161,7 @@ const UnitForm: React.FC = () => {
               </Field.Label>
 
               <Textarea
-                disabled={isComposedLoading}
+                disabled={isPending}
                 variant='outline'
                 placeholder='Описание RU'
                 rows={8}
@@ -169,45 +172,27 @@ const UnitForm: React.FC = () => {
             </Field.Root>
           </FormFileds>
 
-          <Flex w='full' gap={6}>
-            <Button
-              loading={isComposedLoading}
-              w='full'
-              type='submit'
-              size='md'
-              colorPalette='blue'
-              flex='1 1 auto'
-              disabled={!keys(dirtyFields).length}
-            >
-              <IoSaveOutline />
-              {!!unitId ? 'Update' : 'Create'}
-            </Button>
-
-            <Button
-              disabled={isComposedLoading}
-              w='full'
-              variant='surface'
-              type='button'
-              size='md'
-              flex='1 1 auto'
-              onClick={() => {
-                reset();
-                navigate(ROOT_ROUTE);
-              }}
-            >
-              <TbCancel />
-              Cancel
-            </Button>
-          </Flex>
+          <Button
+            loading={isPending}
+            type='submit'
+            size='md'
+            w='full'
+            colorPalette='blue'
+            disabled={!keys(dirtyFields).length}
+          >
+            <IoSaveOutline />
+            {t(!!unitId ? resolveI18NKey('update-unit') : resolveI18NKey('create-unit'))}
+          </Button>
         </Form.Body>
       </Form.Root>
 
       {!!unitId && (
         <Card.Root width='100%' variant='subtle'>
           <Form.Body display='flex' flexDirection='column' gap={6}>
-            <Heading>Media block</Heading>
+            <Heading>{t(resolveI18NKey('media-block'))}</Heading>
 
             <UnitFormGallery
+              disabled={isPending}
               unitId={unitId}
               items={galleryItems}
               getUnitValues={() => omit(getValues(), 'gallery')}
@@ -216,6 +201,21 @@ const UnitForm: React.FC = () => {
           </Form.Body>
         </Card.Root>
       )}
+
+      <Button
+        disabled={isPending}
+        variant='surface'
+        type='button'
+        size='md'
+        w='full'
+        onClick={() => {
+          reset();
+          navigate(ROOT_ROUTE);
+        }}
+      >
+        <IoHomeOutline />
+        {t('app-nav-main')}
+      </Button>
     </>
   );
 };

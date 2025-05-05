@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useQuery, useMutation } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { debounce, keys } from 'lodash';
 import { v4 as getId } from 'uuid';
@@ -10,6 +11,7 @@ import {
   Text,
   Flex,
   Stack,
+  Stack as Form,
   Field,
   Input,
   Dialog,
@@ -18,9 +20,12 @@ import {
   FileUpload,
   Heading,
   VStack,
+  Separator,
+  CloseButton,
 } from '@chakra-ui/react';
 
-import { TbCancel, TbUpload } from 'react-icons/tb';
+import { TbUpload } from 'react-icons/tb';
+import { IoSave, IoRemove, IoClose } from 'react-icons/io5';
 
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 
@@ -30,9 +35,15 @@ import { GALLERY_IMAGE_QUERY, SINGLE_UNIT_QUERY, UNITS_QUERY } from '@src/config
 
 import { UnitFormItemEditorProps } from '../interfaces';
 
+const I18N_KEY = 'item-content-form';
+const resolveI18NKey = (key: string) => `${I18N_KEY}-${key}`;
+
+const resolveUploadVideoButtonTitle = (videoSrc?: string) => (videoSrc ? 'change-video-cover' : 'upload-video-cover');
+
 const ItemContentForm: React.FC<UnitFormItemEditorProps> = (props) => {
   const { currentEditItem, toggleUnitEditor, items = [], updateExistingUnit, getUnitValues, unitId } = props;
 
+  const { t } = useTranslation();
   const qc = useQueryClient();
   const appCtx = useAppContext();
 
@@ -113,40 +124,59 @@ const ItemContentForm: React.FC<UnitFormItemEditorProps> = (props) => {
   );
 
   return (
-    <Stack
-      gap={6}
-      as='form'
-      onSubmit={handleSubmit((itemData) => {
-        if (currentItemIdx < 0) return alert('Something wrong');
+    <Stack gap={{ base: 4, sm: 6 }}>
+      <Heading>{t(resolveI18NKey(`${type}-descr`))}</Heading>
 
-        const newGallery = [...items];
-        newGallery.splice(currentItemIdx, 1, { ...items[currentItemIdx], ...itemData });
-        submit(newGallery);
-      })}
-    >
-      <Heading>Photo or Video description</Heading>
+      <Form
+        gap={{ base: 4, sm: 6 }}
+        as='form'
+        onSubmit={handleSubmit((itemData) => {
+          if (currentItemIdx < 0) return alert('Something wrong');
 
-      <Field.Root invalid={!!errors.en}>
-        <Field.Label>
-          <Text color='white'>EN</Text>
-        </Field.Label>
+          const newGallery = [...items];
+          newGallery.splice(currentItemIdx, 1, { ...items[currentItemIdx], ...itemData });
+          submit(newGallery);
+        })}
+      >
+        <Field.Root invalid={!!errors.en}>
+          <Field.Label>
+            <Text color='white'>{t(resolveI18NKey('en'))}</Text>
+          </Field.Label>
 
-        <Input variant='outline' placeholder='EN' autoComplete='off' {...register('en', { required: true })} />
+          <Input variant='outline' placeholder='EN' autoComplete='off' {...register('en', { required: true })} />
 
-        <Field.ErrorText>{errors.en?.message}</Field.ErrorText>
-      </Field.Root>
+          <Field.ErrorText>{errors.en?.message}</Field.ErrorText>
+        </Field.Root>
 
-      <Field.Root invalid={!!errors.ru}>
-        <Field.Label>
-          <Text color='white'>RU</Text>
-        </Field.Label>
+        <Field.Root invalid={!!errors.ru}>
+          <Field.Label>
+            <Text color='white'>{t(resolveI18NKey('ru'))}</Text>
+          </Field.Label>
 
-        <Input variant='outline' placeholder='RU' autoComplete='off' {...register('ru', { required: true })} />
+          <Input variant='outline' placeholder='RU' autoComplete='off' {...register('ru', { required: true })} />
 
-        <Field.ErrorText>{errors.ru?.message}</Field.ErrorText>
-      </Field.Root>
+          <Field.ErrorText>{errors.ru?.message}</Field.ErrorText>
+        </Field.Root>
 
-      <VStack gap={{ base: 2, sm: 2, md: 6 }}>
+        <Button
+          disabled={!keys(dirtyFields).length || isImageUploading}
+          w='full'
+          type='submit'
+          size='md'
+          colorPalette='blue'
+          flex='1 1 auto'
+        >
+          <IoSave />
+
+          {t(resolveI18NKey(`controls-${type}-save`))}
+        </Button>
+      </Form>
+
+      <Separator borderColor='fg' my={{ base: 2, sm: 4 }} />
+
+      <Heading>{t(resolveI18NKey(`${type}-source`))}</Heading>
+
+      <VStack gap={{ base: 4, sm: 6 }}>
         {imageSrc && (
           <Image
             w='full'
@@ -166,26 +196,24 @@ const ItemContentForm: React.FC<UnitFormItemEditorProps> = (props) => {
 
             {/* @ts-expect-error */}
             <FileUpload.Trigger asChild>
-              <Button variant='surface' disabled={isGalleryItemRemoving || isImageUploading} loading={isImageUploading}>
-                <TbUpload /> Upload photo
+              <Button
+                colorPalette='blue'
+                disabled={isGalleryItemRemoving || isImageUploading}
+                loading={isImageUploading}
+              >
+                <TbUpload />{' '}
+                {t(resolveI18NKey(type === 'video' ? resolveUploadVideoButtonTitle(videoSrc) : 'change-photo'))}
               </Button>
             </FileUpload.Trigger>
           </FileUpload.Root>
         </Flex>
       </VStack>
 
-      <Flex w='full' gap={{ base: 2, sm: 2, md: 6 }}>
-        <Button
-          disabled={!keys(dirtyFields).length || isImageUploading}
-          w='full'
-          type='submit'
-          size='md'
-          colorPalette='blue'
-          flex='1 1 auto'
-        >
-          Save
-        </Button>
+      <Separator borderColor='fg' my={{ base: 2, sm: 4 }} />
 
+      <Heading>{t(resolveI18NKey('controls'))}</Heading>
+
+      <Flex w='full' gap={{ base: 4, sm: 6 }}>
         <Button
           disabled={isGalleryItemRemoving || isImageUploading}
           loading={isGalleryItemRemoving}
@@ -201,7 +229,8 @@ const ItemContentForm: React.FC<UnitFormItemEditorProps> = (props) => {
             }
           }}
         >
-          Remove
+          <IoRemove />
+          {t(resolveI18NKey(`controls-${type}-remove`))}
         </Button>
 
         <Button
@@ -216,8 +245,8 @@ const ItemContentForm: React.FC<UnitFormItemEditorProps> = (props) => {
             toggleUnitEditor(null);
           }}
         >
-          <TbCancel />
-          Cancel
+          <IoClose />
+          {t('app-close-button')}
         </Button>
       </Flex>
     </Stack>
@@ -240,6 +269,11 @@ const UnitFormItemEditor: React.FC<UnitFormItemEditorProps> = (props) => {
 
         <Dialog.Positioner>
           <Dialog.Content>
+            {/* @ts-expect-error */}
+            <Dialog.CloseTrigger asChild>
+              <CloseButton />
+            </Dialog.CloseTrigger>
+
             <Dialog.Body>
               <ItemContentForm {...props} />
             </Dialog.Body>

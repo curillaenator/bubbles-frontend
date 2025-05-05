@@ -9,9 +9,7 @@ import {
   IoHomeOutline,
   IoSettingsOutline,
   IoGlobeOutline,
-  //
   IoPersonOutline,
-  IoAddCircleOutline,
 } from 'react-icons/io5';
 
 import { ColorModeButton } from '@src/features/chakra/color-mode';
@@ -31,7 +29,7 @@ const MENU_ITEMS = [{ to: ROOT_ROUTE, captionId: 'app-nav-main', Icon: IoHomeOut
 const SETTINGS_ITEMS = [
   { to: SHARE_ROUTE, captionId: 'app-nav-share', Icon: IoGlobeOutline },
   { to: EDIT_ME_ROUTE, captionId: 'app-nav-edit-me', Icon: IoPersonOutline },
-  { to: '/unit', captionId: 'app-nav-add-unit', Icon: IoAddCircleOutline },
+  // { to: '/unit', captionId: 'app-nav-add-unit', Icon: IoAddCircleOutline },
   { to: '/units', captionId: 'app-nav-manage-units', Icon: IoSettingsOutline },
 ] as const;
 
