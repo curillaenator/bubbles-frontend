@@ -205,6 +205,8 @@ const EditMe: React.FC = () => {
 
                 <FileUpload.List />
               </FileUpload.Root>
+
+              <Text color='fg.muted'>{appCtx.chatId}</Text>
             </GridItem>
           </SimpleGrid>
 

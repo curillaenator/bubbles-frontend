@@ -1,5 +1,5 @@
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
+import React, { useEffect } from 'react';
+import { useQuery, useMutation } from '@tanstack/react-query';
 
 import { Card, Stack, Image, SimpleGrid, GridItem, Heading, Text, Button, Center, Flex, Box } from '@chakra-ui/react';
 import { FaTelegramPlane, FaWhatsapp } from 'react-icons/fa';
@@ -7,7 +7,7 @@ import { FaTelegramPlane, FaWhatsapp } from 'react-icons/fa';
 import { useTranslation } from '@src/hooks/useTranslation';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 
-import { getUserData, getAvatarUrl, type AppUserEditFields } from '@src/entities/user';
+import { getUserData, getAvatarUrl, updateMyChatId, type AppUserEditFields } from '@src/entities/user';
 import { getAssetUrl } from '@src/entities/asset';
 import { Loader } from '@src/features/loader';
 
@@ -46,6 +46,9 @@ const Me: React.FC = () => {
     queryFn: () => getAssetUrl(`${appCtx.botname}/${STATIC_PATHS.banner}`),
     enabled: !!appCtx.botname,
   });
+
+  const { mutate: setMyChatId } = useMutation({ mutationFn: updateMyChatId.bind(appCtx) });
+  useEffect(setMyChatId, [setMyChatId]);
 
   if (isLoading || isAvatarLoading || isBannerBackgroundLoading) {
     return (

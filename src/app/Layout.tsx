@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
 
 import {
   Container,
@@ -22,7 +21,6 @@ import { useAppContext } from '@src/providers/AppBotnameProvider';
 import { useAuthState } from '@src/hooks/useAuthState';
 import { useTranslation } from '@src/hooks/useTranslation';
 import { useColorModeValue } from '@src/features/chakra/color-mode';
-import { updateMyChatId } from '@src/entities/user';
 
 import { Menu } from '@src/features/menu';
 import { Loader } from '@src/features/loader';
@@ -34,17 +32,12 @@ const Layout: React.FC = () => {
   const { t } = useTranslation();
   const appCtx = useAppContext();
 
-  const { mutate: setMyChatId } = useMutation({
-    mutationFn: updateMyChatId.bind(appCtx),
-  });
-
   const { appLoading } = useAuthState();
   const [drawerOpen, toggleDrawer] = useState<boolean>(false);
 
   useEffect(() => {
-    setMyChatId();
     window.Telegram?.WebApp?.ready();
-  }, [setMyChatId]);
+  }, []);
 
   if (appLoading)
     return (
