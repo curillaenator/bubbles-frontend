@@ -1,7 +1,8 @@
-import { collection, getDocs } from 'firebase/firestore';
+import { doc, collection, getDocs, deleteDoc } from 'firebase/firestore';
 
 import { fsdb } from '@src/configs/firebase.config';
 
+import { BOTNAME_TO_OWNER_UID } from '../user';
 import type { AppGlobalCTX } from '@src/app';
 import type { TgChatMeta } from './interfaces';
 
@@ -18,4 +19,31 @@ async function getChats(this: AppGlobalCTX) {
   return loadedChats;
 }
 
-export { getChats };
+async function removeChat(this: AppGlobalCTX, chat: TgChatMeta) {
+  if (!this.botname) return;
+
+  return await deleteDoc(doc(fsdb, `${this.botname}chats`, `${chat.id}`))
+    .then(() => ({ deletedChat: chat.id || null }))
+    .catch(() => ({ deletedChat: null }));
+}
+
+interface SendAllChatsPayload {
+  uid: string;
+  chats: TgChatMeta[];
+  message: string;
+}
+
+async function sendToAllChats(this: AppGlobalCTX, payload: SendAllChatsPayload) {
+  if (!this.botname) return;
+  if (payload.uid !== BOTNAME_TO_OWNER_UID[this.botname]) return;
+
+  return fetch(`${process.env.NGROK_BOT_ENDPOINT}/bot-data`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ actionType: 'send-to-all', payload }),
+  })
+    .then(() => ({ status: 'ok' }))
+    .catch(() => ({ status: 'failed' }));
+}
+
+export { getChats, removeChat, sendToAllChats };

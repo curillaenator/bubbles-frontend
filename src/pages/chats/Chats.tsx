@@ -1,25 +1,30 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-// import { useQueryClient } from '@tanstack/react-query';
+import { useUnit } from 'effector-react';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
-import { Card, Heading, Stack, HStack, Button, Flex } from '@chakra-ui/react';
-import { IoCreate, IoHomeOutline } from 'react-icons/io5';
+import { Card, Heading, Stack, Button, Flex, SimpleGrid, GridItem, Field, Textarea, Separator } from '@chakra-ui/react';
+import { IoHomeOutline, IoRemoveOutline } from 'react-icons/io5';
 import { FaTelegramPlane } from 'react-icons/fa';
 
 import { useTranslation } from '@src/hooks/useTranslation';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
-import { getChats, type TgChatMeta } from '@src/entities/tgchat';
+
+import { $userStore } from '@src/entities/user';
+import { getChats, removeChat, sendToAllChats, type TgChatMeta } from '@src/entities/tgchat';
+
 import { CHATS_QUERY } from '@src/configs/rtq.keys';
 import { ROOT_ROUTE } from '@src/routes';
 
-const sortChats = (chats: TgChatMeta[]) => chats.toSorted(({ date: dA }, { date: dB }) => (dA || 0) - (dB || 0));
+const sortChats = (chats: TgChatMeta[]) => chats.toSorted(({ date: dA }, { date: dB }) => (dB || 0) - (dA || 0));
 
 const ManageChats: React.FC = () => {
   const navigate = useNavigate();
-  // const qc = useQueryClient();
+  const qc = useQueryClient();
   const appCtx = useAppContext();
   const { t, curLanguage } = useTranslation();
+  const { uid } = useUnit($userStore);
 
   const { data: chats = [] } = useQuery({
     queryKey: [CHATS_QUERY],
@@ -33,69 +38,136 @@ const ManageChats: React.FC = () => {
       day: '2-digit',
       month: 'short',
       year: 'numeric',
+      minute: '2-digit',
+      hour: '2-digit',
     }).format,
     [curLanguage],
   );
 
-  // const { mutate: removeSelectedUnit, isPending: isRemovingUnit } = useMutation({
-  //   mutationFn: removeUnit.bind(appCtx),
+  const { mutate: removeSelectedChat, isPending: isRemovingUnit } = useMutation({
+    mutationFn: removeChat.bind(appCtx),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: [CHATS_QUERY] });
+    },
+  });
 
-  //   onSuccess: () => {
-  //     qc.invalidateQueries({ queryKey: [UNITS_QUERY] });
-  //   },
-  // });
+  const [message, setMessage] = useState<string>('');
+
+  const { mutate: sendMessageToAllChats, isPending: isSendingMessageToallChats } = useMutation({
+    mutationFn: () => sendToAllChats.call(appCtx, { uid: uid!, chats, message }),
+  });
+
+  const isControlsDisabled = isRemovingUnit;
 
   return (
     <Stack py={6} h='100%' maxH='100%' overflow='auto' scrollbar='hidden' gap={6}>
       <Heading>{t('app-nav-chats')}</Heading>
 
-      <HStack gap={{ base: 2, sm: 6 }}>
-        <Button
-          colorPalette='blue'
-          w='100%'
-          flex='auto'
-          // onClick={() => navigate('/unit')}
-          // loading={isControlsDisabled}
-        >
-          <IoCreate />
-          {t('chats-send-all-chats')}
-        </Button>
-
+      <Stack>
         <Button
           variant='surface'
           w='100%'
           flex='auto'
           onClick={() => navigate(ROOT_ROUTE)}
-          // disabled={isControlsDisabled}
+          disabled={isControlsDisabled}
         >
           <IoHomeOutline />
           {t('app-nav-main')}
         </Button>
-      </HStack>
+      </Stack>
+
+      <Separator />
+
+      <Card.Root w='full' size={{ base: 'sm', sm: 'md' }}>
+        <Card.Body gap='2' as='form'>
+          <Field.Root invalid={false}>
+            <Field.Label>
+              <Heading>{t('chats-send-all-chats-title')}</Heading>
+            </Field.Label>
+
+            <Textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              disabled={isSendingMessageToallChats}
+              variant='outline'
+              placeholder={t('chats-send-all-chats-title')}
+              rows={8}
+            />
+
+            <Field.ErrorText></Field.ErrorText>
+          </Field.Root>
+
+          <Button
+            disabled={!message.length || isControlsDisabled}
+            colorPalette='blue'
+            w='100%'
+            flex='auto'
+            onClick={() => sendMessageToAllChats()}
+          >
+            <FaTelegramPlane />
+            {t('chats-send-all-chats')}
+          </Button>
+        </Card.Body>
+      </Card.Root>
+
+      <Separator />
+
+      <Heading>{t('chats-list')}</Heading>
 
       <Flex gap={{ base: 2, sm: 6 }} flexWrap='wrap'>
         {sortChats(chats).map((ch) => (
-          <Card.Root key={ch.id} w={{ base: 'full', sm: 'calc(100% / 2 - 12px)', md: 'calc(100% / 3 - 48px / 3)' }}>
-            <Card.Header>
-              <Card.Title mt='2'>{ch.username}</Card.Title>
-            </Card.Header>
-
+          <Card.Root
+            key={ch.id}
+            size={{ base: 'sm', sm: 'md' }}
+            w={{ base: 'full', sm: 'calc(100% / 2 - 12px)', md: 'calc(100% / 3 - 48px / 3)' }}
+          >
             <Card.Body gap='2'>
-              <Card.Description>{t('chats-user-started-bot-at')}</Card.Description>
-              <Card.Description>{formatDate(new Date(ch.date * 1000))}</Card.Description>
-            </Card.Body>
+              <SimpleGrid columns={5}>
+                <GridItem colSpan={4}>
+                  <Stack gap={2}>
+                    <Card.Title>{`@${ch.username}`}</Card.Title>
 
-            <Card.Footer justifyContent='flex-start'>
-              <Button
-                colorPalette='blue'
-                onClick={() => {
-                  //@ts-expect-error
-                  window.Telegram?.WebApp?.openTelegramLink?.(`https://t.me/${ch.username}`);
-                }}
-              >
-                <FaTelegramPlane /> Telegram
-              </Button>
-            </Card.Footer>
+                    <Card.Description>{t('chats-user-started-bot-at')}</Card.Description>
+                    <Card.Description>{formatDate(new Date(ch.date * 1000))}</Card.Description>
+                  </Stack>
+                </GridItem>
+
+                <GridItem
+                  display='flex'
+                  alignItems='center'
+                  flexDir='column'
+                  justifyContent='center'
+                  gap={{ base: 2, sm: 6 }}
+                >
+                  <Button
+                    disabled={isControlsDisabled}
+                    w='full'
+                    colorPalette='blue'
+                    onClick={() => {
+                      //@ts-expect-error
+                      window.Telegram?.WebApp?.openTelegramLink?.(`https://t.me/${ch.username}`);
+                    }}
+                  >
+                    <FaTelegramPlane />
+                  </Button>
+
+                  <Button
+                    disabled={isControlsDisabled}
+                    loading={isRemovingUnit}
+                    w='full'
+                    variant='surface'
+                    colorPalette='red'
+                    onClick={() => {
+                      if (confirm('Are you sure to delete chat from history?')) {
+                        removeSelectedChat(ch);
+                      }
+                    }}
+                  >
+                    <IoRemoveOutline />
+                  </Button>
+                </GridItem>
+              </SimpleGrid>
+            </Card.Body>
           </Card.Root>
         ))}
       </Flex>
