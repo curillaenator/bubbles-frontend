@@ -1,7 +1,7 @@
 import type { Photo } from 'react-photo-album';
 import type { AppUnitGalleryItem } from '@src/entities/unit';
 
-interface GalleryProps {
+interface AppUIUnitProps {
   title: string;
   description?: string;
   sources?: AppUnitGalleryItem[];
@@ -10,4 +10,4 @@ interface GalleryProps {
 
 interface GalleryItem extends Photo, AppUnitGalleryItem {}
 
-export type { GalleryProps, GalleryItem };
+export type { AppUIUnitProps, GalleryItem };

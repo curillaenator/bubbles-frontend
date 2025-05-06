@@ -16,7 +16,7 @@ import { useItems } from './hooks/useItems';
 import { Carousel } from './Carousel';
 
 import { MOBILE_VIEW_MAX_WIDTH } from './constants';
-import type { GalleryProps, GalleryItem } from './interfaces';
+import type { AppUIUnitProps, GalleryItem } from './interfaces';
 
 import 'react-photo-album/masonry.css';
 
@@ -25,7 +25,7 @@ const decideLanguage = (language: string, locales: Record<string, string>) => lo
 const sortGalleryItems = (units: GalleryItem[]) =>
   units.toSorted(({ order: oA }, { order: oB }) => (oA || 0) - (oB || 0));
 
-const Gallery: React.FC<GalleryProps> = (props) => {
+const AppUIUnit: React.FC<AppUIUnitProps> = (props) => {
   const { title, description } = props;
   const { curLanguage, t } = useTranslation();
   const appCtx = useAppContext();
@@ -157,4 +157,4 @@ const Gallery: React.FC<GalleryProps> = (props) => {
   );
 };
 
-export { Gallery };
+export { AppUIUnit };

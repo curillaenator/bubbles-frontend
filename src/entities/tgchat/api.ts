@@ -62,9 +62,7 @@ async function sendApplication(this: AppGlobalCTX, application: string) {
         application,
       },
     }),
-  })
-    .then(() => ({ status: 'ok' }))
-    .catch(() => ({ status: 'failed' }));
+  });
 }
 
 export { getChats, removeChat, sendToAllChats, sendApplication };

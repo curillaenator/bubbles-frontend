@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { GALLERY_SIZES } from '../constants';
-import { GalleryItem, GalleryProps } from '../interfaces';
+import { GalleryItem, AppUnitProps } from '../interfaces';
 
 import { getAssetUrl } from '@src/entities/asset';
 
-const useItems = (props: GalleryProps) => {
+const useItems = (props: AppUnitProps) => {
   const { sources = [] } = props;
 
   const [items, setItems] = useState<GalleryItem[]>([]);

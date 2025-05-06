@@ -10,9 +10,8 @@ import { $userStore, getUserData, type AppUserEditFields } from '@src/entities/u
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 
 import { Loader } from '@src/features/loader';
-import { Gallery } from '@src/features/gallery';
-// import { Banner } from '@src/features/banner';
-import { Me } from '@src/features/me';
+import { AppUIUnit } from '@src/features/unit';
+import { Me, Bullets } from '@src/features/me';
 
 import { useTranslation } from '@src/hooks/useTranslation';
 import { UNITS_QUERY, ME_QUERY } from '@src/configs/rtq.keys';
@@ -76,7 +75,7 @@ const Main: React.FC = () => {
           {units
             .toSorted(({ order: oA }, { order: oB }) => (oA || 0) - (oB || 0))
             .map((u) => (
-              <Gallery
+              <AppUIUnit
                 key={u.id}
                 title={decideUnitLanguage('title', curLanguage, u)}
                 description={decideUnitLanguage('description', curLanguage, u)}
@@ -102,7 +101,7 @@ const Main: React.FC = () => {
         </VStack>
       )}
 
-      {/* <Bullets /> */}
+      <Bullets />
     </Stack>
   );
 };
