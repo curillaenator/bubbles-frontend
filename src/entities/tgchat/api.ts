@@ -44,4 +44,27 @@ async function sendToAllChats(this: AppGlobalCTX, payload: SendAllChatsPayload) 
     .catch(() => ({ status: 'failed' }));
 }
 
-export { getChats, removeChat, sendToAllChats };
+async function sendApplication(this: AppGlobalCTX, application: string) {
+  if (!this.botname) return;
+  if (!this.chatId) return alert('Something went wrong, please restart bot (not reload)');
+
+  const botwnerId = BOTNAME_TO_OWNER_UID[this.botname];
+
+  return fetch(`${process.env.BOT_ENDPOINT}/bot-data`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      actionType: 'send-application',
+      payload: {
+        uid: botwnerId,
+        chatId: this.chatId,
+        botname: this.botname,
+        application,
+      },
+    }),
+  })
+    .then(() => ({ status: 'ok' }))
+    .catch(() => ({ status: 'failed' }));
+}
+
+export { getChats, removeChat, sendToAllChats, sendApplication };

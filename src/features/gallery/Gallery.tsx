@@ -1,13 +1,17 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { useMutation } from '@tanstack/react-query';
 
 import { debounce } from 'lodash';
 import { MasonryPhotoAlbum } from 'react-photo-album';
 
-import { Stack, Box, Dialog, CloseButton, Heading, Text, Image, Center } from '@chakra-ui/react';
+import { Stack, Box, Dialog, CloseButton, Heading, Text, Image, Center, Button } from '@chakra-ui/react';
 import { IoPlayOutline } from 'react-icons/io5';
 
+import { sendApplication } from '@src/entities/tgchat';
+import { useAppContext } from '@src/providers/AppBotnameProvider';
 import { useTranslation } from '@src/hooks/useTranslation';
 import { useColorModeValue } from '@src/features/chakra/color-mode';
+
 import { useItems } from './hooks/useItems';
 import { Carousel } from './Carousel';
 
@@ -24,6 +28,7 @@ const sortGalleryItems = (units: GalleryItem[]) =>
 const Gallery: React.FC<GalleryProps> = (props) => {
   const { title, description } = props;
   const { curLanguage } = useTranslation();
+  const appCtx = useAppContext();
 
   const imageItemCaptionOverlayBg = useColorModeValue('whiteAlpha.600', 'blackAlpha.600');
 
@@ -34,6 +39,12 @@ const Gallery: React.FC<GalleryProps> = (props) => {
   const [isLightbox, setIsLightbox] = useState<boolean>(false);
 
   const { items: photoItems } = useItems(props);
+
+  const { mutate: sendNewApplication, isPending: isNewApplicationPending } = useMutation({
+    mutationFn: sendApplication.bind(appCtx),
+    onSuccess: () => window.Telegram?.WebApp?.close?.(),
+    onError: () => alert('Somethign went wrong, please restart bot'),
+  });
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const checkMobile = useCallback(
@@ -58,6 +69,12 @@ const Gallery: React.FC<GalleryProps> = (props) => {
         <Text whiteSpace='pre-line' fontSize={{ base: 14, sm: 16 }} color='fg.muted' mb={6}>
           {description}
         </Text>
+      )}
+
+      {!!appCtx.botname && !!appCtx.chatId && (
+        <Button colorPalette='blue' onClick={() => sendNewApplication(title)} loading={isNewApplicationPending}>
+          Application
+        </Button>
       )}
 
       <MasonryPhotoAlbum
