@@ -45,6 +45,9 @@ const updateMeBlock = async (uid: string, updData: Partial<AppUserEditFields>) =
 async function updateMyChatId(this: AppGlobalCTX) {
   const uid = auth.currentUser?.uid;
   if (!uid || !this.botname || !this.chatId) return;
+
+  console.log('updateMyChatId', uid, this.botname, this.chatId);
+
   return await updateDoc(doc(fsdb, 'users', uid), { chatId: this.chatId });
 }
 

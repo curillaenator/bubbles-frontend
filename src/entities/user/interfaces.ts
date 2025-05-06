@@ -14,17 +14,17 @@ interface AppUserEditFields {
   telegram: string;
   whatsapp: string;
 
-  bannerTitleEn: string;
-  bannerTitleRu: string;
+  // bannerTitleEn: string;
+  // bannerTitleRu: string;
 
-  bannerSloganEn: string;
-  bannerSloganRu: string;
+  // bannerSloganEn: string;
+  // bannerSloganRu: string;
 
   headEn: string;
   headRu: string;
 
-  sloganEn: string;
-  sloganRu: string;
+  // sloganEn: string;
+  // sloganRu: string;
 
   pricingEn: string;
   pricingRu: string;
@@ -32,8 +32,8 @@ interface AppUserEditFields {
   bodyEn: string;
   bodyRu: string;
 
-  skillsEn: string;
-  skillsRu: string;
+  // skillsEn: string;
+  // skillsRu: string;
 
   photoURL: FileList | string;
 
