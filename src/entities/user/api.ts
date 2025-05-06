@@ -42,6 +42,12 @@ const updateMeBlock = async (uid: string, updData: Partial<AppUserEditFields>) =
   return await updateDoc(doc(fsdb, 'users', uid), updData);
 };
 
+async function updateMyChatId(this: AppGlobalCTX) {
+  const uid = auth.currentUser?.uid;
+  if (!uid || !this.botname || !this.chatId) return;
+  return await updateDoc(doc(fsdb, 'users', uid), { chatId: this.chatId });
+}
+
 async function getUserData(this: AppGlobalCTX) {
   if (!this.botname) return null;
 
@@ -70,4 +76,4 @@ async function getAvatarUrl(this: AppGlobalCTX) {
   return await getDownloadURL(ref(storage, `${this.botname}/${STATIC_PATHS.avatar}`));
 }
 
-export { loginUser, registerUser, logoutUser, updateMeBlock, getUserData, uploadAvatar, getAvatarUrl };
+export { loginUser, registerUser, logoutUser, updateMeBlock, getUserData, uploadAvatar, getAvatarUrl, updateMyChatId };
