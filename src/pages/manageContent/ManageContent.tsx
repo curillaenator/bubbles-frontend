@@ -6,7 +6,7 @@ import SortableList, { SortableItem } from 'react-easy-sort';
 import arrayMoveImmutable from 'array-move';
 
 import { Heading, Stack, HStack, Button, chakra } from '@chakra-ui/react';
-import { IoCreate, IoHomeOutline } from 'react-icons/io5';
+import { IoCreateOutline, IoHomeOutline } from 'react-icons/io5';
 
 import { useTranslation } from '@src/hooks/useTranslation';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
@@ -67,7 +67,7 @@ const ManageContent: React.FC = () => {
 
       <HStack>
         <Button colorPalette='blue' w='100%' flex='auto' onClick={() => navigate('/unit')} loading={isControlsDisabled}>
-          <IoCreate />
+          <IoCreateOutline />
           {t('unit-form-create-unit')}
         </Button>
 

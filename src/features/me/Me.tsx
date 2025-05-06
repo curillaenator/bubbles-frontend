@@ -124,7 +124,7 @@ const Me: React.FC = () => {
                   }}
                 >
                   <FaTelegramPlane />
-                  {meData.telegram}
+                  Telegram
                 </Button>
               )}
 
@@ -141,7 +141,7 @@ const Me: React.FC = () => {
                   rel='noopener noreferrer'
                 >
                   <FaWhatsapp />
-                  {meData.whatsapp}
+                  WhatsApp
                 </Button>
               )}
             </Flex>
