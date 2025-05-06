@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { debounce } from 'lodash';
 import { MasonryPhotoAlbum } from 'react-photo-album';
 
-import { Stack, Box, Dialog, CloseButton, Heading, Text, Image, Center, Button } from '@chakra-ui/react';
+import { Stack, Box, Dialog, CloseButton, Heading, Text, Image, Center, Button, Flex } from '@chakra-ui/react';
 import { IoPlayOutline } from 'react-icons/io5';
 
 import { sendApplication } from '@src/entities/tgchat';
@@ -27,7 +27,7 @@ const sortGalleryItems = (units: GalleryItem[]) =>
 
 const Gallery: React.FC<GalleryProps> = (props) => {
   const { title, description } = props;
-  const { curLanguage } = useTranslation();
+  const { curLanguage, t } = useTranslation();
   const appCtx = useAppContext();
 
   const imageItemCaptionOverlayBg = useColorModeValue('whiteAlpha.600', 'blackAlpha.600');
@@ -62,19 +62,21 @@ const Gallery: React.FC<GalleryProps> = (props) => {
   }, [checkMobile]);
 
   return (
-    <Stack ref={containerRef} my={4}>
+    <Stack ref={containerRef} gap={6}>
       <Heading py={4}>{title}</Heading>
 
       {!!description && (
-        <Text whiteSpace='pre-line' fontSize={{ base: 14, sm: 16 }} color='fg.muted' mb={6}>
+        <Text whiteSpace='pre-line' fontSize={{ base: 14, sm: 16 }} color='fg.muted'>
           {description}
         </Text>
       )}
 
       {!!appCtx.botname && !!appCtx.chatId && (
-        <Button colorPalette='blue' onClick={() => sendNewApplication(title)} loading={isNewApplicationPending}>
-          Application
-        </Button>
+        <Flex my={6}>
+          <Button colorPalette='blue' onClick={() => sendNewApplication(title)} loading={isNewApplicationPending}>
+            {t('unit-make-application')}
+          </Button>
+        </Flex>
       )}
 
       <MasonryPhotoAlbum
