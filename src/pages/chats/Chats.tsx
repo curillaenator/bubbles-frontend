@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useUnit } from 'effector-react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -11,7 +10,6 @@ import { FaTelegramPlane } from 'react-icons/fa';
 import { useTranslation } from '@src/hooks/useTranslation';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 
-import { $userStore } from '@src/entities/user';
 import { getChats, removeChat, sendToAllChats, type TgChatMeta } from '@src/entities/tgchat';
 
 import { CHATS_QUERY } from '@src/configs/rtq.keys';
@@ -24,7 +22,6 @@ const ManageChats: React.FC = () => {
   const qc = useQueryClient();
   const appCtx = useAppContext();
   const { t, curLanguage } = useTranslation();
-  const { uid } = useUnit($userStore);
 
   const { data: chats = [] } = useQuery({
     queryKey: [CHATS_QUERY],
@@ -53,8 +50,9 @@ const ManageChats: React.FC = () => {
 
   const [message, setMessage] = useState<string>('');
 
-  const { mutate: sendMessageToAllChats, isPending: isSendingMessageToallChats } = useMutation({
-    mutationFn: () => sendToAllChats.call(appCtx, { uid: uid!, chats, message }),
+  const { mutate: sendMessageToAllChats, isPending: isSendingMessageToAllChats } = useMutation({
+    mutationFn: () => sendToAllChats.call(appCtx, { chats, message }),
+    onSuccess: () => setMessage(''),
   });
 
   const isControlsDisabled = isRemovingUnit;
@@ -88,7 +86,6 @@ const ManageChats: React.FC = () => {
             <Textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              disabled={isSendingMessageToallChats}
               variant='outline'
               placeholder={t('chats-send-all-chats-title')}
               rows={8}
@@ -99,6 +96,7 @@ const ManageChats: React.FC = () => {
 
           <Button
             disabled={!message.length || isControlsDisabled}
+            loading={isSendingMessageToAllChats}
             colorPalette='blue'
             w='100%'
             flex='auto'

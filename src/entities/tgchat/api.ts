@@ -1,8 +1,7 @@
 import { doc, collection, getDocs, deleteDoc } from 'firebase/firestore';
+import { fsdb, auth } from '@src/configs/firebase.config';
 
-import { fsdb } from '@src/configs/firebase.config';
-
-import { BOTNAME_TO_OWNER_UID } from '../user';
+import { BOTNAME_TO_OWNER_UID } from '@src/entities/user';
 import type { AppGlobalCTX } from '@src/app';
 import type { TgChatMeta } from './interfaces';
 
@@ -28,16 +27,15 @@ async function removeChat(this: AppGlobalCTX, chat: TgChatMeta) {
 }
 
 interface SendAllChatsPayload {
-  uid: string;
   chats: TgChatMeta[];
   message: string;
 }
 
 async function sendToAllChats(this: AppGlobalCTX, payload: SendAllChatsPayload) {
   if (!this.botname) return;
-  if (payload.uid !== BOTNAME_TO_OWNER_UID[this.botname]) return;
+  if (auth.currentUser?.uid !== BOTNAME_TO_OWNER_UID[this.botname]) return;
 
-  return fetch(`${process.env.NGROK_BOT_ENDPOINT}/bot-data`, {
+  return fetch(`${process.env.BOT_ENDPOINT}/bot-data`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ actionType: 'send-to-all', payload }),
