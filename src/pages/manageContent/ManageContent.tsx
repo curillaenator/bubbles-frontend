@@ -10,7 +10,7 @@ import { IoCreateOutline, IoHomeOutline } from 'react-icons/io5';
 
 import { useTranslation } from '@src/hooks/useTranslation';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
-import { getUnits, removeUnit, reorderUnits, type AppUnit } from '@src/entities/unit';
+import { getUnits, removeUnit, reorderUnits, type AppUnitProps } from '@src/entities/unit';
 import { UNITS_QUERY } from '@src/configs/rtq.keys';
 import { ROOT_ROUTE } from '@src/routes';
 
@@ -18,7 +18,7 @@ import { ContentCard } from './ContentCard';
 
 const ChakraSortableList = chakra(SortableList);
 
-const sortUnits = (units: AppUnit[]) => units.toSorted(({ order: oA }, { order: oB }) => (oA || 0) - (oB || 0));
+const sortUnits = (units: AppUnitProps[]) => units.toSorted(({ order: oA }, { order: oB }) => (oA || 0) - (oB || 0));
 
 const ManageContent: React.FC = () => {
   const navigate = useNavigate();

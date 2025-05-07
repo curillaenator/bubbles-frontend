@@ -1,13 +1,14 @@
 import type { Photo } from 'react-photo-album';
 import type { AppUnitGalleryItem } from '@src/entities/unit';
+import type { KeenSliderInstance, KeenSliderHooks } from 'keen-slider/react';
 
-interface AppUIUnitProps {
-  title: string;
-  description?: string;
-  sources?: AppUnitGalleryItem[];
-  photos?: Photo[];
+interface AppUIUnitGallryItemProps extends Photo, AppUnitGalleryItem {}
+
+interface CarouselProps {
+  photoItems: AppUIUnitGallryItemProps[];
+  isMobile: boolean;
+  initial: number;
+  onCarouselInstanceChange?: (inst: KeenSliderInstance<{}, {}, KeenSliderHooks> | null) => void;
 }
 
-interface GalleryItem extends Photo, AppUnitGalleryItem {}
-
-export type { AppUIUnitProps, GalleryItem };
+export type { CarouselProps, AppUIUnitGallryItemProps };

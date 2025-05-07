@@ -1,24 +1,15 @@
 import React, { useEffect } from 'react';
-import { useKeenSlider, KeenSliderInstance, KeenSliderHooks } from 'keen-slider/react';
+import { useKeenSlider } from 'keen-slider/react';
 
 import { Stack, Box, Text, Image, Center } from '@chakra-ui/react';
 
 import { useTranslation } from '@src/hooks/useTranslation';
 import { useColorModeValue } from '@src/features/chakra/color-mode';
-import type { GalleryItem } from './interfaces';
 
+import type { CarouselProps } from './interfaces';
 import 'keen-slider/keen-slider.min.css';
 
-interface CarouselProps {
-  photoItems: GalleryItem[];
-  isMobile: boolean;
-  initial: number;
-  onCarouselInstanceChange?: (inst: KeenSliderInstance<{}, {}, KeenSliderHooks> | null) => void;
-}
-
-const decideLanguage = (language: string, locales: Record<string, string>) => locales[language];
-
-const Carousel: React.FC<CarouselProps> = (props) => {
+const AppUnitCarousel: React.FC<CarouselProps> = (props) => {
   const { photoItems, isMobile, initial, onCarouselInstanceChange } = props;
 
   const { curLanguage } = useTranslation();
@@ -49,7 +40,7 @@ const Carousel: React.FC<CarouselProps> = (props) => {
                 borderRadius={6}
               >
                 <Text fontSize={{ base: 14, sm: 16 }} lineHeight='24px' maxW='calc(100% - 2rem)'>
-                  {decideLanguage(curLanguage, { en, ru })}
+                  {{ en, ru }[curLanguage]}
                 </Text>
               </Stack>
             )}
@@ -74,4 +65,4 @@ const Carousel: React.FC<CarouselProps> = (props) => {
   );
 };
 
-export { Carousel };
+export { AppUnitCarousel };

@@ -27,13 +27,14 @@ interface AppHeaderProps {
   toggleDrawer: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const cap = (str: string) =>
+const capitate = (str: string) =>
   str
     .split('')
     .map((char, idx) => (idx === 0 ? char.toUpperCase() : char))
     .join('');
 
-const appIntl = (name: string, lang: string) => `${name}${cap(lang)}` as keyof Omit<AppUserEditFields, 'photoURL'>;
+const getFieldKey = (name: string, lang: string) =>
+  `${name}${capitate(lang)}` as keyof Omit<AppUserEditFields, 'photoURL' | 'bullets'>;
 
 const AppHeader: React.FC<AppHeaderProps> = ({ toggleDrawer }) => {
   const headerOpacity = useColorModeValue('0.9', '0.5');
@@ -47,7 +48,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ toggleDrawer }) => {
     enabled: !!appCtx.botname,
   });
 
-  const { data: headerData = null } = useQuery<AppUserEditFields | null>({
+  const { data = null } = useQuery<AppUserEditFields | null>({
     queryKey: [ME_QUERY, uid],
     queryFn: getUserData.bind(appCtx),
     enabled: !!appCtx.botname,
@@ -91,7 +92,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ toggleDrawer }) => {
         </ChakraLink>
 
         <Heading size={{ base: 'md', sm: 'xl', md: '2xl' }} color='white'>
-          {headerData?.[appIntl('botName', curLanguage)]}
+          {data?.[getFieldKey('botName', curLanguage)]}
         </Heading>
       </Flex>
 

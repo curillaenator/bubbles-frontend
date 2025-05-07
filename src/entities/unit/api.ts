@@ -5,18 +5,18 @@ import { v4 as getId } from 'uuid';
 import { fsdb, storage } from '@src/configs/firebase.config';
 
 import type { AppGlobalCTX } from '@src/app';
-import type { AppUnitFields, AppUnit, AppUnitGalleryItem } from './interfaces';
+import type { AppUnitFields, AppUnitProps, AppUnitGalleryItem } from './interfaces';
 
 // COMMON PUBLIC API
 
 async function getUnits(this: AppGlobalCTX) {
   if (!this.botname) return [];
 
-  const loadedUnits: AppUnit[] = [];
+  const loadedUnits: AppUnitProps[] = [];
   const snapshot = await getDocs(collection(fsdb, this.botname));
 
   snapshot.forEach((snap) => {
-    if (snap.exists()) loadedUnits.push({ ...snap.data(), id: snap.id } as AppUnit);
+    if (snap.exists()) loadedUnits.push({ ...snap.data(), id: snap.id } as AppUnitProps);
   });
 
   return loadedUnits;
@@ -44,7 +44,7 @@ async function updateUnit(this: AppGlobalCTX, payload: UpdateUnitPayload) {
   return await updateDoc(doc(fsdb, this.botname, unitId), { ...updData });
 }
 
-async function removeUnit(this: AppGlobalCTX, unit: AppUnit) {
+async function removeUnit(this: AppGlobalCTX, unit: AppUnitProps) {
   if (!this.botname) return;
 
   const fileRemovePromises = unit.gallery
@@ -70,12 +70,12 @@ async function getUnit(this: AppGlobalCTX, unitId: string) {
   if (!this.botname) return null;
 
   return await getDoc(doc(fsdb, this.botname, unitId)).then((res) => {
-    if (res.exists()) return { ...res.data(), id: res.id } as AppUnit;
+    if (res.exists()) return { ...res.data(), id: res.id } as AppUnitProps;
     return null;
   });
 }
 
-async function reorderUnits(this: AppGlobalCTX, reordered: AppUnit[]) {
+async function reorderUnits(this: AppGlobalCTX, reordered: AppUnitProps[]) {
   if (!this.botname) return;
 
   for (const { id, order } of reordered) {
@@ -85,7 +85,7 @@ async function reorderUnits(this: AppGlobalCTX, reordered: AppUnit[]) {
 
 interface RemoveGalleryItemPayload {
   item: AppUnitGalleryItem;
-  unit: AppUnit;
+  unit: AppUnitProps;
 }
 
 async function removeGalleryItem(this: AppGlobalCTX, payload: RemoveGalleryItemPayload) {

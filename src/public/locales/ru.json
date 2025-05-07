@@ -44,5 +44,9 @@
   "chats-list": "Список чатов:",
   "chats-send-all-chats": "Сделать рассылку всем чатам",
   "chats-send-all-chats-title": "Сообщение рассылки",
-  "chats-user-started-bot-at": "Пользователь запустил бота:"
+  "chats-user-started-bot-at": "Пользователь запустил бота:",
+
+  "bullets-title": "Мои персональные сильные стороны",
+  "bullets-add": "Добавить буллет",
+  "bullets-remove": "Удалить буллет"
 }

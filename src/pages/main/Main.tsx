@@ -5,23 +5,19 @@ import { Stack, Center, VStack, Button, Separator } from '@chakra-ui/react';
 
 import { toPairs } from 'lodash';
 
-import { getUnits, AppUnitFields } from '@src/entities/unit';
+import { getUnits } from '@src/entities/unit';
 import { $userStore, getUserData, type AppUserEditFields } from '@src/entities/user';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 
 import { Loader } from '@src/features/loader';
-import { AppUIUnit } from '@src/features/unit';
-import { Me, Bullets } from '@src/features/me';
+import { AppUnit } from '@src/features/unit';
+import { Me } from '@src/features/me';
+import { Bullets } from '@src/features/bullets';
 
-import { useTranslation } from '@src/hooks/useTranslation';
 import { UNITS_QUERY, ME_QUERY } from '@src/configs/rtq.keys';
 import { AVAILBALE_BOTS } from '@src/configs/assets.config';
 
-const decideUnitLanguage = (field: string, lang: string, unit: Omit<AppUnitFields, 'gallery'>) =>
-  unit[`${field}-${lang}` as keyof Omit<AppUnitFields, 'gallery'>];
-
 const Main: React.FC = () => {
-  const { curLanguage } = useTranslation();
   const { uid } = useUnit($userStore);
   const appCtx = useAppContext();
 
@@ -65,27 +61,27 @@ const Main: React.FC = () => {
       gap={{ base: 6, lg: 12 }}
       py={{ base: 6, lg: 12 }}
     >
-      <Me />
+      {!!appCtx.botname ? (
+        <>
+          <Me />
 
-      <Separator />
-      {/* <Banner /> */}
+          <Separator />
 
-      {!!appCtx.botname && (
-        <Stack gap={6}>
-          {units
-            .toSorted(({ order: oA }, { order: oB }) => (oA || 0) - (oB || 0))
-            .map((u) => (
-              <AppUIUnit
-                key={u.id}
-                title={decideUnitLanguage('title', curLanguage, u)}
-                description={decideUnitLanguage('description', curLanguage, u)}
-                sources={u.gallery || []}
-              />
-            ))}
-        </Stack>
-      )}
+          {!!appCtx.botname && (
+            <Stack gap={6}>
+              {units
+                .toSorted(({ order: oA }, { order: oB }) => (oA || 0) - (oB || 0))
+                .map((unit) => (
+                  <AppUnit key={unit.id} {...unit} />
+                ))}
+            </Stack>
+          )}
 
-      {!appCtx.botname && (
+          <Separator />
+
+          <Bullets />
+        </>
+      ) : (
         <VStack>
           {toPairs(AVAILBALE_BOTS).map(([botN, { appRoute, colorPalette }]) => (
             <Button
@@ -100,8 +96,6 @@ const Main: React.FC = () => {
           ))}
         </VStack>
       )}
-
-      <Bullets />
     </Stack>
   );
 };

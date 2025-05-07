@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { useMutation } from '@tanstack/react-query';
-
-import { debounce } from 'lodash';
 import { MasonryPhotoAlbum } from 'react-photo-album';
+import { useMutation } from '@tanstack/react-query';
+import { debounce } from 'lodash';
 
 import { Stack, Box, Dialog, CloseButton, Heading, Text, Image, Center, Button, Flex } from '@chakra-ui/react';
 import { IoPlayOutline } from 'react-icons/io5';
@@ -13,20 +12,21 @@ import { useTranslation } from '@src/hooks/useTranslation';
 import { useColorModeValue } from '@src/features/chakra/color-mode';
 
 import { useItems } from './hooks/useItems';
-import { Carousel } from './Carousel';
+import { AppUnitCarousel } from './AppUnitCarousel';
 
+import type { AppUnitProps, AppUnitFields } from '@src/entities/unit';
 import { MOBILE_VIEW_MAX_WIDTH } from './constants';
-import type { AppUIUnitProps, GalleryItem } from './interfaces';
+import type { AppUIUnitGallryItemProps } from './interfaces';
 
 import 'react-photo-album/masonry.css';
 
-const decideLanguage = (language: string, locales: Record<string, string>) => locales[language];
-
-const sortGalleryItems = (units: GalleryItem[]) =>
+const sortGalleryItems = (units: AppUIUnitGallryItemProps[]) =>
   units.toSorted(({ order: oA }, { order: oB }) => (oA || 0) - (oB || 0));
 
-const AppUIUnit: React.FC<AppUIUnitProps> = (props) => {
-  const { title, description } = props;
+const decideLanguage = (field: string, lang: string, unit: Omit<AppUnitFields, 'gallery'>) =>
+  unit[`${field}-${lang}` as keyof Omit<AppUnitFields, 'gallery'>];
+
+const AppUnit: React.FC<AppUnitProps> = (props) => {
   const { curLanguage, t } = useTranslation();
   const appCtx = useAppContext();
 
@@ -61,19 +61,22 @@ const AppUIUnit: React.FC<AppUIUnitProps> = (props) => {
     return () => obs.disconnect();
   }, [checkMobile]);
 
+  const unitTitle = decideLanguage('title', curLanguage, props);
+  const unitDescription = decideLanguage('description', curLanguage, props);
+
   return (
     <Stack ref={containerRef} gap={6}>
-      <Heading py={4}>{title}</Heading>
+      <Heading py={4}>{unitTitle}</Heading>
 
-      {!!description && (
+      {!!unitDescription && (
         <Text whiteSpace='pre-line' fontSize={{ base: 14, sm: 16 }} color='fg.muted'>
-          {description}
+          {unitDescription}
         </Text>
       )}
 
       {!!appCtx.botname && !!appCtx.chatId && (
         <Flex my={6}>
-          <Button colorPalette='blue' onClick={() => sendNewApplication(title)} loading={isNewApplicationPending}>
+          <Button colorPalette='blue' onClick={() => sendNewApplication(unitTitle)} loading={isNewApplicationPending}>
             {t('unit-make-application')}
           </Button>
         </Flex>
@@ -118,7 +121,7 @@ const AppUIUnit: React.FC<AppUIUnitProps> = (props) => {
                     fontSize={{ base: 12, sm: 14 }}
                     lineHeight={{ base: '16px', sm: '20px' }}
                   >
-                    {decideLanguage(curLanguage, { en: photo.en, ru: photo.ru })}
+                    {{ en: photo.en, ru: photo.ru }[curLanguage]}
                   </Text>
                 </Stack>
               )}
@@ -143,7 +146,7 @@ const AppUIUnit: React.FC<AppUIUnitProps> = (props) => {
           {/* @ts-expect-error */}
           <Dialog.Content maxH='90vh' maxW={{ lg: '70vw' }} mx='auto'>
             <Dialog.Body p={4} h='100%'>
-              <Carousel initial={initial} isMobile={isMobile} photoItems={photoItems} />
+              <AppUnitCarousel initial={initial} isMobile={isMobile} photoItems={photoItems} />
             </Dialog.Body>
 
             {/* @ts-expect-error */}
@@ -157,4 +160,4 @@ const AppUIUnit: React.FC<AppUIUnitProps> = (props) => {
   );
 };
 
-export { AppUIUnit };
+export { AppUnit };

@@ -45,6 +45,7 @@ import { ME_QUERY, AVATAR_QUERY } from '@src/configs/rtq.keys';
 import { STATIC_PATHS } from '@src/configs/assets.config';
 import { FORM_MODEL } from './form.model';
 
+import { EditBullets } from './EditBullets';
 import type { MeEditFieldType } from './interfaces';
 
 const FIELD_COMPONENTS: Record<MeEditFieldType, React.ElementType> = {
@@ -93,12 +94,14 @@ const EditMe: React.FC = () => {
     handleSubmit,
     register,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<AppUserEditFields>({ values: meFieldsData || undefined });
 
   useEffect(() => () => reset(), [reset]);
 
   const avatar = watch('photoURL');
+  const bullets = watch('bullets');
 
   if (!appCtx.botname) return <Navigate to={ROOT_ROUTE} replace />;
 
@@ -157,6 +160,8 @@ const EditMe: React.FC = () => {
                       placeholder={description || label}
                       {...register(fieldKey, { required })}
                       rows={8}
+                      autoComplete='off'
+                      bg='bg'
                     />
 
                     <Field.ErrorText>{errors[fieldKey]?.message}</Field.ErrorText>
@@ -166,6 +171,8 @@ const EditMe: React.FC = () => {
             </GridItem>
 
             <GridItem display='flex' flexDirection='column' gap={6}>
+              {appCtx.chatId && <Text color='fg.muted'>{appCtx.chatId}</Text>}
+
               {/* @ts-expect-error */}
               {!avatar?.item?.(0) && !!avatarURL && (
                 <Image src={avatarURL} alt='Viktor' w='100%' aspectRatio='1 / 1' objectFit='cover' borderRadius={6} />
@@ -205,10 +212,10 @@ const EditMe: React.FC = () => {
 
                 <FileUpload.List />
               </FileUpload.Root>
-
-              <Text color='fg.muted'>{appCtx.chatId}</Text>
             </GridItem>
           </SimpleGrid>
+
+          <EditBullets disabled={isPending || isAvatarPending} setFormValue={setValue} bullets={bullets} />
 
           <Flex w='full' gap={6}>
             <Button

@@ -1,5 +1,5 @@
 import React from 'react';
-import type { AppUnit } from '@src/entities/unit';
+import type { AppUnitProps } from '@src/entities/unit';
 import { useNavigate } from 'react-router-dom';
 
 import { Card, Box, Button, Flex } from '@chakra-ui/react';
@@ -12,9 +12,9 @@ import type { AppUnitFields } from '@src/entities/unit';
 
 type UnitKey = keyof Omit<AppUnitFields, 'gallery'>;
 
-interface ContentCardProps extends AppUnit {
+interface ContentCardProps extends AppUnitProps {
   isControlsDisabled: boolean;
-  removeSelectedUnit: (unit: AppUnit) => void;
+  removeSelectedUnit: (unit: AppUnitProps) => void;
 }
 
 const ContentCard = React.forwardRef<HTMLDivElement, ContentCardProps>((props, ref) => {

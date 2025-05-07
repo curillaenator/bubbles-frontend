@@ -15,9 +15,9 @@ interface AppUnitFields {
   gallery: AppUnitGalleryItem[];
 }
 
-interface AppUnit extends AppUnitFields {
+interface AppUnitProps extends AppUnitFields {
   id: string;
   order?: number;
 }
 
-export type { AppUnitFields, AppUnitGalleryItem, AppUnit };
+export type { AppUnitFields, AppUnitGalleryItem, AppUnitProps };

@@ -23,7 +23,8 @@ const cap = (str: string) =>
     .map((char, idx) => (idx === 0 ? char.toUpperCase() : char))
     .join('');
 
-const appIntl = (name: string, lang: string) => `${name}${cap(lang)}` as keyof Omit<AppUserEditFields, 'photoURL'>;
+const getFieldKey = (name: string, lang: string) =>
+  `${name}${cap(lang)}` as keyof Omit<AppUserEditFields, 'photoURL' | 'bullets'>;
 
 const Me: React.FC = () => {
   const { curLanguage } = useTranslation();
@@ -105,12 +106,12 @@ const Me: React.FC = () => {
             colSpan={{ base: 1, sm: 2, md: 2, lg: 2 }}
           >
             <Stack gap={6}>
-              <Heading>{meData[appIntl('head', curLanguage)]}</Heading>
+              <Heading>{meData[getFieldKey('head', curLanguage)]}</Heading>
 
-              <Heading>{meData?.[appIntl('pricing', curLanguage)]}</Heading>
+              <Heading>{meData?.[getFieldKey('pricing', curLanguage)]}</Heading>
 
               <Text whiteSpace='pre-line' color='fg.muted' fontSize={{ base: 14, sm: 16 }}>
-                {meData[appIntl('body', curLanguage)]}
+                {meData[getFieldKey('body', curLanguage)]}
               </Text>
             </Stack>
 

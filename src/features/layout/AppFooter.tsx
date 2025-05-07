@@ -1,6 +1,5 @@
 import React from 'react';
 import { useUnit } from 'effector-react';
-// import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 
 import { Flex, Button, Image } from '@chakra-ui/react';

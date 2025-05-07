@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 
@@ -56,6 +56,8 @@ const ManageChats: React.FC = () => {
   });
 
   const isControlsDisabled = isRemovingUnit;
+
+  if (!appCtx.botname) return <Navigate to={ROOT_ROUTE} replace />;
 
   return (
     <Stack py={6} h='100%' maxH='100%' overflow='auto' scrollbar='hidden' gap={6}>

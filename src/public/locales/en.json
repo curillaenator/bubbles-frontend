@@ -44,5 +44,9 @@
   "chats-list": "Chat list:",
   "chats-send-all-chats": "Send message to all chats",
   "chats-send-all-chats-title": "Message text",
-  "chats-user-started-bot-at": "User started bot at"
+  "chats-user-started-bot-at": "User started bot at",
+
+  "bullets-title": "My stongest personal features",
+  "bullets-add": "Add feture",
+  "bullets-remove": "Remove feature"
 }
