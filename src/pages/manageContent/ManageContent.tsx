@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import SortableList, { SortableItem } from 'react-easy-sort';
@@ -60,6 +60,8 @@ const ManageContent: React.FC = () => {
   );
 
   const isControlsDisabled = isRemovingUnit || isReorderingUnits;
+
+  if (!appCtx.botname) return <Navigate to={ROUTES.root} replace />;
 
   return (
     <Stack py={6} h='100%' maxH='100%' overflow='auto' scrollbar='hidden' gap={6}>
