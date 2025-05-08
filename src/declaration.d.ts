@@ -1,4 +1,6 @@
+import 'react-router-dom';
 import type { TelegramWebApps } from 'telegram-webapps-types';
+import type { PathParams } from './routes';
 
 declare global {
   interface Window {
@@ -9,6 +11,12 @@ declare global {
     email: string;
     password: string;
     error?: string;
+  }
+}
+
+declare module 'react-router-dom' {
+  interface Register {
+    params: PathParams;
   }
 }
 

@@ -23,8 +23,8 @@ import {
   Stack,
 } from '@chakra-ui/react';
 
-import { IoSaveOutline } from 'react-icons/io5';
-import { TbUpload, TbCancel } from 'react-icons/tb';
+import { IoSaveOutline, IoHomeOutline } from 'react-icons/io5';
+import { TbUpload } from 'react-icons/tb';
 
 import {
   $userStore,
@@ -40,7 +40,7 @@ import { useAppContext } from '@src/providers/AppBotnameProvider';
 
 import { Loader } from '@src/features/loader';
 
-import { ROOT_ROUTE } from '@src/routes';
+import { ROUTES } from '@src/routes';
 import { ME_QUERY, AVATAR_QUERY } from '@src/configs/rtq.keys';
 import { STATIC_PATHS } from '@src/configs/assets.config';
 import { FORM_MODEL } from './form.model';
@@ -85,7 +85,7 @@ const EditMe: React.FC = () => {
 
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: [ME_QUERY, uid] });
-      navigate(ROOT_ROUTE);
+      navigate(ROUTES.root);
     },
   });
 
@@ -103,7 +103,7 @@ const EditMe: React.FC = () => {
   const avatar = watch('photoURL');
   const bullets = watch('bullets');
 
-  if (!appCtx.botname) return <Navigate to={ROOT_ROUTE} replace />;
+  if (!appCtx.botname) return <Navigate to={ROUTES.root} replace />;
 
   if (isLoading)
     return (
@@ -239,11 +239,11 @@ const EditMe: React.FC = () => {
               flex='1 1 auto'
               onClick={() => {
                 reset();
-                navigate(ROOT_ROUTE);
+                navigate(ROUTES.root);
               }}
             >
-              <TbCancel />
-              {t('app-cancel-button')}
+              <IoHomeOutline />
+              {t('app-nav-main')}
             </Button>
           </Flex>
         </Form.Body>
@@ -252,4 +252,4 @@ const EditMe: React.FC = () => {
   );
 };
 
-export { EditMe };
+export const Component = EditMe;

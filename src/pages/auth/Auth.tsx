@@ -108,4 +108,4 @@ const AuthPage: React.FC = () => {
   );
 };
 
-export { AuthPage };
+export const Component = AuthPage;

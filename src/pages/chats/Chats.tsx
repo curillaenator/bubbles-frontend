@@ -13,7 +13,7 @@ import { useAppContext } from '@src/providers/AppBotnameProvider';
 import { getChats, removeChat, sendToAllChats, type TgChatMeta } from '@src/entities/tgchat';
 
 import { CHATS_QUERY } from '@src/configs/rtq.keys';
-import { ROOT_ROUTE } from '@src/routes';
+import { ROUTES } from '@src/routes';
 
 const sortChats = (chats: TgChatMeta[]) => chats.toSorted(({ date: dA }, { date: dB }) => (dB || 0) - (dA || 0));
 
@@ -57,7 +57,7 @@ const ManageChats: React.FC = () => {
 
   const isControlsDisabled = isRemovingUnit;
 
-  if (!appCtx.botname) return <Navigate to={ROOT_ROUTE} replace />;
+  if (!appCtx.botname) return <Navigate to={ROUTES.root} replace />;
 
   return (
     <Stack py={6} h='100%' maxH='100%' overflow='auto' scrollbar='hidden' gap={6}>
@@ -68,7 +68,7 @@ const ManageChats: React.FC = () => {
           variant='surface'
           w='100%'
           flex='auto'
-          onClick={() => navigate(ROOT_ROUTE)}
+          onClick={() => navigate(ROUTES.root)}
           disabled={isControlsDisabled}
         >
           <IoHomeOutline />
@@ -175,4 +175,4 @@ const ManageChats: React.FC = () => {
   );
 };
 
-export { ManageChats };
+export const Component = ManageChats;

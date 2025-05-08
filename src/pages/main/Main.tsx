@@ -100,4 +100,4 @@ const Main: React.FC = () => {
   );
 };
 
-export { Main };
+export const Component = Main;

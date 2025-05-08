@@ -18,20 +18,20 @@ import { $userStore, logoutUser, BOTNAME_TO_OWNER_UID } from '@src/entities/user
 
 import { NavButton } from './NavButton';
 
-import { ROOT_ROUTE, SHARE_ROUTE, AUTH_ROUTE, EDIT_ME_ROUTE } from '@src/routes';
+import { ROUTES } from '@src/routes';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 
 interface MenuProps {
   toggleDrawer: (value: React.SetStateAction<boolean>) => void;
 }
 
-const MENU_ITEMS = [{ to: ROOT_ROUTE, captionId: 'app-nav-main', Icon: IoHomeOutline }] as const;
+const MENU_ITEMS = [{ to: ROUTES.root, captionId: 'app-nav-main', Icon: IoHomeOutline }] as const;
 
 const SETTINGS_ITEMS = [
-  { to: SHARE_ROUTE, captionId: 'app-nav-share', Icon: IoGlobeOutline },
-  { to: EDIT_ME_ROUTE, captionId: 'app-nav-edit-me', Icon: IoPersonOutline },
-  { to: '/units', captionId: 'app-nav-manage-units', Icon: IoSettingsOutline },
-  { to: '/chats', captionId: 'app-nav-chats', Icon: IoChatboxOutline },
+  { to: ROUTES.share, captionId: 'app-nav-share', Icon: IoGlobeOutline },
+  { to: ROUTES.editme, captionId: 'app-nav-edit-me', Icon: IoPersonOutline },
+  { to: ROUTES.units, captionId: 'app-nav-manage-units', Icon: IoSettingsOutline },
+  { to: ROUTES.chats, captionId: 'app-nav-chats', Icon: IoChatboxOutline },
 ] as const;
 
 const Menu: React.FC<MenuProps> = ({ toggleDrawer }) => {
@@ -59,6 +59,8 @@ const Menu: React.FC<MenuProps> = ({ toggleDrawer }) => {
                 {t(captionId)}
               </NavButton>
             ))}
+
+            {/* <Link to={} /> */}
           </Stack>
         )}
       </Stack>
@@ -78,7 +80,7 @@ const Menu: React.FC<MenuProps> = ({ toggleDrawer }) => {
             {t('app-nav-logout')}
           </Button>
         ) : (
-          <NavButton to={AUTH_ROUTE} color='fg.muted' onClick={() => toggleDrawer(false)} w='100%'>
+          <NavButton to={ROUTES.auth} color='fg.muted' onClick={() => toggleDrawer(false)} w='100%'>
             <IoLogInOutline />
             {t('app-nav-auth')}
           </NavButton>

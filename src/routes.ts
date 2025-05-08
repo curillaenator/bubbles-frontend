@@ -1,14 +1,18 @@
-const ROOT_ROUTE = '/';
-const AUTH_ROUTE = '/auth';
-const SHARE_ROUTE = '/share';
+type PathParams = {
+  [ROUTES.unit]: {
+    unitId?: string;
+  };
+};
 
-const EDIT_ME_ROUTE = '/editme';
+const ROUTES = {
+  root: '/',
+  auth: '/auth',
+  share: '/share',
+  editme: '/editme',
+  chats: '/chats',
 
-// /unit - create new unit
-// /unit/unitId - edit existing unit
-const EDIT_UNIT_ROUTE = '/unit/:unitId?';
-const MANAGE_UNITS = '/units';
+  units: '/units',
+  unit: '/unit/:unitId?', // /unit - create new unit , /unit/unitId - edit existing unit
+} as const;
 
-const MANAGE_CHATS = '/chats';
-
-export { ROOT_ROUTE, AUTH_ROUTE, SHARE_ROUTE, EDIT_ME_ROUTE, EDIT_UNIT_ROUTE, MANAGE_UNITS, MANAGE_CHATS };
+export { ROUTES, type PathParams };

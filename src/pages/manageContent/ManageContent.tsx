@@ -12,7 +12,7 @@ import { useTranslation } from '@src/hooks/useTranslation';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 import { getUnits, removeUnit, reorderUnits, type AppUnitProps } from '@src/entities/unit';
 import { UNITS_QUERY } from '@src/configs/rtq.keys';
-import { ROOT_ROUTE } from '@src/routes';
+import { ROUTES } from '@src/routes';
 
 import { ContentCard } from './ContentCard';
 
@@ -75,7 +75,7 @@ const ManageContent: React.FC = () => {
           variant='surface'
           w='100%'
           flex='auto'
-          onClick={() => navigate(ROOT_ROUTE)}
+          onClick={() => navigate(ROUTES.root)}
           disabled={isControlsDisabled}
         >
           <IoHomeOutline />
@@ -94,4 +94,4 @@ const ManageContent: React.FC = () => {
   );
 };
 
-export { ManageContent };
+export const Component = ManageContent;

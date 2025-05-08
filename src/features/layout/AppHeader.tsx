@@ -19,7 +19,7 @@ import { LangSelector } from '@src/features/langSelector';
 
 import { COMMON_ASSET_QUERY, ME_QUERY } from '@src/configs/rtq.keys';
 import { STATIC_PATHS } from '@src/configs/assets.config';
-import { ROOT_ROUTE } from '@src/routes';
+import { ROUTES } from '@src/routes';
 
 const ChakraLink = chakra(Link);
 
@@ -87,7 +87,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ toggleDrawer }) => {
           <IoMenu />
         </IconButton>
 
-        <ChakraLink to={ROOT_ROUTE}>
+        <ChakraLink to={ROUTES.root}>
           <Logo />
         </ChakraLink>
 

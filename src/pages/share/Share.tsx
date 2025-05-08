@@ -66,4 +66,4 @@ const SharePage: React.FC = () => {
   );
 };
 
-export { SharePage };
+export const Component = SharePage;

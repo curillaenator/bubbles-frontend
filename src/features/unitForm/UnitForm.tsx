@@ -3,7 +3,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { useTranslation } from 'react-i18next';
 import { keys, omit } from 'lodash';
 
 import {
@@ -22,12 +21,13 @@ import {
 
 import { IoSaveOutline, IoHomeOutline } from 'react-icons/io5';
 
+import { useTranslation } from '@src/hooks/useTranslation';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 import { createUnit, getUnit, updateUnit, type AppUnitFields } from '@src/entities/unit';
 
 import { Loader } from '@src/features/loader';
 
-import { ROOT_ROUTE, MANAGE_UNITS } from '@src/routes';
+import { ROUTES, type PathParams } from '@src/routes';
 import { SINGLE_UNIT_QUERY, UNITS_QUERY } from '@src/configs/rtq.keys';
 
 import { UnitFormGallery } from './UnitFormGallery';
@@ -36,11 +36,12 @@ const I18N_KEY = 'unit-form';
 const resolveI18NKey = (key: string) => `${I18N_KEY}-${key}`;
 
 const UnitForm: React.FC = () => {
-  const { unitId } = useParams<{ unitId: string }>();
   const navigate = useNavigate();
   const qc = useQueryClient();
   const appCtx = useAppContext();
   const { t } = useTranslation();
+
+  const { unitId = null } = useParams<PathParams[typeof ROUTES.unit]>();
 
   const { data = null, isLoading } = useQuery({
     queryKey: [SINGLE_UNIT_QUERY, unitId],
@@ -62,7 +63,7 @@ const UnitForm: React.FC = () => {
 
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: [UNITS_QUERY] });
-      navigate(MANAGE_UNITS);
+      navigate(ROUTES.units);
     },
   });
 
@@ -210,7 +211,7 @@ const UnitForm: React.FC = () => {
         w='full'
         onClick={() => {
           reset();
-          navigate(ROOT_ROUTE);
+          navigate(ROUTES.root);
         }}
       >
         <IoHomeOutline />
