@@ -6,6 +6,13 @@ declare global {
   interface Window {
     Telegram: TelegramWebApps.SDK;
   }
+
+  interface AvailableBotItem {
+    app: string;
+    bot: string;
+    appRoute: string;
+    colorPalette: string;
+  }
 }
 
 declare module 'react-router-dom' {

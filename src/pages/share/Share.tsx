@@ -5,20 +5,17 @@ import { Stack, Flex, Center, Heading, QrCode, Text } from '@chakra-ui/react';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 import { useTranslation } from '@src/hooks/useTranslation';
 
-import { SHARE_DATA } from './constants';
-import type { ShareLinks } from './interfaces';
+import { AVAILBALE_BOTS } from '@src/configs/assets.config';
 
 const SharePage: React.FC = () => {
   const { t } = useTranslation();
   const { botname } = useAppContext();
 
-  const [shareLinks, setShareLinks] = useState<ShareLinks | null>(null);
+  const [shareLinks, setShareLinks] = useState<AvailableBotItem | null>(null);
 
   useEffect(() => {
-    if (!!botname) setShareLinks(SHARE_DATA[botname]);
+    if (!!botname) setShareLinks(AVAILBALE_BOTS[botname]);
   }, [botname]);
-
-  // const {} = SHARE_DATA[botname]
 
   return (
     <Stack gap={6} h='100%' maxH='100%' overflow='auto' scrollbar='hidden' py={6} alignItems='center'>
@@ -48,11 +45,11 @@ const SharePage: React.FC = () => {
         </>
       )}
 
-      {shareLinks?.web && (
+      {shareLinks?.app && (
         <>
           <Heading size='3xl'>{t('app-share-app')}</Heading>
 
-          <Text color='fg.muted'>{shareLinks.web}</Text>
+          <Text color='fg.muted'>{shareLinks.app}</Text>
 
           <Flex
             w='100%'
@@ -64,7 +61,7 @@ const SharePage: React.FC = () => {
             zIndex={20}
           >
             <Center w='100%' maxW='512px' aspectRatio='1 / 1'>
-              <QrCode.Root value={shareLinks.web} size='2xl'>
+              <QrCode.Root value={shareLinks.app} size='2xl'>
                 <QrCode.Frame style={{ fill: 'black', background: 'white' }}>
                   <QrCode.Pattern />
                 </QrCode.Frame>

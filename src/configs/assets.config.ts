@@ -8,13 +8,6 @@ const STATIC_PATHS = {
   videoCover: 'common/video_default.avif',
 } as const;
 
-interface AvailableBotItem {
-  app: string;
-  bot: string;
-  appRoute: string;
-  colorPalette: string;
-}
-
 const AVAILBALE_BOTS: Record<AppBotname, AvailableBotItem> = {
   divebot: {
     app: 'https://art-app-2020.web.app?botname=divebot',
@@ -24,7 +17,7 @@ const AVAILBALE_BOTS: Record<AppBotname, AvailableBotItem> = {
   },
   lashes: {
     app: 'https://art-app-2020.web.app?botname=lashes',
-    bot: 'https://t.me/best_lashes_bot',
+    bot: '',
     appRoute: '/?botname=lashes',
     colorPalette: 'pink',
   },
