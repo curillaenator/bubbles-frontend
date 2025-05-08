@@ -40,13 +40,13 @@ const Main: React.FC = () => {
     return (
       <Stack
         data-mainpage-loader
-        maxH='100%'
+        h='100%'
         overflow='auto'
         scrollbar='hidden'
         gap={{ base: 6, lg: 12 }}
         py={{ base: 6, lg: 12 }}
       >
-        <Center w='full' h='480px'>
+        <Center w='full' h='100%'>
           <Loader />
         </Center>
       </Stack>

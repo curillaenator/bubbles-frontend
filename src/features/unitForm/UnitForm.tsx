@@ -117,6 +117,7 @@ const UnitForm: React.FC = () => {
                 disabled={isPending}
                 variant='outline'
                 placeholder='Title EN'
+                bg='bg'
                 {...register('title-en', { required: 'Required' })}
               />
 
@@ -132,6 +133,7 @@ const UnitForm: React.FC = () => {
                 disabled={isPending}
                 variant='outline'
                 placeholder='Заголовок RU'
+                bg='bg'
                 {...register('title-ru', { required: 'Required' })}
               />
 
@@ -149,7 +151,8 @@ const UnitForm: React.FC = () => {
                 disabled={isPending}
                 variant='outline'
                 placeholder='Description EN'
-                rows={8}
+                rows={6}
+                bg='bg'
                 {...register('description-en', { required: 'Required' })}
               />
 
@@ -165,7 +168,8 @@ const UnitForm: React.FC = () => {
                 disabled={isPending}
                 variant='outline'
                 placeholder='Описание RU'
-                rows={8}
+                rows={6}
+                bg='bg'
                 {...register('description-ru', { required: 'Required' })}
               />
 
