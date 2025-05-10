@@ -27,7 +27,7 @@ const LangSelector: React.FC = () => {
     >
       {/* @ts-expect-error */}
       <Menu.Trigger asChild>
-        <IconButton variant='ghost' size='md'>
+        <IconButton variant='surface' size='md'>
           {LANG_ASSOC[curLanguage as AppLanguage]?.flag || '🇬🇧'}
         </IconButton>
       </Menu.Trigger>

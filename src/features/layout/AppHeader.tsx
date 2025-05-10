@@ -12,7 +12,7 @@ import { $userStore, getUserData, type AppUserEditFields } from '@src/entities/u
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 import { useTranslation } from '@src/hooks/useTranslation';
 
-import { useColorModeValue } from '@src/features/chakra/color-mode';
+// import { useColorModeValue } from '@src/features/chakra/color-mode';
 
 import { Logo } from '@src/features/logo';
 import { LangSelector } from '@src/features/langSelector';
@@ -36,8 +36,11 @@ const capitate = (str: string) =>
 const getFieldKey = (name: string, lang: string) =>
   `${name}${capitate(lang)}` as keyof Omit<AppUserEditFields, 'photoURL' | 'bullets'>;
 
+const TEXT_SHADOW =
+  'drop-shadow(0 0 4px var(--chakra-colors-black-alpha-950)) drop-shadow(0 0 12px var(--chakra-colors-black-alpha-950))';
+
 const AppHeader: React.FC<AppHeaderProps> = ({ toggleDrawer }) => {
-  const headerOpacity = useColorModeValue('0.9', '0.5');
+  // const headerOpacity = useColorModeValue('0.9', '0.5');
   const { curLanguage } = useTranslation();
   const appCtx = useAppContext();
   const { uid } = useUnit($userStore);
@@ -71,10 +74,9 @@ const AppHeader: React.FC<AppHeaderProps> = ({ toggleDrawer }) => {
       {!!headerBackgroundURL && (
         <Image
           src={headerBackgroundURL}
-          w='100%'
+          w='full'
           objectFit='cover'
           zIndex={-1}
-          opacity={headerOpacity}
           position='absolute'
           top='50%'
           transform='translateY(-50%)'
@@ -83,15 +85,15 @@ const AppHeader: React.FC<AppHeaderProps> = ({ toggleDrawer }) => {
       )}
 
       <Flex alignItems='center' gap={2}>
-        <IconButton variant='ghost' size='md' color='white' onClick={() => toggleDrawer((o) => !o)}>
+        <IconButton variant='surface' size='md' onClick={() => toggleDrawer((o) => !o)}>
           <IoMenu />
         </IconButton>
 
-        <ChakraLink to={ROUTES.root}>
+        <ChakraLink to={ROUTES.root} filter={TEXT_SHADOW}>
           <Logo />
         </ChakraLink>
 
-        <Heading size={{ base: 'md', sm: 'xl', md: '2xl' }} color='white'>
+        <Heading size={{ base: 'md', sm: 'xl', md: '2xl' }} color='white' filter={TEXT_SHADOW}>
           {data?.[getFieldKey('botName', curLanguage)]}
         </Heading>
       </Flex>

@@ -22,4 +22,5 @@ const fsdb = getFirestore(app);
 const storage = getStorage();
 const analytics = getAnalytics(app);
 
-export { app, auth, fsdb, analytics, storage };
+export default app;
+export { auth, fsdb, analytics, storage };

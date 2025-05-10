@@ -5,6 +5,7 @@ import type { AppBotname } from '@src/app';
 
 import { DivebotLogo } from './assets/DivebotLogo';
 import { LashesLogo } from './assets/LashesLogo';
+import { FleaLogo } from './assets/Flea';
 
 interface AppLogoProps {
   size?: number | 'adaptive';
@@ -13,6 +14,7 @@ interface AppLogoProps {
 const LOGO_COMPONENTNS: Record<AppBotname, React.FC<AppLogoProps>> = {
   divebot: DivebotLogo,
   lashes: LashesLogo,
+  flea: FleaLogo,
 };
 
 const Logo: React.FC<AppLogoProps> = (props) => {

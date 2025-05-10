@@ -7,9 +7,8 @@ import { auth, fsdb, storage } from '@src/configs/firebase.config';
 import { IMAGE_RESIZE_SETUP } from '@src/configs/imageresizer.config';
 import { STATIC_PATHS } from '@src/configs/assets.config';
 
+import { BOTNAME_TO_OWNER_UID } from '@src/bots';
 import type { AppGlobalCTX } from '@src/app';
-
-import { BOTNAME_TO_OWNER_UID } from './constants';
 import type { AppUserCreds, AppUserEditFields } from './interfaces';
 
 // AUTH API

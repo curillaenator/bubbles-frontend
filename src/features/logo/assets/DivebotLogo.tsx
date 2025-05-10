@@ -1,14 +1,10 @@
 import React from 'react';
-
 import { chakra } from '@chakra-ui/react';
 
+import { ADAPTIVE_SET } from '../constants';
+import type { AppLogoProps } from '../interfaces';
+
 const LogoSvg = chakra('svg');
-
-interface AppLogoProps {
-  size?: number | 'adaptive';
-}
-
-const ADAPTIVE_SET = { base: '40px', sm: '40px', md: '40px', lg: '48px' };
 
 const DivebotLogo: React.FC<AppLogoProps> = ({ size = 'adaptive' }) => {
   const logoSize = size === 'adaptive' ? ADAPTIVE_SET : `${size}px`;

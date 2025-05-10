@@ -5,7 +5,7 @@ import { Stack, Flex, Center, Heading, QrCode, Text } from '@chakra-ui/react';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 import { useTranslation } from '@src/hooks/useTranslation';
 
-import { AVAILBALE_BOTS } from '@src/configs/assets.config';
+import { AVAILBALE_BOTS } from '@src/bots';
 
 const SharePage: React.FC = () => {
   const { t } = useTranslation();

@@ -14,10 +14,11 @@ import {
 } from 'react-icons/io5';
 
 import { ColorModeButton } from '@src/features/chakra/color-mode';
-import { $userStore, logoutUser, BOTNAME_TO_OWNER_UID } from '@src/entities/user';
+import { $userStore, logoutUser } from '@src/entities/user';
 
 import { NavButton } from './NavButton';
 
+import { BOTNAME_TO_OWNER_UID } from '@src/bots';
 import { ROUTES } from '@src/routes';
 import { useAppContext } from '@src/providers/AppBotnameProvider';
 

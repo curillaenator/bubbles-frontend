@@ -1,3 +1,4 @@
+import './configs/firebase.config';
 import './configs/i18n.config';
 
 import React from 'react';
@@ -16,13 +17,13 @@ const appContainer = document.querySelector('#root[data-bubbles]') as Element;
 const reactRoot = createRoot(appContainer);
 
 reactRoot.render(
-  <QueryClientProvider>
-    <ChakraProvider>
+  <ChakraProvider>
+    <QueryClientProvider>
       <AppBotnameProvider>
         <FirebaseAuthProvider>
           <RouterProvider router={appRouter} fallbackElement={<FullsizeLoader />} />
         </FirebaseAuthProvider>
       </AppBotnameProvider>
-    </ChakraProvider>
-  </QueryClientProvider>,
+    </QueryClientProvider>
+  </ChakraProvider>,
 );

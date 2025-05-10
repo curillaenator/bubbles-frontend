@@ -1,7 +1,7 @@
 import { doc, collection, getDocs, deleteDoc } from 'firebase/firestore';
 import { fsdb, auth } from '@src/configs/firebase.config';
 
-import { BOTNAME_TO_OWNER_UID } from '@src/entities/user';
+import { BOTNAME_TO_OWNER_UID } from '@src/bots';
 import type { AppGlobalCTX } from '@src/app';
 import type { TgChatMeta } from './interfaces';
 

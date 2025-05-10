@@ -15,7 +15,7 @@ import { Me } from '@src/features/me';
 import { Bullets } from '@src/features/bullets';
 
 import { UNITS_QUERY, ME_QUERY } from '@src/configs/rtq.keys';
-import { AVAILBALE_BOTS } from '@src/configs/assets.config';
+import { AVAILBALE_BOTS } from '@src/bots';
 
 const Main: React.FC = () => {
   const { uid } = useUnit($userStore);
