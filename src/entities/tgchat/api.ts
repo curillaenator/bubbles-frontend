@@ -39,9 +39,7 @@ async function sendToAllChats(this: AppGlobalCTX, payload: SendAllChatsPayload) 
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ actionType: 'send-to-all', payload }),
-  })
-    .then(() => ({ status: 'ok' }))
-    .catch(() => ({ status: 'failed' }));
+  });
 }
 
 async function sendApplication(this: AppGlobalCTX, application: string) {
