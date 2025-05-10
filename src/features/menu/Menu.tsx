@@ -20,7 +20,7 @@ import { NavButton } from './NavButton';
 
 import { BOTNAME_TO_OWNER_UID } from '@src/bots';
 import { ROUTES } from '@src/routes';
-import { useAppContext } from '@src/providers/AppBotnameProvider';
+import { useAppContext } from '@src/providers/AppContextProvider';
 
 interface MenuProps {
   toggleDrawer: (value: React.SetStateAction<boolean>) => void;

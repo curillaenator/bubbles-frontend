@@ -27,7 +27,7 @@ import {
 import { TbUpload } from 'react-icons/tb';
 import { IoSave, IoRemove, IoClose } from 'react-icons/io5';
 
-import { useAppContext } from '@src/providers/AppBotnameProvider';
+import { useAppContext } from '@src/providers/AppContextProvider';
 
 import { removeGalleryItem, type AppUnitGalleryItem } from '@src/entities/unit';
 import { getAssetUrl, uploadImage } from '@src/entities/asset';

@@ -9,7 +9,7 @@ import { Heading, Stack, HStack, Button, chakra } from '@chakra-ui/react';
 import { IoCreateOutline, IoHomeOutline } from 'react-icons/io5';
 
 import { useTranslation } from '@src/hooks/useTranslation';
-import { useAppContext } from '@src/providers/AppBotnameProvider';
+import { useAppContext } from '@src/providers/AppContextProvider';
 import { getUnits, removeUnit, reorderUnits, type AppUnitProps } from '@src/entities/unit';
 import { UNITS_QUERY } from '@src/configs/rtq.keys';
 import { ROUTES } from '@src/routes';

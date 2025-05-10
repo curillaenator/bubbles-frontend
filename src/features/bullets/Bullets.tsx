@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import { Card, Stack, SimpleGrid, GridItem, Heading, Text, Center } from '@chakra-ui/react';
 
-import { useAppContext } from '@src/providers/AppBotnameProvider';
+import { useAppContext } from '@src/providers/AppContextProvider';
 import { useTranslation } from '@src/hooks/useTranslation';
 import { getUserData } from '@src/entities/user';
 

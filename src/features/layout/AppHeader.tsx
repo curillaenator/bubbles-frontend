@@ -9,7 +9,7 @@ import { IoMenu } from 'react-icons/io5';
 
 import { getAssetUrl } from '@src/entities/asset';
 import { $userStore, getUserData, type AppUserEditFields } from '@src/entities/user';
-import { useAppContext } from '@src/providers/AppBotnameProvider';
+import { useAppContext } from '@src/providers/AppContextProvider';
 import { useTranslation } from '@src/hooks/useTranslation';
 
 // import { useColorModeValue } from '@src/features/chakra/color-mode';

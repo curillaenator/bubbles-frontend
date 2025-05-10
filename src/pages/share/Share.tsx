@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Stack, Flex, Center, Heading, QrCode, Text } from '@chakra-ui/react';
 
-import { useAppContext } from '@src/providers/AppBotnameProvider';
+import { useAppContext } from '@src/providers/AppContextProvider';
 import { useTranslation } from '@src/hooks/useTranslation';
 
 import { AVAILBALE_BOTS } from '@src/bots';

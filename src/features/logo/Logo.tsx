@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useAppContext } from '@src/providers/AppBotnameProvider';
+import { useAppContext } from '@src/providers/AppContextProvider';
 import type { AppBotname } from '@src/app';
 
 import { DivebotLogo } from './assets/DivebotLogo';

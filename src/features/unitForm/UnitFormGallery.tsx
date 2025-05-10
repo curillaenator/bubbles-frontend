@@ -9,7 +9,7 @@ import { v4 as getId } from 'uuid';
 import { Box, Flex, FileUpload, Center, chakra, Heading } from '@chakra-ui/react';
 import { IoImageOutline, IoVideocamOutline } from 'react-icons/io5';
 
-import { useAppContext } from '@src/providers/AppBotnameProvider';
+import { useAppContext } from '@src/providers/AppContextProvider';
 
 import { type AppUnitGalleryItem } from '@src/entities/unit';
 import { uploadImage, uploadVideo } from '@src/entities/asset';

@@ -36,7 +36,7 @@ import {
 } from '@src/entities/user';
 
 import { useTranslation } from '@src/hooks/useTranslation';
-import { useAppContext } from '@src/providers/AppBotnameProvider';
+import { useAppContext } from '@src/providers/AppContextProvider';
 
 import { Loader } from '@src/features/loader';
 

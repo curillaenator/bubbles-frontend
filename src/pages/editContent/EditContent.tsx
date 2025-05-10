@@ -2,7 +2,7 @@ import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { Stack } from '@chakra-ui/react';
 
-import { useAppContext } from '@src/providers/AppBotnameProvider';
+import { useAppContext } from '@src/providers/AppContextProvider';
 import { UnitForm } from '@src/features/unitForm';
 
 import { ROUTES } from '@src/routes';

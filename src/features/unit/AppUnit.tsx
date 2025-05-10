@@ -7,7 +7,7 @@ import { Stack, Box, Dialog, CloseButton, Heading, Text, Image, Center, Button, 
 import { IoPlayOutline } from 'react-icons/io5';
 
 import { sendApplication } from '@src/entities/tgchat';
-import { useAppContext } from '@src/providers/AppBotnameProvider';
+import { useAppContext } from '@src/providers/AppContextProvider';
 import { useTranslation } from '@src/hooks/useTranslation';
 import { useColorModeValue } from '@src/features/chakra/color-mode';
 

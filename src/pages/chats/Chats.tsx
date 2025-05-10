@@ -8,7 +8,7 @@ import { IoHomeOutline, IoRemoveOutline } from 'react-icons/io5';
 import { FaTelegramPlane } from 'react-icons/fa';
 
 import { useTranslation } from '@src/hooks/useTranslation';
-import { useAppContext } from '@src/providers/AppBotnameProvider';
+import { useAppContext } from '@src/providers/AppContextProvider';
 
 import { getChats, removeChat, sendToAllChats, type TgChatMeta } from '@src/entities/tgchat';
 

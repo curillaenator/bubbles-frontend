@@ -7,7 +7,7 @@ import { toPairs } from 'lodash';
 
 import { getUnits } from '@src/entities/unit';
 import { $userStore, getUserData, type AppUserEditFields } from '@src/entities/user';
-import { useAppContext } from '@src/providers/AppBotnameProvider';
+import { useAppContext } from '@src/providers/AppContextProvider';
 
 import { Loader } from '@src/features/loader';
 import { AppUnit } from '@src/features/unit';

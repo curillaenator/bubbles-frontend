@@ -1,3 +1,3 @@
-export { AppBotnameProvider } from './AppBotnameProvider';
+export { AppContextProvider } from './AppContextProvider';
 export { FirebaseAuthProvider } from './FirebseAuthProvider';
 export { QueryClientProvider } from './QueryClientProvider';

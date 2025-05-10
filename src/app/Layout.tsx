@@ -7,7 +7,7 @@ import { Logo } from '@src/features/logo';
 import { AppHeader, AppFooter } from '@src/features/layout';
 import { Bubbles } from '@src/features/bubbles';
 
-import { useAppContext } from '@src/providers/AppBotnameProvider';
+import { useAppContext } from '@src/providers/AppContextProvider';
 import { useTranslation } from '@src/hooks/useTranslation';
 import { useColorModeValue } from '@src/features/chakra/color-mode';
 

@@ -7,10 +7,13 @@ import { FaTelegramPlane, FaWhatsapp } from 'react-icons/fa';
 
 import { getAssetUrl } from '@src/entities/asset';
 import { $userStore, getUserData, type AppUserEditFields } from '@src/entities/user';
-import { useAppContext } from '@src/providers/AppBotnameProvider';
+import { useAppContext } from '@src/providers/AppContextProvider';
 
+import type { AppBotname } from '@src/app';
 import { COMMON_ASSET_QUERY, ME_QUERY } from '@src/configs/rtq.keys';
 import { STATIC_PATHS } from '@src/configs/assets.config';
+
+const displayContactButton = (botname: AppBotname | null) => !!botname && !['flea'].includes(botname);
 
 const AppFooter: React.FC = () => {
   const appCtx = useAppContext();
@@ -55,7 +58,7 @@ const AppFooter: React.FC = () => {
         />
       )}
 
-      {footerData && (
+      {displayContactButton(appCtx.botname) && footerData && (
         <Flex
           gap={6}
           h='full'

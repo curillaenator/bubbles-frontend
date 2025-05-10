@@ -5,7 +5,7 @@ import { Card, Stack, Image, SimpleGrid, GridItem, Heading, Text, Button, Center
 import { FaTelegramPlane, FaWhatsapp } from 'react-icons/fa';
 
 import { useTranslation } from '@src/hooks/useTranslation';
-import { useAppContext } from '@src/providers/AppBotnameProvider';
+import { useAppContext } from '@src/providers/AppContextProvider';
 
 import type { AppBotname } from '@src/app';
 import { getUserData, getAvatarUrl, updateMyChatId, type AppUserEditFields } from '@src/entities/user';
